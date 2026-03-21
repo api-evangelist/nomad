@@ -1,0 +1,809 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.hashicorp.com/schemas/nomad/job.json",
+  "title": "HashiCorp Nomad Job",
+  "description": "A Nomad job specification defining the workload to be scheduled, including task groups, tasks, resources, networking, service discovery, and update strategies.",
+  "type": "object",
+  "required": ["ID", "Name", "Type", "TaskGroups"],
+  "properties": {
+    "ID": {
+      "type": "string",
+      "description": "The unique identifier of the job, used to reference it in API calls."
+    },
+    "Name": {
+      "type": "string",
+      "description": "The human-readable name of the job."
+    },
+    "Namespace": {
+      "type": "string",
+      "description": "The namespace the job is registered in. Defaults to 'default'.",
+      "default": "default"
+    },
+    "Type": {
+      "type": "string",
+      "description": "The scheduler type for the job.",
+      "enum": ["service", "batch", "system", "sysbatch"]
+    },
+    "Priority": {
+      "type": "integer",
+      "description": "The priority of the job, from 1 (lowest) to 100 (highest). Defaults to 50.",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 50
+    },
+    "Region": {
+      "type": "string",
+      "description": "The region in which the job is registered."
+    },
+    "Datacenters": {
+      "type": "array",
+      "description": "A list of datacenters the job is allowed to run in.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "NodePool": {
+      "type": "string",
+      "description": "The node pool the job should be scheduled in."
+    },
+    "Status": {
+      "type": "string",
+      "description": "The current status of the job. Set by Nomad, not the user.",
+      "enum": ["pending", "running", "dead"]
+    },
+    "Stable": {
+      "type": "boolean",
+      "description": "Whether this job version is marked as stable."
+    },
+    "Version": {
+      "type": "integer",
+      "description": "The version number of the job, incremented on each update.",
+      "minimum": 0
+    },
+    "SubmitTime": {
+      "type": "integer",
+      "description": "The time the job was submitted in nanoseconds since Unix epoch."
+    },
+    "Meta": {
+      "type": "object",
+      "description": "User-defined metadata key-value pairs attached to the job.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "TaskGroups": {
+      "type": "array",
+      "description": "The task groups that make up the job. Each group is a set of co-located tasks.",
+      "items": {
+        "$ref": "#/$defs/TaskGroup"
+      },
+      "minItems": 1
+    },
+    "Update": {
+      "$ref": "#/$defs/UpdateStrategy"
+    },
+    "Periodic": {
+      "$ref": "#/$defs/PeriodicConfig"
+    },
+    "Parameterized": {
+      "$ref": "#/$defs/ParameterizedConfig"
+    },
+    "Constraints": {
+      "type": "array",
+      "description": "Job-level constraints that apply to all task groups.",
+      "items": {
+        "$ref": "#/$defs/Constraint"
+      }
+    },
+    "Affinities": {
+      "type": "array",
+      "description": "Job-level affinities for soft scheduling preferences.",
+      "items": {
+        "$ref": "#/$defs/Affinity"
+      }
+    },
+    "Spreads": {
+      "type": "array",
+      "description": "Job-level spread targets for distributing allocations.",
+      "items": {
+        "$ref": "#/$defs/Spread"
+      }
+    }
+  },
+  "$defs": {
+    "TaskGroup": {
+      "type": "object",
+      "description": "A task group is a set of tasks that must be co-located on the same node.",
+      "required": ["Name", "Tasks"],
+      "properties": {
+        "Name": {
+          "type": "string",
+          "description": "The name of the task group."
+        },
+        "Count": {
+          "type": "integer",
+          "description": "The number of instances of this task group to run.",
+          "minimum": 0,
+          "default": 1
+        },
+        "Tasks": {
+          "type": "array",
+          "description": "The tasks that are part of this task group.",
+          "items": {
+            "$ref": "#/$defs/Task"
+          },
+          "minItems": 1
+        },
+        "Networks": {
+          "type": "array",
+          "description": "Network configuration for the task group.",
+          "items": {
+            "$ref": "#/$defs/NetworkResource"
+          }
+        },
+        "Services": {
+          "type": "array",
+          "description": "Service registrations for the task group.",
+          "items": {
+            "$ref": "#/$defs/Service"
+          }
+        },
+        "Volumes": {
+          "type": "object",
+          "description": "Volume declarations for the task group.",
+          "additionalProperties": {
+            "$ref": "#/$defs/VolumeRequest"
+          }
+        },
+        "RestartPolicy": {
+          "$ref": "#/$defs/RestartPolicy"
+        },
+        "EphemeralDisk": {
+          "$ref": "#/$defs/EphemeralDisk"
+        },
+        "Update": {
+          "$ref": "#/$defs/UpdateStrategy"
+        },
+        "Scaling": {
+          "$ref": "#/$defs/ScalingPolicy"
+        },
+        "Constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "Affinities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Affinity"
+          }
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "description": "A task is the smallest unit of work in Nomad, executed within a task group.",
+      "required": ["Name", "Driver"],
+      "properties": {
+        "Name": {
+          "type": "string",
+          "description": "The name of the task."
+        },
+        "Driver": {
+          "type": "string",
+          "description": "The task driver to use (e.g., docker, exec, raw_exec, java, podman)."
+        },
+        "Config": {
+          "type": "object",
+          "description": "Driver-specific configuration for the task.",
+          "additionalProperties": true
+        },
+        "Env": {
+          "type": "object",
+          "description": "Environment variables for the task.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "Resources": {
+          "$ref": "#/$defs/Resources"
+        },
+        "Meta": {
+          "type": "object",
+          "description": "User-defined metadata for the task.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "LogConfig": {
+          "type": "object",
+          "description": "Log configuration for the task.",
+          "properties": {
+            "MaxFiles": {
+              "type": "integer",
+              "description": "Maximum number of rotated log files to retain.",
+              "minimum": 1,
+              "default": 10
+            },
+            "MaxFileSizeMB": {
+              "type": "integer",
+              "description": "Maximum size of each log file in megabytes.",
+              "minimum": 1,
+              "default": 10
+            }
+          }
+        },
+        "Templates": {
+          "type": "array",
+          "description": "Template configurations for rendering dynamic files.",
+          "items": {
+            "$ref": "#/$defs/Template"
+          }
+        },
+        "Artifacts": {
+          "type": "array",
+          "description": "Artifacts to download before task execution.",
+          "items": {
+            "$ref": "#/$defs/TaskArtifact"
+          }
+        },
+        "Leader": {
+          "type": "boolean",
+          "description": "If true, this task is the leader task of the group. When it exits, all other tasks are stopped."
+        },
+        "KillTimeout": {
+          "type": "integer",
+          "description": "Time in nanoseconds to wait for the task to exit before forcefully killing it."
+        },
+        "ShutdownDelay": {
+          "type": "integer",
+          "description": "Duration in nanoseconds to wait before sending a kill signal, allowing for graceful shutdown."
+        },
+        "Lifecycle": {
+          "type": "object",
+          "description": "Lifecycle configuration for sidecar and init tasks.",
+          "properties": {
+            "Hook": {
+              "type": "string",
+              "description": "When to run the task relative to the main tasks.",
+              "enum": ["prestart", "poststart", "poststop"]
+            },
+            "Sidecar": {
+              "type": "boolean",
+              "description": "If true, the task runs for the lifetime of the allocation."
+            }
+          }
+        }
+      }
+    },
+    "Resources": {
+      "type": "object",
+      "description": "Resource requirements for a task.",
+      "properties": {
+        "CPU": {
+          "type": "integer",
+          "description": "CPU required in MHz.",
+          "minimum": 1
+        },
+        "Cores": {
+          "type": "integer",
+          "description": "Number of dedicated CPU cores required.",
+          "minimum": 1
+        },
+        "MemoryMB": {
+          "type": "integer",
+          "description": "Memory required in megabytes.",
+          "minimum": 1
+        },
+        "MemoryMaxMB": {
+          "type": "integer",
+          "description": "Maximum memory in megabytes for memory oversubscription.",
+          "minimum": 1
+        },
+        "DiskMB": {
+          "type": "integer",
+          "description": "Disk space required in megabytes.",
+          "minimum": 0
+        }
+      }
+    },
+    "NetworkResource": {
+      "type": "object",
+      "description": "Network resource configuration for a task group.",
+      "properties": {
+        "Mode": {
+          "type": "string",
+          "description": "The network mode (bridge, host, cni/<name>)."
+        },
+        "DNS": {
+          "type": "object",
+          "description": "Custom DNS configuration.",
+          "properties": {
+            "Servers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "DNS server addresses."
+            },
+            "Searches": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "DNS search domains."
+            },
+            "Options": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "DNS options."
+            }
+          }
+        },
+        "DynamicPorts": {
+          "type": "array",
+          "description": "Dynamic port allocations.",
+          "items": {
+            "$ref": "#/$defs/Port"
+          }
+        },
+        "ReservedPorts": {
+          "type": "array",
+          "description": "Reserved static port allocations.",
+          "items": {
+            "$ref": "#/$defs/Port"
+          }
+        }
+      }
+    },
+    "Port": {
+      "type": "object",
+      "description": "A port mapping for a network resource.",
+      "required": ["Label"],
+      "properties": {
+        "Label": {
+          "type": "string",
+          "description": "The label for the port, used to reference it in service definitions."
+        },
+        "Value": {
+          "type": "integer",
+          "description": "The static port value (for reserved ports).",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "To": {
+          "type": "integer",
+          "description": "The port inside the allocation to map to.",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "HostNetwork": {
+          "type": "string",
+          "description": "The host network to bind to."
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "description": "A service registration for Consul or Nomad native service discovery.",
+      "required": ["Name"],
+      "properties": {
+        "Name": {
+          "type": "string",
+          "description": "The name of the service."
+        },
+        "Tags": {
+          "type": "array",
+          "description": "Tags to associate with the service registration.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "CanaryTags": {
+          "type": "array",
+          "description": "Tags to set on the service when it is a canary.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "PortLabel": {
+          "type": "string",
+          "description": "The port label to associate with the service."
+        },
+        "Provider": {
+          "type": "string",
+          "description": "The service discovery provider to use.",
+          "enum": ["consul", "nomad"],
+          "default": "consul"
+        },
+        "Checks": {
+          "type": "array",
+          "description": "Health checks for the service.",
+          "items": {
+            "$ref": "#/$defs/ServiceCheck"
+          }
+        }
+      }
+    },
+    "ServiceCheck": {
+      "type": "object",
+      "description": "A health check for a service registration.",
+      "required": ["Type"],
+      "properties": {
+        "Name": {
+          "type": "string",
+          "description": "The name of the health check."
+        },
+        "Type": {
+          "type": "string",
+          "description": "The type of health check.",
+          "enum": ["http", "tcp", "script", "grpc"]
+        },
+        "Path": {
+          "type": "string",
+          "description": "The HTTP path for HTTP checks."
+        },
+        "Protocol": {
+          "type": "string",
+          "description": "The protocol for the check (http or https)."
+        },
+        "PortLabel": {
+          "type": "string",
+          "description": "The port label to use for the check."
+        },
+        "Interval": {
+          "type": "integer",
+          "description": "How often to run the check in nanoseconds."
+        },
+        "Timeout": {
+          "type": "integer",
+          "description": "Timeout for the check in nanoseconds."
+        },
+        "Command": {
+          "type": "string",
+          "description": "The command to run for script checks."
+        },
+        "Args": {
+          "type": "array",
+          "description": "Arguments for script checks.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "UpdateStrategy": {
+      "type": "object",
+      "description": "Configuration for rolling update deployments.",
+      "properties": {
+        "MaxParallel": {
+          "type": "integer",
+          "description": "Maximum number of allocations to update simultaneously.",
+          "minimum": 0
+        },
+        "HealthCheck": {
+          "type": "string",
+          "description": "The health check strategy for deployed allocations.",
+          "enum": ["checks", "task_states", "manual"]
+        },
+        "MinHealthyTime": {
+          "type": "integer",
+          "description": "Minimum time in nanoseconds an allocation must be healthy before considered successful."
+        },
+        "HealthyDeadline": {
+          "type": "integer",
+          "description": "Deadline in nanoseconds for a single allocation to become healthy."
+        },
+        "ProgressDeadline": {
+          "type": "integer",
+          "description": "Deadline in nanoseconds for overall deployment progress."
+        },
+        "AutoRevert": {
+          "type": "boolean",
+          "description": "If true, automatically reverts to the last stable version on deployment failure."
+        },
+        "AutoPromote": {
+          "type": "boolean",
+          "description": "If true, automatically promotes canary allocations when all are healthy."
+        },
+        "Canary": {
+          "type": "integer",
+          "description": "The number of canary allocations to create during an update.",
+          "minimum": 0
+        },
+        "Stagger": {
+          "type": "integer",
+          "description": "Time in nanoseconds to wait between batches of updates."
+        }
+      }
+    },
+    "PeriodicConfig": {
+      "type": "object",
+      "description": "Configuration for periodic (cron-like) jobs.",
+      "properties": {
+        "Enabled": {
+          "type": "boolean",
+          "description": "Whether the periodic job is enabled."
+        },
+        "Spec": {
+          "type": "string",
+          "description": "The cron expression for the job schedule."
+        },
+        "SpecType": {
+          "type": "string",
+          "description": "The type of schedule specification.",
+          "enum": ["cron"]
+        },
+        "ProhibitOverlap": {
+          "type": "boolean",
+          "description": "If true, prevents launching new instances while previous ones are running."
+        },
+        "TimeZone": {
+          "type": "string",
+          "description": "The time zone for the cron expression (e.g., America/New_York)."
+        }
+      }
+    },
+    "ParameterizedConfig": {
+      "type": "object",
+      "description": "Configuration for parameterized dispatch jobs.",
+      "properties": {
+        "Payload": {
+          "type": "string",
+          "description": "Whether the payload is optional, required, or forbidden.",
+          "enum": ["optional", "required", "forbidden"]
+        },
+        "MetaRequired": {
+          "type": "array",
+          "description": "Required metadata keys for dispatch.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "MetaOptional": {
+          "type": "array",
+          "description": "Optional metadata keys for dispatch.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Constraint": {
+      "type": "object",
+      "description": "A scheduling constraint.",
+      "properties": {
+        "LTarget": {
+          "type": "string",
+          "description": "The left-hand side target of the constraint."
+        },
+        "RTarget": {
+          "type": "string",
+          "description": "The right-hand side target of the constraint."
+        },
+        "Operand": {
+          "type": "string",
+          "description": "The constraint operator.",
+          "enum": ["=", "!=", ">", ">=", "<", "<=", "regexp", "set_contains", "set_contains_any", "version", "semver", "is_set", "is_not_set", "distinct_hosts", "distinct_property"]
+        }
+      }
+    },
+    "Affinity": {
+      "type": "object",
+      "description": "A soft scheduling preference.",
+      "properties": {
+        "LTarget": {
+          "type": "string",
+          "description": "The left-hand side target of the affinity."
+        },
+        "RTarget": {
+          "type": "string",
+          "description": "The right-hand side target of the affinity."
+        },
+        "Operand": {
+          "type": "string",
+          "description": "The affinity operator."
+        },
+        "Weight": {
+          "type": "integer",
+          "description": "The weight of the affinity, from -100 to 100.",
+          "minimum": -100,
+          "maximum": 100
+        }
+      }
+    },
+    "Spread": {
+      "type": "object",
+      "description": "A spread target for distributing allocations across attribute values.",
+      "properties": {
+        "Attribute": {
+          "type": "string",
+          "description": "The attribute to spread on."
+        },
+        "Weight": {
+          "type": "integer",
+          "description": "The weight of the spread, from 0 to 100.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "SpreadTarget": {
+          "type": "array",
+          "description": "The target distribution of allocations.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Value": {
+                "type": "string"
+              },
+              "Percent": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        }
+      }
+    },
+    "RestartPolicy": {
+      "type": "object",
+      "description": "Policy for restarting failed tasks.",
+      "properties": {
+        "Interval": {
+          "type": "integer",
+          "description": "The duration in nanoseconds for which the restart attempts are tracked."
+        },
+        "Attempts": {
+          "type": "integer",
+          "description": "Maximum number of restart attempts within the interval.",
+          "minimum": 0
+        },
+        "Delay": {
+          "type": "integer",
+          "description": "Duration in nanoseconds to wait between restart attempts."
+        },
+        "Mode": {
+          "type": "string",
+          "description": "The restart behavior after exceeding attempts.",
+          "enum": ["delay", "fail"]
+        }
+      }
+    },
+    "EphemeralDisk": {
+      "type": "object",
+      "description": "Configuration for the ephemeral disk of a task group.",
+      "properties": {
+        "SizeMB": {
+          "type": "integer",
+          "description": "The size of the ephemeral disk in megabytes.",
+          "minimum": 1,
+          "default": 300
+        },
+        "Sticky": {
+          "type": "boolean",
+          "description": "If true, attempts to place the allocation on the same node as a previous allocation."
+        },
+        "Migrate": {
+          "type": "boolean",
+          "description": "If true, migrates the disk data from a previous allocation."
+        }
+      }
+    },
+    "VolumeRequest": {
+      "type": "object",
+      "description": "A volume request for a task group.",
+      "properties": {
+        "Name": {
+          "type": "string",
+          "description": "The name of the volume."
+        },
+        "Type": {
+          "type": "string",
+          "description": "The type of volume.",
+          "enum": ["host", "csi"]
+        },
+        "Source": {
+          "type": "string",
+          "description": "The source of the volume (host volume name or CSI volume ID)."
+        },
+        "ReadOnly": {
+          "type": "boolean",
+          "description": "If true, the volume is mounted as read-only."
+        }
+      }
+    },
+    "Template": {
+      "type": "object",
+      "description": "A template for rendering dynamic configuration files.",
+      "properties": {
+        "SourcePath": {
+          "type": "string",
+          "description": "Path to the template source file."
+        },
+        "DestPath": {
+          "type": "string",
+          "description": "Path where the rendered template will be written."
+        },
+        "EmbeddedTmpl": {
+          "type": "string",
+          "description": "Inline template content."
+        },
+        "ChangeMode": {
+          "type": "string",
+          "description": "Action to take when the template changes.",
+          "enum": ["noop", "restart", "signal"],
+          "default": "restart"
+        },
+        "ChangeSignal": {
+          "type": "string",
+          "description": "Signal to send when ChangeMode is 'signal'."
+        },
+        "Perms": {
+          "type": "string",
+          "description": "File permissions for the rendered template.",
+          "pattern": "^[0-7]{3,4}$"
+        },
+        "Envvars": {
+          "type": "boolean",
+          "description": "If true, the template is parsed as environment variables."
+        }
+      }
+    },
+    "TaskArtifact": {
+      "type": "object",
+      "description": "An artifact to download before task execution.",
+      "required": ["GetterSource"],
+      "properties": {
+        "GetterSource": {
+          "type": "string",
+          "description": "The URL to download the artifact from."
+        },
+        "GetterOptions": {
+          "type": "object",
+          "description": "Options for the artifact getter.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "GetterMode": {
+          "type": "string",
+          "description": "The download mode.",
+          "enum": ["any", "file", "dir"]
+        },
+        "RelativeDest": {
+          "type": "string",
+          "description": "The destination path relative to the task directory."
+        }
+      }
+    },
+    "ScalingPolicy": {
+      "type": "object",
+      "description": "A scaling policy for dynamically adjusting task group count.",
+      "properties": {
+        "Min": {
+          "type": "integer",
+          "description": "Minimum count for the task group.",
+          "minimum": 0
+        },
+        "Max": {
+          "type": "integer",
+          "description": "Maximum count for the task group.",
+          "minimum": 0
+        },
+        "Enabled": {
+          "type": "boolean",
+          "description": "Whether the scaling policy is enabled."
+        },
+        "Policy": {
+          "type": "object",
+          "description": "The autoscaling policy configuration.",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

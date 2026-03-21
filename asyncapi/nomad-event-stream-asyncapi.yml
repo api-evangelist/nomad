@@ -1,0 +1,366 @@
+asyncapi: 2.6.0
+info:
+  title: HashiCorp Nomad Event Stream
+  description: >-
+    The Nomad Event Stream provides a way to subscribe to Job, Allocation,
+    Evaluation, Deployment, Node, Node Pool, and Service changes in near
+    real time. The /v1/event/stream endpoint streams events as newline-
+    delimited JSON (ndjson) over an HTTP long-polling connection. Each
+    response object may contain multiple events from a single Raft
+    transaction or no events as a heartbeat to keep the connection alive.
+    Consumers can filter by topic and key to receive only relevant events.
+  version: '1.9.0'
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+  externalDocs:
+    description: Nomad Event Stream Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs/events
+servers:
+  production:
+    url: '{protocol}://{host}:{port}/v1'
+    protocol: https
+    description: >-
+      Nomad agent event stream endpoint. Uses HTTP long-polling with
+      ndjson response format.
+    variables:
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+      host:
+        default: localhost
+      port:
+        default: '4646'
+    security:
+      - nomadToken: []
+channels:
+  /event/stream?topic=Job:
+    description: >-
+      Subscribe to job lifecycle events including registration,
+      deregistration, and updates.
+    subscribe:
+      operationId: receiveJobEvents
+      summary: Receive job events
+      description: >-
+        Streams job-related events such as job registration, updates,
+        deregistration, and dispatch. Filter by specific job ID using
+        the topic key parameter (e.g., topic=Job:web).
+      message:
+        oneOf:
+          - $ref: '#/components/messages/JobRegistered'
+          - $ref: '#/components/messages/JobDeregistered'
+          - $ref: '#/components/messages/JobBatchDeregistered'
+  /event/stream?topic=Allocation:
+    description: >-
+      Subscribe to allocation lifecycle events including placement,
+      updates, and completion.
+    subscribe:
+      operationId: receiveAllocationEvents
+      summary: Receive allocation events
+      description: >-
+        Streams allocation-related events such as placement, health
+        status changes, migration, and completion. Filter by specific
+        allocation ID using the topic key parameter.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/AllocationCreated'
+          - $ref: '#/components/messages/AllocationUpdated'
+  /event/stream?topic=Evaluation:
+    description: >-
+      Subscribe to evaluation lifecycle events including creation,
+      scheduling, and completion.
+    subscribe:
+      operationId: receiveEvaluationEvents
+      summary: Receive evaluation events
+      description: >-
+        Streams evaluation-related events triggered by job updates,
+        node status changes, and periodic scheduling.
+      message:
+        $ref: '#/components/messages/EvaluationUpdated'
+  /event/stream?topic=Deployment:
+    description: >-
+      Subscribe to deployment lifecycle events including creation,
+      promotion, failure, and success.
+    subscribe:
+      operationId: receiveDeploymentEvents
+      summary: Receive deployment events
+      description: >-
+        Streams deployment-related events tracking rolling updates
+        between job versions.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/DeploymentStatusUpdate'
+          - $ref: '#/components/messages/DeploymentPromotion'
+  /event/stream?topic=Node:
+    description: >-
+      Subscribe to node lifecycle events including registration,
+      status changes, drain, and deregistration.
+    subscribe:
+      operationId: receiveNodeEvents
+      summary: Receive node events
+      description: >-
+        Streams node-related events such as registration, status
+        transitions, drain mode changes, and eligibility updates.
+        Filter by specific node ID using the topic key parameter.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/NodeRegistered'
+          - $ref: '#/components/messages/NodeDeregistered'
+          - $ref: '#/components/messages/NodeStatusUpdate'
+          - $ref: '#/components/messages/NodeDrainUpdate'
+  /event/stream?topic=NodePool:
+    description: >-
+      Subscribe to node pool events including creation, updates,
+      and deletion.
+    subscribe:
+      operationId: receiveNodePoolEvents
+      summary: Receive node pool events
+      description: >-
+        Streams node pool-related events when pools are created,
+        updated, or deleted.
+      message:
+        $ref: '#/components/messages/NodePoolUpdated'
+  /event/stream?topic=Service:
+    description: >-
+      Subscribe to Nomad native service registration events.
+    subscribe:
+      operationId: receiveServiceEvents
+      summary: Receive service events
+      description: >-
+        Streams service registration and deregistration events for
+        services using the Nomad service discovery provider.
+      message:
+        $ref: '#/components/messages/ServiceUpdated'
+  /event/stream?topic=*:
+    description: >-
+      Subscribe to all event topics. Receives every event generated
+      by the Nomad server.
+    subscribe:
+      operationId: receiveAllEvents
+      summary: Receive all events
+      description: >-
+        Streams all events across all topics. Useful for building
+        comprehensive audit logs or monitoring dashboards.
+      message:
+        $ref: '#/components/messages/EventEnvelope'
+components:
+  securitySchemes:
+    nomadToken:
+      type: httpApiKey
+      name: X-Nomad-Token
+      in: header
+      description: >-
+        ACL token passed via the X-Nomad-Token request header.
+  messages:
+    JobRegistered:
+      name: JobRegistered
+      title: Job Registered
+      summary: >-
+        Emitted when a job is registered or updated in Nomad.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    JobDeregistered:
+      name: JobDeregistered
+      title: Job Deregistered
+      summary: >-
+        Emitted when a job is deregistered from Nomad.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    JobBatchDeregistered:
+      name: JobBatchDeregistered
+      title: Job Batch Deregistered
+      summary: >-
+        Emitted when multiple jobs are deregistered at once.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    AllocationCreated:
+      name: AllocationCreated
+      title: Allocation Created
+      summary: >-
+        Emitted when a new allocation is placed on a node.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    AllocationUpdated:
+      name: AllocationUpdated
+      title: Allocation Updated
+      summary: >-
+        Emitted when an allocation status or health changes.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    EvaluationUpdated:
+      name: EvaluationUpdated
+      title: Evaluation Updated
+      summary: >-
+        Emitted when an evaluation is created or its status changes.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    DeploymentStatusUpdate:
+      name: DeploymentStatusUpdate
+      title: Deployment Status Update
+      summary: >-
+        Emitted when a deployment status changes.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    DeploymentPromotion:
+      name: DeploymentPromotion
+      title: Deployment Promotion
+      summary: >-
+        Emitted when canary allocations in a deployment are promoted.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    NodeRegistered:
+      name: NodeRegistered
+      title: Node Registered
+      summary: >-
+        Emitted when a new node registers with the cluster.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    NodeDeregistered:
+      name: NodeDeregistered
+      title: Node Deregistered
+      summary: >-
+        Emitted when a node is deregistered from the cluster.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    NodeStatusUpdate:
+      name: NodeStatusUpdate
+      title: Node Status Update
+      summary: >-
+        Emitted when a node status changes (ready, down, disconnected).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    NodeDrainUpdate:
+      name: NodeDrainUpdate
+      title: Node Drain Update
+      summary: >-
+        Emitted when a node drain mode is enabled or disabled.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    NodePoolUpdated:
+      name: NodePoolUpdated
+      title: Node Pool Updated
+      summary: >-
+        Emitted when a node pool is created, updated, or deleted.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    ServiceUpdated:
+      name: ServiceUpdated
+      title: Service Updated
+      summary: >-
+        Emitted when a Nomad service registration changes.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+    EventEnvelope:
+      name: EventEnvelope
+      title: Event Envelope
+      summary: >-
+        The top-level envelope for all event stream messages.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+  schemas:
+    EventEnvelope:
+      type: object
+      description: >-
+        The top-level ndjson object containing an index and a set of
+        events from a single Raft transaction. An empty Events array
+        serves as a heartbeat.
+      properties:
+        Index:
+          type: integer
+          description: >-
+            The Raft index associated with this set of events.
+        Events:
+          type: array
+          description: >-
+            The list of events in this transaction. May be empty for
+            heartbeat messages.
+          items:
+            $ref: '#/components/schemas/Event'
+    Event:
+      type: object
+      description: >-
+        A single event within an event stream message.
+      required:
+        - Topic
+        - Type
+        - Key
+        - Namespace
+        - Index
+      properties:
+        Topic:
+          type: string
+          description: >-
+            The topic of the event.
+          enum:
+            - Job
+            - Allocation
+            - Evaluation
+            - Deployment
+            - Node
+            - NodePool
+            - Service
+        Type:
+          type: string
+          description: >-
+            The type of event within the topic.
+          examples:
+            - JobRegistered
+            - JobDeregistered
+            - JobBatchDeregistered
+            - AllocationCreated
+            - AllocationUpdated
+            - EvaluationUpdated
+            - DeploymentStatusUpdate
+            - DeploymentPromotion
+            - NodeRegistration
+            - NodeDeregistration
+            - NodeEligibility
+            - NodeDrain
+            - NodePoolUpserted
+            - NodePoolDeleted
+            - ServiceRegistration
+            - ServiceDeregistration
+        Key:
+          type: string
+          description: >-
+            The primary key of the object this event relates to, such
+            as a job ID or node ID.
+        Namespace:
+          type: string
+          description: >-
+            The namespace of the object this event relates to.
+        FilterKeys:
+          type: array
+          items:
+            type: string
+          description: >-
+            Additional keys that can be used to filter this event.
+        Index:
+          type: integer
+          description: >-
+            The Raft index at which this event was generated.
+        Payload:
+          type: object
+          description: >-
+            The event payload containing the full or partial object
+            that was affected. The structure depends on the Topic.

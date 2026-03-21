@@ -1,0 +1,237 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "nomad": "https://developer.hashicorp.com/nomad/ns#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Job": {
+      "@id": "nomad:Job",
+      "@context": {
+        "ID": "nomad:jobId",
+        "Name": "schema:name",
+        "Namespace": "nomad:namespace",
+        "Type": "nomad:jobType",
+        "Priority": "nomad:priority",
+        "Region": "nomad:region",
+        "Datacenters": {
+          "@id": "nomad:datacenters",
+          "@container": "@set"
+        },
+        "NodePool": "nomad:nodePool",
+        "Status": "nomad:status",
+        "StatusDescription": "schema:description",
+        "Stable": "nomad:stable",
+        "Version": "schema:version",
+        "SubmitTime": {
+          "@id": "dcterms:dateSubmitted",
+          "@type": "xsd:long"
+        },
+        "Meta": "nomad:metadata",
+        "TaskGroups": {
+          "@id": "nomad:taskGroups",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "TaskGroup": {
+      "@id": "nomad:TaskGroup",
+      "@context": {
+        "Name": "schema:name",
+        "Count": "nomad:count",
+        "Tasks": {
+          "@id": "nomad:tasks",
+          "@container": "@set"
+        },
+        "Networks": {
+          "@id": "nomad:networks",
+          "@container": "@set"
+        },
+        "Services": {
+          "@id": "nomad:services",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Task": {
+      "@id": "nomad:Task",
+      "@context": {
+        "Name": "schema:name",
+        "Driver": "nomad:driver",
+        "Config": "nomad:taskConfig",
+        "Env": "nomad:environment",
+        "Resources": "nomad:resources",
+        "Leader": "nomad:leader"
+      }
+    },
+
+    "Allocation": {
+      "@id": "nomad:Allocation",
+      "@context": {
+        "ID": "nomad:allocationId",
+        "Name": "schema:name",
+        "Namespace": "nomad:namespace",
+        "NodeID": "nomad:nodeId",
+        "NodeName": "nomad:nodeName",
+        "JobID": "nomad:jobId",
+        "TaskGroup": "nomad:taskGroup",
+        "DesiredStatus": "nomad:desiredStatus",
+        "ClientStatus": "nomad:clientStatus",
+        "ClientDescription": "schema:description",
+        "DeploymentID": "nomad:deploymentId",
+        "CreateTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:long"
+        },
+        "ModifyTime": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:long"
+        }
+      }
+    },
+
+    "Evaluation": {
+      "@id": "nomad:Evaluation",
+      "@context": {
+        "ID": "nomad:evaluationId",
+        "Priority": "nomad:priority",
+        "Type": "nomad:evaluationType",
+        "TriggeredBy": "nomad:triggeredBy",
+        "Namespace": "nomad:namespace",
+        "JobID": "nomad:jobId",
+        "NodeID": "nomad:nodeId",
+        "DeploymentID": "nomad:deploymentId",
+        "Status": "nomad:status",
+        "StatusDescription": "schema:description",
+        "CreateTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:long"
+        },
+        "ModifyTime": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:long"
+        }
+      }
+    },
+
+    "Deployment": {
+      "@id": "nomad:Deployment",
+      "@context": {
+        "ID": "nomad:deploymentId",
+        "Namespace": "nomad:namespace",
+        "JobID": "nomad:jobId",
+        "JobVersion": "nomad:jobVersion",
+        "Status": "nomad:status",
+        "StatusDescription": "schema:description",
+        "TaskGroups": "nomad:deploymentTaskGroups"
+      }
+    },
+
+    "Node": {
+      "@id": "nomad:Node",
+      "@context": {
+        "ID": "nomad:nodeId",
+        "Datacenter": "nomad:datacenter",
+        "Name": "schema:name",
+        "NodeClass": "nomad:nodeClass",
+        "NodePool": "nomad:nodePool",
+        "Drain": "nomad:drain",
+        "SchedulingEligibility": "nomad:schedulingEligibility",
+        "Status": "nomad:status",
+        "StatusDescription": "schema:description",
+        "HTTPAddr": {
+          "@id": "nomad:httpAddress",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "NodePool": {
+      "@id": "nomad:NodePool",
+      "@context": {
+        "Name": "schema:name",
+        "Description": "schema:description",
+        "Meta": "nomad:metadata"
+      }
+    },
+
+    "Service": {
+      "@id": "nomad:Service",
+      "@context": {
+        "ServiceName": "schema:name",
+        "Namespace": "nomad:namespace",
+        "NodeID": "nomad:nodeId",
+        "Datacenter": "nomad:datacenter",
+        "JobID": "nomad:jobId",
+        "AllocID": "nomad:allocationId",
+        "Tags": {
+          "@id": "schema:keywords",
+          "@container": "@set"
+        },
+        "Address": "nomad:address",
+        "Port": "nomad:port"
+      }
+    },
+
+    "Namespace": {
+      "@id": "nomad:Namespace",
+      "@context": {
+        "Name": "schema:name",
+        "Description": "schema:description",
+        "Quota": "nomad:quota",
+        "Meta": "nomad:metadata"
+      }
+    },
+
+    "Variable": {
+      "@id": "nomad:Variable",
+      "@context": {
+        "Namespace": "nomad:namespace",
+        "Path": "nomad:variablePath",
+        "Items": "nomad:variableItems",
+        "CreateTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:long"
+        },
+        "ModifyTime": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:long"
+        }
+      }
+    },
+
+    "ACLPolicy": {
+      "@id": "nomad:ACLPolicy",
+      "@context": {
+        "Name": "schema:name",
+        "Description": "schema:description",
+        "Rules": "nomad:policyRules"
+      }
+    },
+
+    "ACLToken": {
+      "@id": "nomad:ACLToken",
+      "@context": {
+        "AccessorID": "nomad:accessorId",
+        "Name": "schema:name",
+        "Type": "nomad:tokenType",
+        "Policies": {
+          "@id": "nomad:policies",
+          "@container": "@set"
+        },
+        "Global": "nomad:global",
+        "CreateTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "ExpirationTime": {
+          "@id": "nomad:expirationTime",
+          "@type": "xsd:dateTime"
+        }
+      }
+    }
+  }
+}

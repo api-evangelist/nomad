@@ -1,0 +1,3898 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP API
+  description: >-
+    The HashiCorp Nomad HTTP API provides programmatic access to all Nomad
+    functionality including job scheduling, allocation management, node
+    operations, deployments, services, evaluations, namespaces, ACL policies,
+    and cluster status. All API routes are prefixed with /v1/ and the default
+    port is 4646. The API is RESTful, responds to standard HTTP verbs, and
+    supports ACL token authentication via the X-Nomad-Token header or Bearer
+    scheme.
+  version: '1.9.0'
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs
+servers:
+  - url: http://localhost:4646/v1
+    description: Local Nomad Agent
+tags:
+  - name: Jobs
+    description: >-
+      Endpoints for listing, creating, reading, updating, and deleting jobs.
+      Jobs are the primary unit of work in Nomad.
+  - name: Allocations
+    description: >-
+      Endpoints for querying allocations. An allocation declares that a set of
+      tasks in a job should be run on a particular node.
+  - name: Evaluations
+    description: >-
+      Endpoints for querying evaluations. Evaluations are the mechanism by
+      which Nomad makes scheduling decisions.
+  - name: Deployments
+    description: >-
+      Endpoints for querying and managing deployments. Deployments track the
+      rolling update of allocations between two versions of a job.
+  - name: Nodes
+    description: >-
+      Endpoints for querying and managing client nodes registered with the
+      Nomad cluster.
+  - name: Node Pools
+    description: >-
+      Endpoints for managing node pools, which group nodes for scheduling
+      constraints.
+  - name: Agent
+    description: >-
+      Endpoints for interacting with the local Nomad agent, including health
+      checks, member listing, and server management.
+  - name: Services
+    description: >-
+      Endpoints for querying Nomad-registered services for service discovery.
+  - name: Volumes
+    description: >-
+      Endpoints for managing CSI and host volumes attached to Nomad
+      allocations.
+  - name: Namespaces
+    description: >-
+      Endpoints for managing namespaces, which segment jobs and their
+      associated objects.
+  - name: ACL
+    description: >-
+      Endpoints for managing Access Control List policies, tokens, and
+      authentication methods.
+  - name: Operator
+    description: >-
+      Endpoints for cluster-level operations such as Raft peer management
+      and autopilot configuration.
+  - name: Scaling
+    description: >-
+      Endpoints for querying scaling policies and their status.
+  - name: Variables
+    description: >-
+      Endpoints for managing Nomad variables, which store encrypted
+      key-value data.
+  - name: Search
+    description: >-
+      Endpoints for searching across Nomad objects by prefix or fuzzy match.
+  - name: System
+    description: >-
+      Endpoints for system maintenance operations such as garbage collection
+      and reconciliation.
+  - name: Sentinel
+    description: >-
+      Endpoints for managing Sentinel policies. Enterprise only.
+  - name: Quotas
+    description: >-
+      Endpoints for managing resource quotas. Enterprise only.
+  - name: Recommendations
+    description: >-
+      Endpoints for querying and applying resource recommendations.
+      Enterprise only.
+  - name: Regions
+    description: >-
+      Endpoints for listing known regions in the Nomad cluster.
+  - name: Status
+    description: >-
+      Endpoints for querying the status of the Nomad cluster including
+      leader and peer information.
+security:
+  - nomadToken: []
+  - bearerAuth: []
+paths:
+  /jobs:
+    get:
+      operationId: listJobs
+      summary: List jobs
+      description: >-
+        Lists all known jobs in the system registered with Nomad. Supports
+        prefix-based filtering and pagination via next_token and per_page
+        query parameters.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of job stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobListStub'
+          headers:
+            X-Nomad-Index:
+              $ref: '#/components/headers/NomadIndex'
+            X-Nomad-KnownLeader:
+              $ref: '#/components/headers/NomadKnownLeader'
+            X-Nomad-LastContact:
+              $ref: '#/components/headers/NomadLastContact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: registerJob
+      summary: Register a new job
+      description: >-
+        Registers a new job or updates an existing job. The job must be
+        provided as a JSON payload in the request body.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRegisterRequest'
+      responses:
+        '200':
+          description: Job registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobRegisterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /jobs/parse:
+    put:
+      operationId: parseJob
+      summary: Parse a job specification
+      description: >-
+        Parses a HCL or JSON job specification and returns the equivalent
+        JSON job structure. This endpoint can be used to validate job
+        specifications without registering them.
+      tags:
+        - Jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                JobHCL:
+                  type: string
+                  description: >-
+                    The HCL definition of the job encoded as a JSON string.
+                Canonicalize:
+                  type: boolean
+                  description: >-
+                    If true, sets any unset fields to their default values.
+      responses:
+        '200':
+          description: Parsed job specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /jobs/statuses:
+    get:
+      operationId: listJobStatuses
+      summary: List job statuses
+      description: >-
+        Returns a list of jobs with their current status information
+        including allocation summaries and deployment status.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: A list of job statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}:
+    get:
+      operationId: readJob
+      summary: Read a job
+      description: >-
+        Returns the full specification and status of the specified job.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: The job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deregisterJob
+      summary: Deregister a job
+      description: >-
+        Deregisters a job and stops all allocations associated with it.
+        Optionally purges the job from the system entirely.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - name: purge
+          in: query
+          description: >-
+            If true, the job is purged from the system and cannot be
+            recovered. Defaults to false.
+          schema:
+            type: boolean
+        - name: global
+          in: query
+          description: >-
+            If true, deregisters the job in all federated regions.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Job deregistered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                    description: >-
+                      The ID of the evaluation created as a result of
+                      deregistering the job.
+                  EvalCreateIndex:
+                    type: integer
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/evaluate:
+    put:
+      operationId: evaluateJob
+      summary: Create a new evaluation for a job
+      description: >-
+        Creates a new evaluation for the given job. This can be used to
+        force run the scheduling logic if necessary.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ForceReschedule:
+                  type: boolean
+                  description: >-
+                    If true, forces rescheduling of failed allocations.
+      responses:
+        '200':
+          description: Evaluation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/plan:
+    put:
+      operationId: planJob
+      summary: Plan a job update
+      description: >-
+        Invokes a dry-run of the scheduler for the job which will determine
+        the effects of an update. The plan will not result in any changes
+        to the cluster.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Job:
+                  $ref: '#/components/schemas/Job'
+                Diff:
+                  type: boolean
+                  description: >-
+                    If true, returns a diff between the current and planned
+                    job.
+                PolicyOverride:
+                  type: boolean
+                  description: >-
+                    If true, overrides any soft mandatory Sentinel policies.
+      responses:
+        '200':
+          description: Job plan result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  JobModifyIndex:
+                    type: integer
+                  Diff:
+                    type: object
+                  Annotations:
+                    type: object
+                  FailedTGAllocs:
+                    type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/allocations:
+    get:
+      operationId: listJobAllocations
+      summary: List allocations for a job
+      description: >-
+        Returns a list of allocations belonging to the specified job.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - name: all
+          in: query
+          description: >-
+            If true, includes allocations from all namespaces.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/evaluations:
+    get:
+      operationId: listJobEvaluations
+      summary: List evaluations for a job
+      description: >-
+        Returns a list of evaluations belonging to the specified job.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: A list of evaluations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evaluation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/deployments:
+    get:
+      operationId: listJobDeployments
+      summary: List deployments for a job
+      description: >-
+        Returns a list of deployments belonging to the specified job.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: A list of deployments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/versions:
+    get:
+      operationId: listJobVersions
+      summary: List versions of a job
+      description: >-
+        Returns a list of versions for the specified job, with the most
+        recent version first.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - name: diffs
+          in: query
+          description: >-
+            If true, includes the diff between consecutive job versions.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of job versions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Versions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+                  Diffs:
+                    type: array
+                    items:
+                      type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/revert:
+    put:
+      operationId: revertJob
+      summary: Revert job to an older version
+      description: >-
+        Reverts the job to an older version by creating a new version with
+        the specification of the older version.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - JobID
+                - JobVersion
+              properties:
+                JobID:
+                  type: string
+                  description: >-
+                    The ID of the job to revert.
+                JobVersion:
+                  type: integer
+                  description: >-
+                    The version number to revert to.
+                EnforcePriorVersion:
+                  type: integer
+                  description: >-
+                    If set, the job is only reverted if the current version
+                    matches this value.
+      responses:
+        '200':
+          description: Job reverted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/stable:
+    put:
+      operationId: setJobStability
+      summary: Set job stability
+      description: >-
+        Sets the stability of a job version, marking it as stable or
+        unstable. Stable versions are not eligible for automatic garbage
+        collection.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - JobID
+                - JobVersion
+                - Stable
+              properties:
+                JobID:
+                  type: string
+                JobVersion:
+                  type: integer
+                Stable:
+                  type: boolean
+      responses:
+        '200':
+          description: Stability set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/summary:
+    get:
+      operationId: readJobSummary
+      summary: Read a job summary
+      description: >-
+        Returns a summary of the specified job including the number of
+        allocations in each state per task group.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Job summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/dispatch:
+    put:
+      operationId: dispatchJob
+      summary: Dispatch a parameterized job
+      description: >-
+        Dispatches a new instance of a parameterized job. The job must be
+        of type parameterized.
+      tags:
+        - Jobs
+      parameters:
+        - $ref: '#/components/parameters/JobIDParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Payload:
+                  type: string
+                  description: >-
+                    Base64-encoded payload for the dispatched job.
+                Meta:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: >-
+                    Metadata key-value pairs for the dispatched job.
+      responses:
+        '200':
+          description: Job dispatched
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  DispatchedJobID:
+                    type: string
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocations:
+    get:
+      operationId: listAllocations
+      summary: List allocations
+      description: >-
+        Lists all allocations in the system. Supports prefix-based
+        filtering and pagination.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}:
+    get:
+      operationId: readAllocation
+      summary: Read an allocation
+      description: >-
+        Returns the full details of the specified allocation.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}/services:
+    get:
+      operationId: listAllocationServices
+      summary: List allocation services
+      description: >-
+        Returns the services registered by the specified allocation
+        including address, port, and service name.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}/checks:
+    get:
+      operationId: listAllocationChecks
+      summary: List allocation health checks
+      description: >-
+        Returns the health check results for the specified allocation.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation health checks
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /evaluations:
+    get:
+      operationId: listEvaluations
+      summary: List evaluations
+      description: >-
+        Lists all evaluations in the system. Supports filtering by job ID
+        and evaluation status (blocked, pending, complete, failed,
+        or canceled).
+      tags:
+        - Evaluations
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+        - name: status
+          in: query
+          description: >-
+            Filter evaluations by status.
+          schema:
+            type: string
+            enum:
+              - blocked
+              - pending
+              - complete
+              - failed
+              - canceled
+        - name: job
+          in: query
+          description: >-
+            Filter evaluations by job ID.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of evaluations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evaluation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /evaluations/count:
+    get:
+      operationId: countEvaluations
+      summary: Count evaluations
+      description: >-
+        Returns a count of evaluations in the system, optionally filtered
+        by status.
+      tags:
+        - Evaluations
+      parameters:
+        - name: status
+          in: query
+          description: >-
+            Filter the count by evaluation status.
+          schema:
+            type: string
+            enum:
+              - blocked
+              - pending
+              - complete
+              - failed
+              - canceled
+      responses:
+        '200':
+          description: Evaluation count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Count:
+                    type: integer
+                    description: >-
+                      The number of evaluations matching the filter.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /evaluation/{evalID}:
+    get:
+      operationId: readEvaluation
+      summary: Read an evaluation
+      description: >-
+        Returns the full details of the specified evaluation.
+      tags:
+        - Evaluations
+      parameters:
+        - $ref: '#/components/parameters/EvalIDParam'
+      responses:
+        '200':
+          description: Evaluation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /evaluation/{evalID}/allocations:
+    get:
+      operationId: listEvaluationAllocations
+      summary: List allocations for an evaluation
+      description: >-
+        Returns a list of allocations created or modified by the
+        specified evaluation.
+      tags:
+        - Evaluations
+      parameters:
+        - $ref: '#/components/parameters/EvalIDParam'
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployments:
+    get:
+      operationId: listDeployments
+      summary: List deployments
+      description: >-
+        Lists all deployments in the system. Supports pagination via
+        next_token.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of deployments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/{deploymentID}:
+    get:
+      operationId: readDeployment
+      summary: Read a deployment
+      description: >-
+        Returns the full details of the specified deployment.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: Deployment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/allocations/{deploymentID}:
+    get:
+      operationId: listDeploymentAllocations
+      summary: List deployment allocations
+      description: >-
+        Returns a list of allocations associated with the specified
+        deployment.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/fail/{deploymentID}:
+    put:
+      operationId: failDeployment
+      summary: Fail a deployment
+      description: >-
+        Marks the specified deployment as failed. This causes Nomad to
+        stop the deployment and revert to the previous stable version
+        of the job if configured to do so.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: Deployment failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/pause/{deploymentID}:
+    put:
+      operationId: pauseDeployment
+      summary: Pause or resume a deployment
+      description: >-
+        Pauses or resumes a rolling deployment. While paused, no new
+        allocations will be placed for the deployment.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/DeploymentIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Pause
+              properties:
+                Pause:
+                  type: boolean
+                  description: >-
+                    If true, pauses the deployment. If false, resumes it.
+      responses:
+        '200':
+          description: Deployment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/promote/{deploymentID}:
+    put:
+      operationId: promoteDeployment
+      summary: Promote a deployment
+      description: >-
+        Promotes canary allocations in the specified deployment, moving
+        them to the main allocation set.
+      tags:
+        - Deployments
+      parameters:
+        - $ref: '#/components/parameters/DeploymentIDParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                All:
+                  type: boolean
+                  description: >-
+                    If true, promotes all canary allocations.
+                Groups:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    A list of task group names to promote.
+      responses:
+        '200':
+          description: Deployment promoted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /nodes:
+    get:
+      operationId: listNodes
+      summary: List nodes
+      description: >-
+        Lists all client nodes registered with Nomad. Supports
+        prefix-based filtering on node ID.
+      tags:
+        - Nodes
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of node stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodeListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}:
+    get:
+      operationId: readNode
+      summary: Read a node
+      description: >-
+        Returns the full details of the specified node.
+      tags:
+        - Nodes
+      parameters:
+        - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Node details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Node'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/evaluate:
+    put:
+      operationId: evaluateNode
+      summary: Create a new evaluation for a node
+      description: >-
+        Creates a new evaluation for the specified node. This can be used
+        to force a re-evaluation of the node and its allocations.
+      tags:
+        - Nodes
+      parameters:
+        - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Evaluation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/drain:
+    post:
+      operationId: drainNode
+      summary: Set node drain mode
+      description: >-
+        Enables or disables drain mode on the specified node. When
+        draining is enabled, no further allocations will be assigned to
+        this node, and existing allocations will be migrated.
+      tags:
+        - Nodes
+      parameters:
+        - $ref: '#/components/parameters/NodeIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DrainSpec:
+                  type: object
+                  properties:
+                    Deadline:
+                      type: integer
+                      description: >-
+                        Deadline in nanoseconds for the drain to complete.
+                    IgnoreSystemJobs:
+                      type: boolean
+                      description: >-
+                        If true, system jobs are not drained from the node.
+                MarkEligible:
+                  type: boolean
+                  description: >-
+                    If true, marks the node as eligible for scheduling.
+      responses:
+        '200':
+          description: Node drain updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+                  NodeModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/purge:
+    delete:
+      operationId: purgeNode
+      summary: Purge a node
+      description: >-
+        Purges a node from the system. The node must be in a down state.
+      tags:
+        - Nodes
+      parameters:
+        - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Node purged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/pools:
+    get:
+      operationId: listNodePools
+      summary: List node pools
+      description: >-
+        Lists all node pools registered with Nomad.
+      tags:
+        - Node Pools
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of node pools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodePool'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: createNodePool
+      summary: Create or update a node pool
+      description: >-
+        Creates a new node pool or updates an existing one.
+      tags:
+        - Node Pools
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodePool'
+      responses:
+        '200':
+          description: Node pool created or updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/pool/{poolName}:
+    get:
+      operationId: readNodePool
+      summary: Read a node pool
+      description: >-
+        Returns the details of the specified node pool.
+      tags:
+        - Node Pools
+      parameters:
+        - name: poolName
+          in: path
+          required: true
+          description: >-
+            The name of the node pool.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Node pool details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodePool'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteNodePool
+      summary: Delete a node pool
+      description: >-
+        Deletes the specified node pool.
+      tags:
+        - Node Pools
+      parameters:
+        - name: poolName
+          in: path
+          required: true
+          description: >-
+            The name of the node pool.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Node pool deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /services:
+    get:
+      operationId: listServices
+      summary: List services
+      description: >-
+        Lists all currently registered Nomad services.
+      tags:
+        - Services
+      parameters:
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of service registrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceRegistrationStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /service/{serviceName}:
+    get:
+      operationId: readService
+      summary: Read a service
+      description: >-
+        Returns the registrations for the specified service name.
+      tags:
+        - Services
+      parameters:
+        - name: serviceName
+          in: path
+          required: true
+          description: >-
+            The name of the service.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Service registrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteService
+      summary: Delete a service registration
+      description: >-
+        Deletes the specified service registration.
+      tags:
+        - Services
+      parameters:
+        - name: serviceName
+          in: path
+          required: true
+          description: >-
+            The name of the service.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Service deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /volumes:
+    get:
+      operationId: listVolumes
+      summary: List volumes
+      description: >-
+        Lists all CSI and host volumes. Supports filtering by namespace,
+        job ID, task group, and volume name.
+      tags:
+        - Volumes
+      parameters:
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - $ref: '#/components/parameters/FilterParam'
+        - name: type
+          in: query
+          description: >-
+            Filter volumes by type (csi or host).
+          schema:
+            type: string
+            enum:
+              - csi
+              - host
+      responses:
+        '200':
+          description: A list of volumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VolumeListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /namespaces:
+    get:
+      operationId: listNamespaces
+      summary: List namespaces
+      description: >-
+        Lists all namespaces in the system.
+      tags:
+        - Namespaces
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: A list of namespaces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Namespace'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /namespace:
+    put:
+      operationId: createNamespace
+      summary: Create or update a namespace
+      description: >-
+        Creates a new namespace or updates an existing one.
+      tags:
+        - Namespaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Namespace'
+      responses:
+        '200':
+          description: Namespace created or updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /namespace/{namespaceName}:
+    get:
+      operationId: readNamespace
+      summary: Read a namespace
+      description: >-
+        Returns the details of the specified namespace.
+      tags:
+        - Namespaces
+      parameters:
+        - name: namespaceName
+          in: path
+          required: true
+          description: >-
+            The name of the namespace.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Namespace details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Namespace'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteNamespace
+      summary: Delete a namespace
+      description: >-
+        Deletes the specified namespace.
+      tags:
+        - Namespaces
+      parameters:
+        - name: namespaceName
+          in: path
+          required: true
+          description: >-
+            The name of the namespace.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Namespace deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/policies:
+    get:
+      operationId: listACLPolicies
+      summary: List ACL policies
+      description: >-
+        Lists all ACL policies in the system.
+      tags:
+        - ACL
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+      responses:
+        '200':
+          description: A list of ACL policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ACLPolicyListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/policy/{policyName}:
+    get:
+      operationId: readACLPolicy
+      summary: Read an ACL policy
+      description: >-
+        Returns the details of the specified ACL policy.
+      tags:
+        - ACL
+      parameters:
+        - name: policyName
+          in: path
+          required: true
+          description: >-
+            The name of the ACL policy.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ACL policy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: upsertACLPolicy
+      summary: Create or update an ACL policy
+      description: >-
+        Creates a new ACL policy or updates an existing one.
+      tags:
+        - ACL
+      parameters:
+        - name: policyName
+          in: path
+          required: true
+          description: >-
+            The name of the ACL policy.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ACLPolicy'
+      responses:
+        '200':
+          description: ACL policy upserted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteACLPolicy
+      summary: Delete an ACL policy
+      description: >-
+        Deletes the specified ACL policy.
+      tags:
+        - ACL
+      parameters:
+        - name: policyName
+          in: path
+          required: true
+          description: >-
+            The name of the ACL policy.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ACL policy deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/tokens:
+    get:
+      operationId: listACLTokens
+      summary: List ACL tokens
+      description: >-
+        Lists all ACL tokens in the system.
+      tags:
+        - ACL
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+      responses:
+        '200':
+          description: A list of ACL tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ACLTokenListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token:
+    put:
+      operationId: createACLToken
+      summary: Create an ACL token
+      description: >-
+        Creates a new ACL token.
+      tags:
+        - ACL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ACLToken'
+      responses:
+        '200':
+          description: ACL token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token/self:
+    get:
+      operationId: readSelfACLToken
+      summary: Read own ACL token
+      description: >-
+        Returns the details of the ACL token used to make the request.
+      tags:
+        - ACL
+      responses:
+        '200':
+          description: ACL token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token/{tokenAccessorID}:
+    get:
+      operationId: readACLToken
+      summary: Read an ACL token
+      description: >-
+        Returns the details of the specified ACL token by accessor ID.
+      tags:
+        - ACL
+      parameters:
+        - name: tokenAccessorID
+          in: path
+          required: true
+          description: >-
+            The accessor ID of the ACL token.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ACL token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteACLToken
+      summary: Delete an ACL token
+      description: >-
+        Deletes the specified ACL token.
+      tags:
+        - ACL
+      parameters:
+        - name: tokenAccessorID
+          in: path
+          required: true
+          description: >-
+            The accessor ID of the ACL token.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ACL token deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/members:
+    get:
+      operationId: listAgentMembers
+      summary: List agent members
+      description: >-
+        Returns a list of the known members of the gossip pool.
+      tags:
+        - Agent
+      responses:
+        '200':
+          description: Agent members
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ServerName:
+                    type: string
+                  ServerRegion:
+                    type: string
+                  ServerDC:
+                    type: string
+                  Members:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/self:
+    get:
+      operationId: readAgentSelf
+      summary: Read agent self
+      description: >-
+        Returns the configuration and status of the local agent.
+      tags:
+        - Agent
+      responses:
+        '200':
+          description: Agent configuration and status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  config:
+                    type: object
+                    description: >-
+                      The agent configuration.
+                  member:
+                    $ref: '#/components/schemas/AgentMember'
+                  stats:
+                    type: object
+                    description: >-
+                      Agent runtime statistics.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/join:
+    put:
+      operationId: joinAgent
+      summary: Join an agent
+      description: >-
+        Instructs the agent to join one or more servers by address.
+      tags:
+        - Agent
+      parameters:
+        - name: address
+          in: query
+          required: true
+          description: >-
+            The address of the server(s) to join.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Join result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  num_joined:
+                    type: integer
+                  error:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/force-leave:
+    put:
+      operationId: forceLeaveAgent
+      summary: Force leave an agent
+      description: >-
+        Forces the specified agent to leave the gossip pool.
+      tags:
+        - Agent
+      parameters:
+        - name: node
+          in: query
+          required: true
+          description: >-
+            The name of the node to force leave.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent forced to leave
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/health:
+    get:
+      operationId: readAgentHealth
+      summary: Read agent health
+      description: >-
+        Returns the health status of the agent.
+      tags:
+        - Agent
+      responses:
+        '200':
+          description: Agent is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                      message:
+                        type: string
+                  server:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                      message:
+                        type: string
+        '429':
+          description: Agent is unhealthy
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /vars:
+    get:
+      operationId: listVariables
+      summary: List variables
+      description: >-
+        Lists all Nomad variables. Variables are encrypted key-value
+        pairs stored in Nomad.
+      tags:
+        - Variables
+      parameters:
+        - $ref: '#/components/parameters/PrefixParam'
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: A list of variable metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VariableMetadata'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /var/{variablePath}:
+    get:
+      operationId: readVariable
+      summary: Read a variable
+      description: >-
+        Returns the full variable including its items at the specified
+        path.
+      tags:
+        - Variables
+      parameters:
+        - name: variablePath
+          in: path
+          required: true
+          description: >-
+            The path of the variable.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Variable details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Variable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: upsertVariable
+      summary: Create or update a variable
+      description: >-
+        Creates a new variable or updates an existing one at the
+        specified path.
+      tags:
+        - Variables
+      parameters:
+        - name: variablePath
+          in: path
+          required: true
+          description: >-
+            The path of the variable.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Variable'
+      responses:
+        '200':
+          description: Variable created or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Variable'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteVariable
+      summary: Delete a variable
+      description: >-
+        Deletes the variable at the specified path.
+      tags:
+        - Variables
+      parameters:
+        - name: variablePath
+          in: path
+          required: true
+          description: >-
+            The path of the variable.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Variable deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /scaling/policies:
+    get:
+      operationId: listScalingPolicies
+      summary: List scaling policies
+      description: >-
+        Lists all scaling policies in the system.
+      tags:
+        - Scaling
+      parameters:
+        - $ref: '#/components/parameters/NamespaceParam'
+        - $ref: '#/components/parameters/NextTokenParam'
+        - $ref: '#/components/parameters/PerPageParam'
+        - name: job
+          in: query
+          description: >-
+            Filter scaling policies by job ID.
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: >-
+            Filter scaling policies by type.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of scaling policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScalingPolicyListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /scaling/policy/{policyID}:
+    get:
+      operationId: readScalingPolicy
+      summary: Read a scaling policy
+      description: >-
+        Returns the details of the specified scaling policy.
+      tags:
+        - Scaling
+      parameters:
+        - name: policyID
+          in: path
+          required: true
+          description: >-
+            The ID of the scaling policy.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Scaling policy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScalingPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /search:
+    post:
+      operationId: prefixSearch
+      summary: Prefix search
+      description: >-
+        Searches for objects by prefix match across multiple object types.
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Prefix
+                - Context
+              properties:
+                Prefix:
+                  type: string
+                  description: >-
+                    The prefix to search for.
+                Context:
+                  type: string
+                  description: >-
+                    The context to search within (jobs, evals, allocs,
+                    nodes, deployment, plugins, namespaces, volumes).
+                  enum:
+                    - jobs
+                    - evals
+                    - allocs
+                    - nodes
+                    - deployment
+                    - plugins
+                    - namespaces
+                    - volumes
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Matches:
+                    type: object
+                  Truncations:
+                    type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /search/fuzzy:
+    post:
+      operationId: fuzzySearch
+      summary: Fuzzy search
+      description: >-
+        Performs a fuzzy search across Nomad objects by text match.
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - Text
+                - Context
+              properties:
+                Text:
+                  type: string
+                  description: >-
+                    The text to search for.
+                Context:
+                  type: string
+                  description: >-
+                    The context to search within.
+      responses:
+        '200':
+          description: Fuzzy search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Matches:
+                    type: object
+                  Truncations:
+                    type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /system/gc:
+    put:
+      operationId: systemGarbageCollect
+      summary: Run garbage collection
+      description: >-
+        Initiates garbage collection of jobs, evaluations, allocations,
+        and nodes. This should not be necessary for most users.
+      tags:
+        - System
+      responses:
+        '200':
+          description: Garbage collection initiated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /system/reconcile/summaries:
+    put:
+      operationId: reconcileSummaries
+      summary: Reconcile job summaries
+      description: >-
+        Reconciles the summaries of all registered jobs.
+      tags:
+        - System
+      responses:
+        '200':
+          description: Reconciliation initiated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/raft/configuration:
+    get:
+      operationId: readRaftConfiguration
+      summary: Read Raft configuration
+      description: >-
+        Returns the current Raft peer configuration of the cluster.
+      tags:
+        - Operator
+      responses:
+        '200':
+          description: Raft configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Servers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: string
+                        Node:
+                          type: string
+                        Address:
+                          type: string
+                        Leader:
+                          type: boolean
+                        Voter:
+                          type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/raft/peer:
+    delete:
+      operationId: removeRaftPeer
+      summary: Remove a Raft peer
+      description: >-
+        Removes a Raft peer from the cluster. This is useful when a server
+        has permanently failed and will not be returning.
+      tags:
+        - Operator
+      parameters:
+        - name: address
+          in: query
+          description: >-
+            The address of the peer to remove.
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: >-
+            The ID of the peer to remove.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Peer removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/autopilot/configuration:
+    get:
+      operationId: readAutopilotConfiguration
+      summary: Read autopilot configuration
+      description: >-
+        Returns the current autopilot configuration.
+      tags:
+        - Operator
+      responses:
+        '200':
+          description: Autopilot configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CleanupDeadServers:
+                    type: boolean
+                  LastContactThreshold:
+                    type: string
+                  MaxTrailingLogs:
+                    type: integer
+                  ServerStabilizationTime:
+                    type: string
+                  EnableRedundancyZones:
+                    type: boolean
+                  DisableUpgradeMigration:
+                    type: boolean
+                  EnableCustomUpgrades:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: updateAutopilotConfiguration
+      summary: Update autopilot configuration
+      description: >-
+        Updates the autopilot configuration.
+      tags:
+        - Operator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CleanupDeadServers:
+                  type: boolean
+                LastContactThreshold:
+                  type: string
+                MaxTrailingLogs:
+                  type: integer
+                ServerStabilizationTime:
+                  type: string
+      responses:
+        '200':
+          description: Configuration updated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/autopilot/health:
+    get:
+      operationId: readAutopilotHealth
+      summary: Read autopilot health
+      description: >-
+        Returns the health status of the cluster as determined by the
+        autopilot.
+      tags:
+        - Operator
+      responses:
+        '200':
+          description: Cluster health
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Healthy:
+                    type: boolean
+                  FailureTolerance:
+                    type: integer
+                  Servers:
+                    type: array
+                    items:
+                      type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /regions:
+    get:
+      operationId: listRegions
+      summary: List regions
+      description: >-
+        Returns a list of all known regions in the Nomad cluster.
+      tags:
+        - Regions
+      responses:
+        '200':
+          description: A list of region names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /status/leader:
+    get:
+      operationId: readLeader
+      summary: Read cluster leader
+      description: >-
+        Returns the address of the current cluster leader.
+      tags:
+        - Status
+      responses:
+        '200':
+          description: Leader address
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /status/peers:
+    get:
+      operationId: listPeers
+      summary: List cluster peers
+      description: >-
+        Returns the addresses of the current cluster peers (Raft servers).
+      tags:
+        - Status
+      responses:
+        '200':
+          description: Peer addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: >-
+        ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        ACL token passed via the Authorization header with Bearer scheme.
+  headers:
+    NomadIndex:
+      description: >-
+        The internal index value that represents the current state of the
+        requested resource.
+      schema:
+        type: integer
+    NomadKnownLeader:
+      description: >-
+        Indicates if there is a known cluster leader.
+      schema:
+        type: boolean
+    NomadLastContact:
+      description: >-
+        The time in milliseconds that a server was last contacted by the
+        leader node.
+      schema:
+        type: integer
+  parameters:
+    PrefixParam:
+      name: prefix
+      in: query
+      description: >-
+        Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: >-
+        The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: >-
+        Indicates where to start paging for queries that support
+        pagination.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: >-
+        Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: >-
+        Specifies the expression used to filter the results.
+      schema:
+        type: string
+    JobIDParam:
+      name: jobID
+      in: path
+      required: true
+      description: >-
+        The ID of the job.
+      schema:
+        type: string
+    AllocIDParam:
+      name: allocID
+      in: path
+      required: true
+      description: >-
+        The ID of the allocation.
+      schema:
+        type: string
+    EvalIDParam:
+      name: evalID
+      in: path
+      required: true
+      description: >-
+        The ID of the evaluation.
+      schema:
+        type: string
+    DeploymentIDParam:
+      name: deploymentID
+      in: path
+      required: true
+      description: >-
+        The ID of the deployment.
+      schema:
+        type: string
+    NodeIDParam:
+      name: nodeID
+      in: path
+      required: true
+      description: >-
+        The ID of the node.
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    Job:
+      type: object
+      description: >-
+        A Nomad job specification defining the workload to be scheduled.
+      properties:
+        ID:
+          type: string
+          description: >-
+            The unique identifier of the job.
+        Name:
+          type: string
+          description: >-
+            The human-readable name of the job.
+        Namespace:
+          type: string
+          description: >-
+            The namespace the job is registered in.
+        Type:
+          type: string
+          description: >-
+            The type of job (service, batch, system, sysbatch).
+          enum:
+            - service
+            - batch
+            - system
+            - sysbatch
+        Priority:
+          type: integer
+          description: >-
+            The priority of the job, from 1 to 100.
+          minimum: 1
+          maximum: 100
+        Region:
+          type: string
+          description: >-
+            The region in which the job is registered.
+        Datacenters:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of datacenters the job is allowed to run in.
+        NodePool:
+          type: string
+          description: >-
+            The node pool the job should be scheduled in.
+        Status:
+          type: string
+          description: >-
+            The current status of the job.
+          enum:
+            - pending
+            - running
+            - dead
+        StatusDescription:
+          type: string
+          description: >-
+            Human-readable description of the current status.
+        Stable:
+          type: boolean
+          description: >-
+            Whether the job version is marked as stable.
+        Version:
+          type: integer
+          description: >-
+            The version number of the job.
+        SubmitTime:
+          type: integer
+          format: int64
+          description: >-
+            The time the job was submitted in nanoseconds since epoch.
+        CreateIndex:
+          type: integer
+          description: >-
+            The Raft index at which the job was created.
+        ModifyIndex:
+          type: integer
+          description: >-
+            The Raft index at which the job was last modified.
+        JobModifyIndex:
+          type: integer
+          description: >-
+            The Raft index at which the job definition was last modified.
+        TaskGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskGroup'
+          description: >-
+            A list of task groups that make up the job.
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Periodic:
+          type: object
+          description: >-
+            Periodic configuration for the job if it is a periodic job.
+          properties:
+            Enabled:
+              type: boolean
+            Spec:
+              type: string
+            SpecType:
+              type: string
+            ProhibitOverlap:
+              type: boolean
+            TimeZone:
+              type: string
+        Parameterized:
+          type: object
+          description: >-
+            Configuration for parameterized dispatch jobs.
+          properties:
+            Payload:
+              type: string
+              enum:
+                - optional
+                - required
+                - forbidden
+            MetaRequired:
+              type: array
+              items:
+                type: string
+            MetaOptional:
+              type: array
+              items:
+                type: string
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            Metadata key-value pairs associated with the job.
+        ConsulToken:
+          type: string
+          description: >-
+            Consul token for the job.
+        VaultToken:
+          type: string
+          description: >-
+            Vault token for the job.
+    TaskGroup:
+      type: object
+      description: >-
+        A task group is a set of tasks that must be co-located on the
+        same node.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the task group.
+        Count:
+          type: integer
+          description: >-
+            The number of instances of this task group to run.
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: >-
+            The tasks that are part of this task group.
+        RestartPolicy:
+          type: object
+          properties:
+            Interval:
+              type: integer
+            Attempts:
+              type: integer
+            Delay:
+              type: integer
+            Mode:
+              type: string
+        EphemeralDisk:
+          type: object
+          properties:
+            SizeMB:
+              type: integer
+            Sticky:
+              type: boolean
+            Migrate:
+              type: boolean
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+        Services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        Volumes:
+          type: object
+          additionalProperties:
+            type: object
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Scaling:
+          type: object
+          description: >-
+            Scaling policy for the task group.
+    Task:
+      type: object
+      description: >-
+        A task is the smallest unit of work in Nomad, executed within
+        a task group.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the task.
+        Driver:
+          type: string
+          description: >-
+            The task driver to use (e.g., docker, exec, raw_exec, java).
+        Config:
+          type: object
+          additionalProperties: true
+          description: >-
+            Driver-specific configuration for the task.
+        Env:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            Environment variables for the task.
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        LogConfig:
+          type: object
+          properties:
+            MaxFiles:
+              type: integer
+            MaxFileSizeMB:
+              type: integer
+        Templates:
+          type: array
+          items:
+            type: object
+        Artifacts:
+          type: array
+          items:
+            type: object
+        Leader:
+          type: boolean
+          description: >-
+            If true, this task is the leader task of the group.
+    Resources:
+      type: object
+      description: >-
+        Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: >-
+            CPU required in MHz.
+        Cores:
+          type: integer
+          description: >-
+            Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: >-
+            Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: >-
+            Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: >-
+            Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+    NetworkResource:
+      type: object
+      description: >-
+        Network resource configuration.
+      properties:
+        Mode:
+          type: string
+          description: >-
+            The network mode (bridge, host, cni).
+        Device:
+          type: string
+        CIDR:
+          type: string
+        IP:
+          type: string
+        MBits:
+          type: integer
+        DNS:
+          type: object
+          properties:
+            Servers:
+              type: array
+              items:
+                type: string
+        DynamicPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+        ReservedPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+    Service:
+      type: object
+      description: >-
+        A service registration for Consul or Nomad service discovery.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the service.
+        Tags:
+          type: array
+          items:
+            type: string
+        CanaryTags:
+          type: array
+          items:
+            type: string
+        PortLabel:
+          type: string
+        Provider:
+          type: string
+          description: >-
+            The service discovery provider (consul or nomad).
+          enum:
+            - consul
+            - nomad
+        Checks:
+          type: array
+          items:
+            type: object
+    UpdateStrategy:
+      type: object
+      description: >-
+        Update strategy configuration for rolling deployments.
+      properties:
+        MaxParallel:
+          type: integer
+          description: >-
+            The maximum number of allocations to update at a time.
+        HealthCheck:
+          type: string
+          description: >-
+            The type of health check to use.
+          enum:
+            - checks
+            - task_states
+            - manual
+        MinHealthyTime:
+          type: integer
+          description: >-
+            Minimum time in nanoseconds an allocation must be healthy.
+        HealthyDeadline:
+          type: integer
+          description: >-
+            Deadline in nanoseconds for an allocation to become healthy.
+        ProgressDeadline:
+          type: integer
+          description: >-
+            Deadline in nanoseconds for the deployment to make progress.
+        AutoRevert:
+          type: boolean
+          description: >-
+            If true, automatically reverts to the last stable version
+            on deployment failure.
+        AutoPromote:
+          type: boolean
+          description: >-
+            If true, automatically promotes canary allocations when
+            all are healthy.
+        Canary:
+          type: integer
+          description: >-
+            The number of canary allocations to create.
+        Stagger:
+          type: integer
+          description: >-
+            Time in nanoseconds to wait between batches of updates.
+    JobListStub:
+      type: object
+      description: >-
+        A stub representation of a job returned in list operations.
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Priority:
+          type: integer
+        Version:
+          type: integer
+        SubmitTime:
+          type: integer
+          format: int64
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        NodePool:
+          type: string
+        Datacenters:
+          type: array
+          items:
+            type: string
+        JobSummary:
+          $ref: '#/components/schemas/JobSummary'
+    JobSummary:
+      type: object
+      description: >-
+        Summary of a job showing allocation counts by task group.
+      properties:
+        JobID:
+          type: string
+        Namespace:
+          type: string
+        Summary:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Queued:
+                type: integer
+              Complete:
+                type: integer
+              Failed:
+                type: integer
+              Running:
+                type: integer
+              Starting:
+                type: integer
+              Lost:
+                type: integer
+              Unknown:
+                type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    JobRegisterRequest:
+      type: object
+      description: >-
+        The request body for registering a new job.
+      required:
+        - Job
+      properties:
+        Job:
+          $ref: '#/components/schemas/Job'
+        EnforceIndex:
+          type: boolean
+          description: >-
+            If true, the job will only be registered if the
+            JobModifyIndex matches.
+        JobModifyIndex:
+          type: integer
+          description: >-
+            The expected JobModifyIndex for enforcement.
+        PolicyOverride:
+          type: boolean
+          description: >-
+            If true, overrides soft mandatory Sentinel policies.
+    JobRegisterResponse:
+      type: object
+      description: >-
+        The response body for a successful job registration.
+      properties:
+        EvalID:
+          type: string
+          description: >-
+            The ID of the evaluation created by the registration.
+        EvalCreateIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        Warnings:
+          type: string
+          description: >-
+            Warnings generated during the registration.
+    Allocation:
+      type: object
+      description: >-
+        An allocation mapping a task group in a job to a client node.
+      properties:
+        ID:
+          type: string
+          description: >-
+            The unique ID of the allocation.
+        EvalID:
+          type: string
+          description: >-
+            The ID of the evaluation that created this allocation.
+        Name:
+          type: string
+          description: >-
+            The name of the allocation.
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+          description: >-
+            The ID of the node the allocation is placed on.
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        Job:
+          $ref: '#/components/schemas/Job'
+        TaskGroup:
+          type: string
+          description: >-
+            The name of the task group being allocated.
+        DesiredStatus:
+          type: string
+          description: >-
+            The desired status of the allocation.
+          enum:
+            - run
+            - stop
+            - evict
+        ClientStatus:
+          type: string
+          description: >-
+            The status of the allocation as reported by the client.
+          enum:
+            - pending
+            - running
+            - complete
+            - failed
+            - lost
+            - unknown
+        ClientDescription:
+          type: string
+        TaskStates:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              State:
+                type: string
+              Failed:
+                type: boolean
+              StartedAt:
+                type: string
+                format: date-time
+              FinishedAt:
+                type: string
+                format: date-time
+              Events:
+                type: array
+                items:
+                  type: object
+        DeploymentID:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Timestamp:
+              type: string
+              format: date-time
+            Canary:
+              type: boolean
+            ModifyIndex:
+              type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    AllocationListStub:
+      type: object
+      description: >-
+        A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Evaluation:
+      type: object
+      description: >-
+        An evaluation represents a scheduling decision made by Nomad.
+      properties:
+        ID:
+          type: string
+          description: >-
+            The unique ID of the evaluation.
+        Priority:
+          type: integer
+        Type:
+          type: string
+        TriggeredBy:
+          type: string
+          description: >-
+            The event that triggered the evaluation.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobModifyIndex:
+          type: integer
+        NodeID:
+          type: string
+        NodeModifyIndex:
+          type: integer
+        DeploymentID:
+          type: string
+        Status:
+          type: string
+          description: >-
+            The status of the evaluation.
+          enum:
+            - blocked
+            - pending
+            - complete
+            - failed
+            - canceled
+        StatusDescription:
+          type: string
+        Wait:
+          type: integer
+        NextEval:
+          type: string
+        PreviousEval:
+          type: string
+        BlockedEval:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Deployment:
+      type: object
+      description: >-
+        A deployment tracks a rolling update of allocations between
+        two versions of a job.
+      properties:
+        ID:
+          type: string
+          description: >-
+            The unique ID of the deployment.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        JobSpecModifyIndex:
+          type: integer
+        JobCreateIndex:
+          type: integer
+        Status:
+          type: string
+          description: >-
+            The current status of the deployment.
+          enum:
+            - running
+            - paused
+            - failed
+            - successful
+            - cancelled
+        StatusDescription:
+          type: string
+        TaskGroups:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              AutoRevert:
+                type: boolean
+              AutoPromote:
+                type: boolean
+              Promoted:
+                type: boolean
+              DesiredCanaries:
+                type: integer
+              DesiredTotal:
+                type: integer
+              PlacedAllocs:
+                type: integer
+              HealthyAllocs:
+                type: integer
+              UnhealthyAllocs:
+                type: integer
+              RequireProgressBy:
+                type: string
+                format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    DeploymentUpdateResponse:
+      type: object
+      description: >-
+        Response from a deployment update operation.
+      properties:
+        EvalID:
+          type: string
+        EvalCreateIndex:
+          type: integer
+        DeploymentModifyIndex:
+          type: integer
+    Node:
+      type: object
+      description: >-
+        A Nomad client node.
+      properties:
+        ID:
+          type: string
+          description: >-
+            The unique ID of the node.
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+          description: >-
+            Whether the node is in drain mode.
+        SchedulingEligibility:
+          type: string
+          description: >-
+            Whether the node is eligible for scheduling.
+          enum:
+            - eligible
+            - ineligible
+        Status:
+          type: string
+          description: >-
+            The status of the node.
+          enum:
+            - initializing
+            - ready
+            - down
+            - disconnected
+        StatusDescription:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Detected:
+                type: boolean
+              Healthy:
+                type: boolean
+              HealthDescription:
+                type: string
+        Attributes:
+          type: object
+          additionalProperties:
+            type: string
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Reserved:
+          $ref: '#/components/schemas/Resources'
+        HTTPAddr:
+          type: string
+        TLSEnabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    NodeListStub:
+      type: object
+      description: >-
+        A stub representation of a node returned in list operations.
+      properties:
+        ID:
+          type: string
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+        SchedulingEligibility:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Version:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    NodePool:
+      type: object
+      description: >-
+        A node pool groups nodes for scheduling constraints.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the node pool.
+        Description:
+          type: string
+          description: >-
+            A human-readable description of the node pool.
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        SchedulerConfiguration:
+          type: object
+          properties:
+            SchedulerAlgorithm:
+              type: string
+              enum:
+                - binpack
+                - spread
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ServiceRegistration:
+      type: object
+      description: >-
+        A Nomad service registration.
+      properties:
+        ID:
+          type: string
+        ServiceName:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        Datacenter:
+          type: string
+        JobID:
+          type: string
+        AllocID:
+          type: string
+        Tags:
+          type: array
+          items:
+            type: string
+        Address:
+          type: string
+        Port:
+          type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ServiceRegistrationStub:
+      type: object
+      description: >-
+        A stub representation of service registrations grouped by name.
+      properties:
+        Namespace:
+          type: string
+        Services:
+          type: array
+          items:
+            type: object
+            properties:
+              ServiceName:
+                type: string
+              Tags:
+                type: array
+                items:
+                  type: string
+    VolumeListStub:
+      type: object
+      description: >-
+        A stub representation of a volume.
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        ExternalID:
+          type: string
+        Topologies:
+          type: object
+        Provider:
+          type: string
+        ControllerRequired:
+          type: boolean
+        ControllersHealthy:
+          type: integer
+        ControllersExpected:
+          type: integer
+        NodesHealthy:
+          type: integer
+        NodesExpected:
+          type: integer
+        Schedulable:
+          type: boolean
+        PluginID:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    Namespace:
+      type: object
+      description: >-
+        A Nomad namespace for segmenting jobs and objects.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the namespace.
+        Description:
+          type: string
+          description: >-
+            A human-readable description of the namespace.
+        Quota:
+          type: string
+          description: >-
+            The name of the quota specification attached to the namespace.
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLPolicy:
+      type: object
+      description: >-
+        An ACL policy defining permissions for Nomad resources.
+      properties:
+        Name:
+          type: string
+          description: >-
+            The name of the ACL policy.
+        Description:
+          type: string
+          description: >-
+            A human-readable description of the policy.
+        Rules:
+          type: string
+          description: >-
+            The HCL or JSON policy rules specification.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLPolicyListStub:
+      type: object
+      description: >-
+        A stub representation of an ACL policy.
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLToken:
+      type: object
+      description: >-
+        An ACL token used for authentication and authorization.
+      properties:
+        AccessorID:
+          type: string
+          description: >-
+            The public accessor ID of the token.
+        SecretID:
+          type: string
+          description: >-
+            The secret ID used for API authentication.
+        Name:
+          type: string
+          description: >-
+            A human-readable name for the token.
+        Type:
+          type: string
+          description: >-
+            The type of token.
+          enum:
+            - client
+            - management
+        Policies:
+          type: array
+          items:
+            type: string
+          description: >-
+            A list of ACL policy names associated with the token.
+        Global:
+          type: boolean
+          description: >-
+            If true, the token is replicated across all regions.
+        CreateTime:
+          type: string
+          format: date-time
+        ExpirationTime:
+          type: string
+          format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLTokenListStub:
+      type: object
+      description: >-
+        A stub representation of an ACL token.
+      properties:
+        AccessorID:
+          type: string
+        Name:
+          type: string
+        Type:
+          type: string
+        Policies:
+          type: array
+          items:
+            type: string
+        Global:
+          type: boolean
+        CreateTime:
+          type: string
+          format: date-time
+        ExpirationTime:
+          type: string
+          format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    AgentMember:
+      type: object
+      description: >-
+        A member of the gossip pool.
+      properties:
+        Name:
+          type: string
+        Addr:
+          type: string
+        Port:
+          type: integer
+        Tags:
+          type: object
+          additionalProperties:
+            type: string
+        Status:
+          type: string
+        ProtocolMin:
+          type: integer
+        ProtocolMax:
+          type: integer
+        ProtocolCur:
+          type: integer
+        DelegateMin:
+          type: integer
+        DelegateMax:
+          type: integer
+        DelegateCur:
+          type: integer
+    Variable:
+      type: object
+      description: >-
+        A Nomad variable containing encrypted key-value data.
+      properties:
+        Namespace:
+          type: string
+          description: >-
+            The namespace the variable belongs to.
+        Path:
+          type: string
+          description: >-
+            The path of the variable.
+        Items:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            The key-value items stored in the variable.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    VariableMetadata:
+      type: object
+      description: >-
+        Metadata about a Nomad variable without the item values.
+      properties:
+        Namespace:
+          type: string
+        Path:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    ScalingPolicy:
+      type: object
+      description: >-
+        A scaling policy for a task group.
+      properties:
+        ID:
+          type: string
+        Namespace:
+          type: string
+        Target:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            The target of the scaling policy (job, group).
+        Type:
+          type: string
+          description: >-
+            The type of scaling policy.
+        Policy:
+          type: object
+          description: >-
+            The scaling policy configuration.
+        Min:
+          type: integer
+        Max:
+          type: integer
+        Enabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ScalingPolicyListStub:
+      type: object
+      description: >-
+        A stub representation of a scaling policy.
+      properties:
+        ID:
+          type: string
+        Target:
+          type: object
+          additionalProperties:
+            type: string
+        Type:
+          type: string
+        Enabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
