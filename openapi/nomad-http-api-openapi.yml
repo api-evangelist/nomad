@@ -24,84 +24,71 @@ servers:
   - url: http://localhost:4646/v1
     description: Local Nomad Agent
 tags:
-  - name: Jobs
-    description: >-
-      Endpoints for listing, creating, reading, updating, and deleting jobs.
-      Jobs are the primary unit of work in Nomad.
-  - name: Allocations
-    description: >-
-      Endpoints for querying allocations. An allocation declares that a set of
-      tasks in a job should be run on a particular node.
-  - name: Evaluations
-    description: >-
-      Endpoints for querying evaluations. Evaluations are the mechanism by
-      which Nomad makes scheduling decisions.
-  - name: Deployments
-    description: >-
-      Endpoints for querying and managing deployments. Deployments track the
-      rolling update of allocations between two versions of a job.
-  - name: Nodes
-    description: >-
-      Endpoints for querying and managing client nodes registered with the
-      Nomad cluster.
-  - name: Node Pools
-    description: >-
-      Endpoints for managing node pools, which group nodes for scheduling
-      constraints.
-  - name: Agent
-    description: >-
-      Endpoints for interacting with the local Nomad agent, including health
-      checks, member listing, and server management.
-  - name: Services
-    description: >-
-      Endpoints for querying Nomad-registered services for service discovery.
-  - name: Volumes
-    description: >-
-      Endpoints for managing CSI and host volumes attached to Nomad
-      allocations.
-  - name: Namespaces
-    description: >-
-      Endpoints for managing namespaces, which segment jobs and their
-      associated objects.
   - name: ACL
     description: >-
       Endpoints for managing Access Control List policies, tokens, and
       authentication methods.
+  - name: Agent
+    description: >-
+      Endpoints for interacting with the local Nomad agent, including health
+      checks, member listing, and server management.
+  - name: Allocations
+    description: >-
+      Endpoints for querying allocations. An allocation declares that a set of
+      tasks in a job should be run on a particular node.
+  - name: Deployments
+    description: >-
+      Endpoints for querying and managing deployments. Deployments track the
+      rolling update of allocations between two versions of a job.
+  - name: Evaluations
+    description: >-
+      Endpoints for querying evaluations. Evaluations are the mechanism by
+      which Nomad makes scheduling decisions.
+  - name: Jobs
+    description: >-
+      Endpoints for listing, creating, reading, updating, and deleting jobs.
+      Jobs are the primary unit of work in Nomad.
+  - name: Namespaces
+    description: >-
+      Endpoints for managing namespaces, which segment jobs and their
+      associated objects.
+  - name: Node Pools
+    description: >-
+      Endpoints for managing node pools, which group nodes for scheduling
+      constraints.
+  - name: Nodes
+    description: >-
+      Endpoints for querying and managing client nodes registered with the
+      Nomad cluster.
   - name: Operator
     description: >-
       Endpoints for cluster-level operations such as Raft peer management
       and autopilot configuration.
-  - name: Scaling
-    description: >-
-      Endpoints for querying scaling policies and their status.
-  - name: Variables
-    description: >-
-      Endpoints for managing Nomad variables, which store encrypted
-      key-value data.
-  - name: Search
-    description: >-
-      Endpoints for searching across Nomad objects by prefix or fuzzy match.
-  - name: System
-    description: >-
-      Endpoints for system maintenance operations such as garbage collection
-      and reconciliation.
-  - name: Sentinel
-    description: >-
-      Endpoints for managing Sentinel policies. Enterprise only.
-  - name: Quotas
-    description: >-
-      Endpoints for managing resource quotas. Enterprise only.
-  - name: Recommendations
-    description: >-
-      Endpoints for querying and applying resource recommendations.
-      Enterprise only.
   - name: Regions
     description: >-
       Endpoints for listing known regions in the Nomad cluster.
+  - name: Scaling
+    description: >-
+      Endpoints for querying scaling policies and their status.
+  - name: Search
+    description: >-
+      Endpoints for searching across Nomad objects by prefix or fuzzy match.
   - name: Status
     description: >-
       Endpoints for querying the status of the Nomad cluster including
       leader and peer information.
+  - name: System
+    description: >-
+      Endpoints for system maintenance operations such as garbage collection
+      and reconciliation.
+  - name: Variables
+    description: >-
+      Endpoints for managing Nomad variables, which store encrypted
+      key-value data.
+  - name: Volumes
+    description: >-
+      Endpoints for managing CSI and host volumes attached to Nomad
+      allocations.
 security:
   - nomadToken: []
   - bearerAuth: []
@@ -1373,8 +1360,7 @@ paths:
       summary: List services
       description: >-
         Lists all currently registered Nomad services.
-      tags:
-        - Services
+      tags: []
       parameters:
         - $ref: '#/components/parameters/NamespaceParam'
         - $ref: '#/components/parameters/NextTokenParam'
@@ -1399,8 +1385,7 @@ paths:
       summary: Read a service
       description: >-
         Returns the registrations for the specified service name.
-      tags:
-        - Services
+      tags: []
       parameters:
         - name: serviceName
           in: path
@@ -1430,8 +1415,7 @@ paths:
       summary: Delete a service registration
       description: >-
         Deletes the specified service registration.
-      tags:
-        - Services
+      tags: []
       parameters:
         - name: serviceName
           in: path
