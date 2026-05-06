@@ -4,102 +4,60 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: HashiCorp Nomad
 providerId: nomad
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
-  - Workload Orchestration
-  - Container Orchestration
-  - Scheduling
-  - Infrastructure
-  - DevOps
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the HashiCorp Nomad API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  - Workload Orchestration
+  - DevOps
+description: The Nomad HTTP API does not enforce HTTP-level rate limits in the open-source distribution.
+  Throughput is bound by Nomad server capacity (Raft commit, scheduler workers, RPC concurrency) and
+  client-side ACL token limits. Nomad supports blocking queries and long-poll consistency modes that
+  control how clients consume the API. Rate-limit-style protections are configured operator-side via
+  ACL token hierarchies, namespaces, and Sentinel policies (Enterprise).
+sources:
+  - https://developer.hashicorp.com/nomad/api-docs
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  badRequest: 400
+  forbidden: 403
+  notFound: 404
+  serverError: 500
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - HashiCorp Nomad HTTP API
-      - HashiCorp Nomad Go SDK
-      - HashiCorp Nomad Python SDK
-      - HashiCorp Nomad Java SDK
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - HashiCorp Nomad HTTP API
-      - HashiCorp Nomad Go SDK
-      - HashiCorp Nomad Python SDK
-      - HashiCorp Nomad Java SDK
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - HashiCorp Nomad HTTP API
-      - HashiCorp Nomad Go SDK
-      - HashiCorp Nomad Python SDK
-      - HashiCorp Nomad Java SDK
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - HashiCorp Nomad HTTP API
-      - HashiCorp Nomad Go SDK
-      - HashiCorp Nomad Python SDK
-      - HashiCorp Nomad Java SDK
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - HashiCorp Nomad HTTP API
-      - HashiCorp Nomad Go SDK
-      - HashiCorp Nomad Python SDK
-      - HashiCorp Nomad Java SDK
+  - name: Nomad HTTP API
+    scope: server
+    metric: varies
+    limit: bound by server CPU, memory, Raft commit rate
+    notes: No per-second HTTP rate limit enforced; throughput is implementation-bounded.
+  - name: Blocking queries
+    scope: per-request
+    metric: long-poll-duration
+    limit: 5 minutes (default wait)
+    notes: Clients can long-poll via index= and wait= parameters; `wait` defaults to 5 minutes, capped
+      at 10 minutes.
+  - name: Pagination
+    scope: per-request
+    metric: per_page
+    limit: 100 (default)
+    notes: Use `next_token` for cursor-based pagination on list endpoints.
+  - name: ACL token enforcement
+    scope: token
+    metric: varies
+    limit: token-policy-bound
+    notes: ACL policies bound which endpoints / namespaces / nodes a token can reach.
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Blocking queries / consistency modes
+    description: Use index= and wait= parameters for long-poll behavior; choose `stale` consistency for
+      reads to spread load across followers and reduce leader pressure.
+  - name: Pagination
+    description: Use `next_token` cursor pagination; do not enumerate all jobs / allocations in a single
+      request.
+  - name: ACL token scoping
+    description: Issue narrowly scoped ACL tokens per integration; revoke unused tokens promptly.
+  - name: Sentinel governance (Enterprise)
+    description: In Enterprise, Sentinel policies can rate-limit operations like job submissions per
+      namespace.
+  - name: Namespaces (Enterprise)
+    description: Use namespaces to isolate teams and prevent noisy-neighbor scheduler pressure.
 maintainers:
-  - FN: API Evangelist
-    url: https://apievangelist.com
-    email: info@apievangelist.com
+  - FN: Kin Lane
+    email: kin@apievangelist.com
