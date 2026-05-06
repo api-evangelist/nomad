@@ -1,0 +1,2146 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling,
+    allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status.
+    All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs,
+    and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  tags:
+  - Nomad
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: nomad
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API HTTP API.
+    authentication:
+      type: apikey
+      in: header
+      name: X-Nomad-Token
+      value: '{{NOMAD_TOKEN}}'
+    resources:
+    - name: jobs
+      path: /jobs
+      operations:
+      - name: listjobs
+        method: GET
+        description: List jobs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: registerjob
+        method: PUT
+        description: Register a new job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: jobs-parse
+      path: /jobs/parse
+      operations:
+      - name: parsejob
+        method: PUT
+        description: Parse a job specification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: jobs-statuses
+      path: /jobs/statuses
+      operations:
+      - name: listjobstatuses
+        method: GET
+        description: List job statuses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid
+      path: /job/{jobID}
+      operations:
+      - name: readjob
+        method: GET
+        description: Read a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deregisterjob
+        method: DELETE
+        description: Deregister a job
+        inputParameters:
+        - name: purge
+          in: query
+          type: boolean
+          description: If true, the job is purged from the system and cannot be recovered. Defaults to false.
+        - name: global
+          in: query
+          type: boolean
+          description: If true, deregisters the job in all federated regions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-evaluate
+      path: /job/{jobID}/evaluate
+      operations:
+      - name: evaluatejob
+        method: PUT
+        description: Create a new evaluation for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-plan
+      path: /job/{jobID}/plan
+      operations:
+      - name: planjob
+        method: PUT
+        description: Plan a job update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-allocations
+      path: /job/{jobID}/allocations
+      operations:
+      - name: listjoballocations
+        method: GET
+        description: List allocations for a job
+        inputParameters:
+        - name: all
+          in: query
+          type: boolean
+          description: If true, includes allocations from all namespaces.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-evaluations
+      path: /job/{jobID}/evaluations
+      operations:
+      - name: listjobevaluations
+        method: GET
+        description: List evaluations for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-deployments
+      path: /job/{jobID}/deployments
+      operations:
+      - name: listjobdeployments
+        method: GET
+        description: List deployments for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-versions
+      path: /job/{jobID}/versions
+      operations:
+      - name: listjobversions
+        method: GET
+        description: List versions of a job
+        inputParameters:
+        - name: diffs
+          in: query
+          type: boolean
+          description: If true, includes the diff between consecutive job versions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-revert
+      path: /job/{jobID}/revert
+      operations:
+      - name: revertjob
+        method: PUT
+        description: Revert job to an older version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-stable
+      path: /job/{jobID}/stable
+      operations:
+      - name: setjobstability
+        method: PUT
+        description: Set job stability
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-summary
+      path: /job/{jobID}/summary
+      operations:
+      - name: readjobsummary
+        method: GET
+        description: Read a job summary
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobid-dispatch
+      path: /job/{jobID}/dispatch
+      operations:
+      - name: dispatchjob
+        method: PUT
+        description: Dispatch a parameterized job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocations
+      path: /allocations
+      operations:
+      - name: listallocations
+        method: GET
+        description: List allocations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocation-allocid
+      path: /allocation/{allocID}
+      operations:
+      - name: readallocation
+        method: GET
+        description: Read an allocation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocation-allocid-services
+      path: /allocation/{allocID}/services
+      operations:
+      - name: listallocationservices
+        method: GET
+        description: List allocation services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocation-allocid-checks
+      path: /allocation/{allocID}/checks
+      operations:
+      - name: listallocationchecks
+        method: GET
+        description: List allocation health checks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: evaluations
+      path: /evaluations
+      operations:
+      - name: listevaluations
+        method: GET
+        description: List evaluations
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter evaluations by status.
+        - name: job
+          in: query
+          type: string
+          description: Filter evaluations by job ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: evaluations-count
+      path: /evaluations/count
+      operations:
+      - name: countevaluations
+        method: GET
+        description: Count evaluations
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter the count by evaluation status.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: evaluation-evalid
+      path: /evaluation/{evalID}
+      operations:
+      - name: readevaluation
+        method: GET
+        description: Read an evaluation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: evaluation-evalid-allocations
+      path: /evaluation/{evalID}/allocations
+      operations:
+      - name: listevaluationallocations
+        method: GET
+        description: List allocations for an evaluation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployments
+      path: /deployments
+      operations:
+      - name: listdeployments
+        method: GET
+        description: List deployments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployment-deploymentid
+      path: /deployment/{deploymentID}
+      operations:
+      - name: readdeployment
+        method: GET
+        description: Read a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployment-allocations-deploymentid
+      path: /deployment/allocations/{deploymentID}
+      operations:
+      - name: listdeploymentallocations
+        method: GET
+        description: List deployment allocations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployment-fail-deploymentid
+      path: /deployment/fail/{deploymentID}
+      operations:
+      - name: faildeployment
+        method: PUT
+        description: Fail a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployment-pause-deploymentid
+      path: /deployment/pause/{deploymentID}
+      operations:
+      - name: pausedeployment
+        method: PUT
+        description: Pause or resume a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deployment-promote-deploymentid
+      path: /deployment/promote/{deploymentID}
+      operations:
+      - name: promotedeployment
+        method: PUT
+        description: Promote a deployment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: nodes
+      path: /nodes
+      operations:
+      - name: listnodes
+        method: GET
+        description: List nodes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-nodeid
+      path: /node/{nodeID}
+      operations:
+      - name: readnode
+        method: GET
+        description: Read a node
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-nodeid-evaluate
+      path: /node/{nodeID}/evaluate
+      operations:
+      - name: evaluatenode
+        method: PUT
+        description: Create a new evaluation for a node
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-nodeid-drain
+      path: /node/{nodeID}/drain
+      operations:
+      - name: drainnode
+        method: POST
+        description: Set node drain mode
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-nodeid-purge
+      path: /node/{nodeID}/purge
+      operations:
+      - name: purgenode
+        method: DELETE
+        description: Purge a node
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-pools
+      path: /node/pools
+      operations:
+      - name: listnodepools
+        method: GET
+        description: List node pools
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createnodepool
+        method: PUT
+        description: Create or update a node pool
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: node-pool-poolname
+      path: /node/pool/{poolName}
+      operations:
+      - name: readnodepool
+        method: GET
+        description: Read a node pool
+        inputParameters:
+        - name: poolName
+          in: path
+          type: string
+          required: true
+          description: The name of the node pool.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletenodepool
+        method: DELETE
+        description: Delete a node pool
+        inputParameters:
+        - name: poolName
+          in: path
+          type: string
+          required: true
+          description: The name of the node pool.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: services
+      path: /services
+      operations:
+      - name: listservices
+        method: GET
+        description: List services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: service-servicename
+      path: /service/{serviceName}
+      operations:
+      - name: readservice
+        method: GET
+        description: Read a service
+        inputParameters:
+        - name: serviceName
+          in: path
+          type: string
+          required: true
+          description: The name of the service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteservice
+        method: DELETE
+        description: Delete a service registration
+        inputParameters:
+        - name: serviceName
+          in: path
+          type: string
+          required: true
+          description: The name of the service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: volumes
+      path: /volumes
+      operations:
+      - name: listvolumes
+        method: GET
+        description: List volumes
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: Filter volumes by type (csi or host).
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: namespaces
+      path: /namespaces
+      operations:
+      - name: listnamespaces
+        method: GET
+        description: List namespaces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: namespace
+      path: /namespace
+      operations:
+      - name: createnamespace
+        method: PUT
+        description: Create or update a namespace
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: namespace-namespacename
+      path: /namespace/{namespaceName}
+      operations:
+      - name: readnamespace
+        method: GET
+        description: Read a namespace
+        inputParameters:
+        - name: namespaceName
+          in: path
+          type: string
+          required: true
+          description: The name of the namespace.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletenamespace
+        method: DELETE
+        description: Delete a namespace
+        inputParameters:
+        - name: namespaceName
+          in: path
+          type: string
+          required: true
+          description: The name of the namespace.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-policies
+      path: /acl/policies
+      operations:
+      - name: listaclpolicies
+        method: GET
+        description: List ACL policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-policy-policyname
+      path: /acl/policy/{policyName}
+      operations:
+      - name: readaclpolicy
+        method: GET
+        description: Read an ACL policy
+        inputParameters:
+        - name: policyName
+          in: path
+          type: string
+          required: true
+          description: The name of the ACL policy.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertaclpolicy
+        method: PUT
+        description: Create or update an ACL policy
+        inputParameters:
+        - name: policyName
+          in: path
+          type: string
+          required: true
+          description: The name of the ACL policy.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteaclpolicy
+        method: DELETE
+        description: Delete an ACL policy
+        inputParameters:
+        - name: policyName
+          in: path
+          type: string
+          required: true
+          description: The name of the ACL policy.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-tokens
+      path: /acl/tokens
+      operations:
+      - name: listacltokens
+        method: GET
+        description: List ACL tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-token
+      path: /acl/token
+      operations:
+      - name: createacltoken
+        method: PUT
+        description: Create an ACL token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-token-self
+      path: /acl/token/self
+      operations:
+      - name: readselfacltoken
+        method: GET
+        description: Read own ACL token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: acl-token-tokenaccessorid
+      path: /acl/token/{tokenAccessorID}
+      operations:
+      - name: readacltoken
+        method: GET
+        description: Read an ACL token
+        inputParameters:
+        - name: tokenAccessorID
+          in: path
+          type: string
+          required: true
+          description: The accessor ID of the ACL token.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteacltoken
+        method: DELETE
+        description: Delete an ACL token
+        inputParameters:
+        - name: tokenAccessorID
+          in: path
+          type: string
+          required: true
+          description: The accessor ID of the ACL token.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-members
+      path: /agent/members
+      operations:
+      - name: listagentmembers
+        method: GET
+        description: List agent members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-self
+      path: /agent/self
+      operations:
+      - name: readagentself
+        method: GET
+        description: Read agent self
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-join
+      path: /agent/join
+      operations:
+      - name: joinagent
+        method: PUT
+        description: Join an agent
+        inputParameters:
+        - name: address
+          in: query
+          type: string
+          required: true
+          description: The address of the server(s) to join.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-force-leave
+      path: /agent/force-leave
+      operations:
+      - name: forceleaveagent
+        method: PUT
+        description: Force leave an agent
+        inputParameters:
+        - name: node
+          in: query
+          type: string
+          required: true
+          description: The name of the node to force leave.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: nomad-rest
+    description: REST adapter for HashiCorp Nomad HTTP API.
+    resources:
+    - path: /jobs
+      name: listjobs
+      operations:
+      - method: GET
+        name: listjobs
+        description: List jobs
+        call: nomad.listjobs
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /jobs
+      name: registerjob
+      operations:
+      - method: PUT
+        name: registerjob
+        description: Register a new job
+        call: nomad.registerjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /jobs/parse
+      name: parsejob
+      operations:
+      - method: PUT
+        name: parsejob
+        description: Parse a job specification
+        call: nomad.parsejob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /jobs/statuses
+      name: listjobstatuses
+      operations:
+      - method: GET
+        name: listjobstatuses
+        description: List job statuses
+        call: nomad.listjobstatuses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}
+      name: readjob
+      operations:
+      - method: GET
+        name: readjob
+        description: Read a job
+        call: nomad.readjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}
+      name: deregisterjob
+      operations:
+      - method: DELETE
+        name: deregisterjob
+        description: Deregister a job
+        call: nomad.deregisterjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/evaluate
+      name: evaluatejob
+      operations:
+      - method: PUT
+        name: evaluatejob
+        description: Create a new evaluation for a job
+        call: nomad.evaluatejob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/plan
+      name: planjob
+      operations:
+      - method: PUT
+        name: planjob
+        description: Plan a job update
+        call: nomad.planjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/allocations
+      name: listjoballocations
+      operations:
+      - method: GET
+        name: listjoballocations
+        description: List allocations for a job
+        call: nomad.listjoballocations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/evaluations
+      name: listjobevaluations
+      operations:
+      - method: GET
+        name: listjobevaluations
+        description: List evaluations for a job
+        call: nomad.listjobevaluations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/deployments
+      name: listjobdeployments
+      operations:
+      - method: GET
+        name: listjobdeployments
+        description: List deployments for a job
+        call: nomad.listjobdeployments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/versions
+      name: listjobversions
+      operations:
+      - method: GET
+        name: listjobversions
+        description: List versions of a job
+        call: nomad.listjobversions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/revert
+      name: revertjob
+      operations:
+      - method: PUT
+        name: revertjob
+        description: Revert job to an older version
+        call: nomad.revertjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/stable
+      name: setjobstability
+      operations:
+      - method: PUT
+        name: setjobstability
+        description: Set job stability
+        call: nomad.setjobstability
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/summary
+      name: readjobsummary
+      operations:
+      - method: GET
+        name: readjobsummary
+        description: Read a job summary
+        call: nomad.readjobsummary
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /job/{jobID}/dispatch
+      name: dispatchjob
+      operations:
+      - method: PUT
+        name: dispatchjob
+        description: Dispatch a parameterized job
+        call: nomad.dispatchjob
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocations
+      name: listallocations
+      operations:
+      - method: GET
+        name: listallocations
+        description: List allocations
+        call: nomad.listallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocation/{allocID}
+      name: readallocation
+      operations:
+      - method: GET
+        name: readallocation
+        description: Read an allocation
+        call: nomad.readallocation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocation/{allocID}/services
+      name: listallocationservices
+      operations:
+      - method: GET
+        name: listallocationservices
+        description: List allocation services
+        call: nomad.listallocationservices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /allocation/{allocID}/checks
+      name: listallocationchecks
+      operations:
+      - method: GET
+        name: listallocationchecks
+        description: List allocation health checks
+        call: nomad.listallocationchecks
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /evaluations
+      name: listevaluations
+      operations:
+      - method: GET
+        name: listevaluations
+        description: List evaluations
+        call: nomad.listevaluations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /evaluations/count
+      name: countevaluations
+      operations:
+      - method: GET
+        name: countevaluations
+        description: Count evaluations
+        call: nomad.countevaluations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /evaluation/{evalID}
+      name: readevaluation
+      operations:
+      - method: GET
+        name: readevaluation
+        description: Read an evaluation
+        call: nomad.readevaluation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /evaluation/{evalID}/allocations
+      name: listevaluationallocations
+      operations:
+      - method: GET
+        name: listevaluationallocations
+        description: List allocations for an evaluation
+        call: nomad.listevaluationallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployments
+      name: listdeployments
+      operations:
+      - method: GET
+        name: listdeployments
+        description: List deployments
+        call: nomad.listdeployments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployment/{deploymentID}
+      name: readdeployment
+      operations:
+      - method: GET
+        name: readdeployment
+        description: Read a deployment
+        call: nomad.readdeployment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployment/allocations/{deploymentID}
+      name: listdeploymentallocations
+      operations:
+      - method: GET
+        name: listdeploymentallocations
+        description: List deployment allocations
+        call: nomad.listdeploymentallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployment/fail/{deploymentID}
+      name: faildeployment
+      operations:
+      - method: PUT
+        name: faildeployment
+        description: Fail a deployment
+        call: nomad.faildeployment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployment/pause/{deploymentID}
+      name: pausedeployment
+      operations:
+      - method: PUT
+        name: pausedeployment
+        description: Pause or resume a deployment
+        call: nomad.pausedeployment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deployment/promote/{deploymentID}
+      name: promotedeployment
+      operations:
+      - method: PUT
+        name: promotedeployment
+        description: Promote a deployment
+        call: nomad.promotedeployment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /nodes
+      name: listnodes
+      operations:
+      - method: GET
+        name: listnodes
+        description: List nodes
+        call: nomad.listnodes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/{nodeID}
+      name: readnode
+      operations:
+      - method: GET
+        name: readnode
+        description: Read a node
+        call: nomad.readnode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/{nodeID}/evaluate
+      name: evaluatenode
+      operations:
+      - method: PUT
+        name: evaluatenode
+        description: Create a new evaluation for a node
+        call: nomad.evaluatenode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/{nodeID}/drain
+      name: drainnode
+      operations:
+      - method: POST
+        name: drainnode
+        description: Set node drain mode
+        call: nomad.drainnode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/{nodeID}/purge
+      name: purgenode
+      operations:
+      - method: DELETE
+        name: purgenode
+        description: Purge a node
+        call: nomad.purgenode
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/pools
+      name: listnodepools
+      operations:
+      - method: GET
+        name: listnodepools
+        description: List node pools
+        call: nomad.listnodepools
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/pools
+      name: createnodepool
+      operations:
+      - method: PUT
+        name: createnodepool
+        description: Create or update a node pool
+        call: nomad.createnodepool
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/pool/{poolName}
+      name: readnodepool
+      operations:
+      - method: GET
+        name: readnodepool
+        description: Read a node pool
+        call: nomad.readnodepool
+        with:
+          poolName: rest.poolName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /node/pool/{poolName}
+      name: deletenodepool
+      operations:
+      - method: DELETE
+        name: deletenodepool
+        description: Delete a node pool
+        call: nomad.deletenodepool
+        with:
+          poolName: rest.poolName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /services
+      name: listservices
+      operations:
+      - method: GET
+        name: listservices
+        description: List services
+        call: nomad.listservices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /service/{serviceName}
+      name: readservice
+      operations:
+      - method: GET
+        name: readservice
+        description: Read a service
+        call: nomad.readservice
+        with:
+          serviceName: rest.serviceName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /service/{serviceName}
+      name: deleteservice
+      operations:
+      - method: DELETE
+        name: deleteservice
+        description: Delete a service registration
+        call: nomad.deleteservice
+        with:
+          serviceName: rest.serviceName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /volumes
+      name: listvolumes
+      operations:
+      - method: GET
+        name: listvolumes
+        description: List volumes
+        call: nomad.listvolumes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /namespaces
+      name: listnamespaces
+      operations:
+      - method: GET
+        name: listnamespaces
+        description: List namespaces
+        call: nomad.listnamespaces
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /namespace
+      name: createnamespace
+      operations:
+      - method: PUT
+        name: createnamespace
+        description: Create or update a namespace
+        call: nomad.createnamespace
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /namespace/{namespaceName}
+      name: readnamespace
+      operations:
+      - method: GET
+        name: readnamespace
+        description: Read a namespace
+        call: nomad.readnamespace
+        with:
+          namespaceName: rest.namespaceName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /namespace/{namespaceName}
+      name: deletenamespace
+      operations:
+      - method: DELETE
+        name: deletenamespace
+        description: Delete a namespace
+        call: nomad.deletenamespace
+        with:
+          namespaceName: rest.namespaceName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/policies
+      name: listaclpolicies
+      operations:
+      - method: GET
+        name: listaclpolicies
+        description: List ACL policies
+        call: nomad.listaclpolicies
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/policy/{policyName}
+      name: readaclpolicy
+      operations:
+      - method: GET
+        name: readaclpolicy
+        description: Read an ACL policy
+        call: nomad.readaclpolicy
+        with:
+          policyName: rest.policyName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/policy/{policyName}
+      name: upsertaclpolicy
+      operations:
+      - method: PUT
+        name: upsertaclpolicy
+        description: Create or update an ACL policy
+        call: nomad.upsertaclpolicy
+        with:
+          policyName: rest.policyName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/policy/{policyName}
+      name: deleteaclpolicy
+      operations:
+      - method: DELETE
+        name: deleteaclpolicy
+        description: Delete an ACL policy
+        call: nomad.deleteaclpolicy
+        with:
+          policyName: rest.policyName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/tokens
+      name: listacltokens
+      operations:
+      - method: GET
+        name: listacltokens
+        description: List ACL tokens
+        call: nomad.listacltokens
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/token
+      name: createacltoken
+      operations:
+      - method: PUT
+        name: createacltoken
+        description: Create an ACL token
+        call: nomad.createacltoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/token/self
+      name: readselfacltoken
+      operations:
+      - method: GET
+        name: readselfacltoken
+        description: Read own ACL token
+        call: nomad.readselfacltoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/token/{tokenAccessorID}
+      name: readacltoken
+      operations:
+      - method: GET
+        name: readacltoken
+        description: Read an ACL token
+        call: nomad.readacltoken
+        with:
+          tokenAccessorID: rest.tokenAccessorID
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /acl/token/{tokenAccessorID}
+      name: deleteacltoken
+      operations:
+      - method: DELETE
+        name: deleteacltoken
+        description: Delete an ACL token
+        call: nomad.deleteacltoken
+        with:
+          tokenAccessorID: rest.tokenAccessorID
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /agent/members
+      name: listagentmembers
+      operations:
+      - method: GET
+        name: listagentmembers
+        description: List agent members
+        call: nomad.listagentmembers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /agent/self
+      name: readagentself
+      operations:
+      - method: GET
+        name: readagentself
+        description: Read agent self
+        call: nomad.readagentself
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /agent/join
+      name: joinagent
+      operations:
+      - method: PUT
+        name: joinagent
+        description: Join an agent
+        call: nomad.joinagent
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /agent/force-leave
+      name: forceleaveagent
+      operations:
+      - method: PUT
+        name: forceleaveagent
+        description: Force leave an agent
+        call: nomad.forceleaveagent
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: nomad-mcp
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API for AI agent use.
+    tools:
+    - name: listjobs
+      description: List jobs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjobs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: registerjob
+      description: Register a new job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.registerjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: parsejob
+      description: Parse a job specification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.parsejob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listjobstatuses
+      description: List job statuses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjobstatuses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readjob
+      description: Read a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deregisterjob
+      description: Deregister a job
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deregisterjob
+      with:
+        purge: tools.purge
+        global: tools.global
+      inputParameters:
+      - name: purge
+        type: boolean
+        description: If true, the job is purged from the system and cannot be recovered. Defaults to false.
+      - name: global
+        type: boolean
+        description: If true, deregisters the job in all federated regions.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: evaluatejob
+      description: Create a new evaluation for a job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.evaluatejob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: planjob
+      description: Plan a job update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.planjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listjoballocations
+      description: List allocations for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjoballocations
+      with:
+        all: tools.all
+      inputParameters:
+      - name: all
+        type: boolean
+        description: If true, includes allocations from all namespaces.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listjobevaluations
+      description: List evaluations for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjobevaluations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listjobdeployments
+      description: List deployments for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjobdeployments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listjobversions
+      description: List versions of a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listjobversions
+      with:
+        diffs: tools.diffs
+      inputParameters:
+      - name: diffs
+        type: boolean
+        description: If true, includes the diff between consecutive job versions.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: revertjob
+      description: Revert job to an older version
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.revertjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: setjobstability
+      description: Set job stability
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.setjobstability
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readjobsummary
+      description: Read a job summary
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readjobsummary
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: dispatchjob
+      description: Dispatch a parameterized job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.dispatchjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listallocations
+      description: List allocations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listallocations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readallocation
+      description: Read an allocation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readallocation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listallocationservices
+      description: List allocation services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listallocationservices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listallocationchecks
+      description: List allocation health checks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listallocationchecks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listevaluations
+      description: List evaluations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listevaluations
+      with:
+        status: tools.status
+        job: tools.job
+      inputParameters:
+      - name: status
+        type: string
+        description: Filter evaluations by status.
+      - name: job
+        type: string
+        description: Filter evaluations by job ID.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: countevaluations
+      description: Count evaluations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.countevaluations
+      with:
+        status: tools.status
+      inputParameters:
+      - name: status
+        type: string
+        description: Filter the count by evaluation status.
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readevaluation
+      description: Read an evaluation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readevaluation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listevaluationallocations
+      description: List allocations for an evaluation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listevaluationallocations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdeployments
+      description: List deployments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listdeployments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readdeployment
+      description: Read a deployment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readdeployment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdeploymentallocations
+      description: List deployment allocations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listdeploymentallocations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: faildeployment
+      description: Fail a deployment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.faildeployment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: pausedeployment
+      description: Pause or resume a deployment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.pausedeployment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: promotedeployment
+      description: Promote a deployment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.promotedeployment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listnodes
+      description: List nodes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listnodes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readnode
+      description: Read a node
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readnode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: evaluatenode
+      description: Create a new evaluation for a node
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.evaluatenode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: drainnode
+      description: Set node drain mode
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: nomad.drainnode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: purgenode
+      description: Purge a node
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.purgenode
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listnodepools
+      description: List node pools
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listnodepools
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createnodepool
+      description: Create or update a node pool
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.createnodepool
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readnodepool
+      description: Read a node pool
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readnodepool
+      with:
+        poolName: tools.poolName
+      inputParameters:
+      - name: poolName
+        type: string
+        description: The name of the node pool.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletenodepool
+      description: Delete a node pool
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deletenodepool
+      with:
+        poolName: tools.poolName
+      inputParameters:
+      - name: poolName
+        type: string
+        description: The name of the node pool.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listservices
+      description: List services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listservices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readservice
+      description: Read a service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readservice
+      with:
+        serviceName: tools.serviceName
+      inputParameters:
+      - name: serviceName
+        type: string
+        description: The name of the service.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteservice
+      description: Delete a service registration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deleteservice
+      with:
+        serviceName: tools.serviceName
+      inputParameters:
+      - name: serviceName
+        type: string
+        description: The name of the service.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listvolumes
+      description: List volumes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listvolumes
+      with:
+        type: tools.type
+      inputParameters:
+      - name: type
+        type: string
+        description: Filter volumes by type (csi or host).
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listnamespaces
+      description: List namespaces
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listnamespaces
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createnamespace
+      description: Create or update a namespace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.createnamespace
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readnamespace
+      description: Read a namespace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readnamespace
+      with:
+        namespaceName: tools.namespaceName
+      inputParameters:
+      - name: namespaceName
+        type: string
+        description: The name of the namespace.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletenamespace
+      description: Delete a namespace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deletenamespace
+      with:
+        namespaceName: tools.namespaceName
+      inputParameters:
+      - name: namespaceName
+        type: string
+        description: The name of the namespace.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listaclpolicies
+      description: List ACL policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listaclpolicies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readaclpolicy
+      description: Read an ACL policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readaclpolicy
+      with:
+        policyName: tools.policyName
+      inputParameters:
+      - name: policyName
+        type: string
+        description: The name of the ACL policy.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: upsertaclpolicy
+      description: Create or update an ACL policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.upsertaclpolicy
+      with:
+        policyName: tools.policyName
+      inputParameters:
+      - name: policyName
+        type: string
+        description: The name of the ACL policy.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteaclpolicy
+      description: Delete an ACL policy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deleteaclpolicy
+      with:
+        policyName: tools.policyName
+      inputParameters:
+      - name: policyName
+        type: string
+        description: The name of the ACL policy.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listacltokens
+      description: List ACL tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listacltokens
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createacltoken
+      description: Create an ACL token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.createacltoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readselfacltoken
+      description: Read own ACL token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readselfacltoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readacltoken
+      description: Read an ACL token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readacltoken
+      with:
+        tokenAccessorID: tools.tokenAccessorID
+      inputParameters:
+      - name: tokenAccessorID
+        type: string
+        description: The accessor ID of the ACL token.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteacltoken
+      description: Delete an ACL token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: nomad.deleteacltoken
+      with:
+        tokenAccessorID: tools.tokenAccessorID
+      inputParameters:
+      - name: tokenAccessorID
+        type: string
+        description: The accessor ID of the ACL token.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listagentmembers
+      description: List agent members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.listagentmembers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: readagentself
+      description: Read agent self
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: nomad.readagentself
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: joinagent
+      description: Join an agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.joinagent
+      with:
+        address: tools.address
+      inputParameters:
+      - name: address
+        type: string
+        description: The address of the server(s) to join.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: forceleaveagent
+      description: Force leave an agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: nomad.forceleaveagent
+      with:
+        node: tools.node
+      inputParameters:
+      - name: node
+        type: string
+        description: The name of the node to force leave.
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    NOMAD_TOKEN: NOMAD_TOKEN
