@@ -1,0 +1,218 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Agent
+  description: 'HashiCorp Nomad HTTP API — Agent. 5 operations. Lead operation: Force leave an agent. Self-contained Naftiko
+    capability covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Agent
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-agent
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Agent business capability. Self-contained, no shared references.
+    resources:
+    - name: agent-force-leave
+      path: /agent/force-leave
+      operations:
+      - name: forceleaveagent
+        method: PUT
+        description: Force leave an agent
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: node
+          in: query
+          type: string
+          description: The name of the node to force leave.
+          required: true
+    - name: agent-health
+      path: /agent/health
+      operations:
+      - name: readagenthealth
+        method: GET
+        description: Read agent health
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-join
+      path: /agent/join
+      operations:
+      - name: joinagent
+        method: PUT
+        description: Join an agent
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: address
+          in: query
+          type: string
+          description: The address of the server(s) to join.
+          required: true
+    - name: agent-members
+      path: /agent/members
+      operations:
+      - name: listagentmembers
+        method: GET
+        description: List agent members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: agent-self
+      path: /agent/self
+      operations:
+      - name: readagentself
+        method: GET
+        description: Read agent self
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-agent-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Agent. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/agent/force-leave
+      name: agent-force-leave
+      description: REST surface for agent-force-leave.
+      operations:
+      - method: PUT
+        name: forceleaveagent
+        description: Force leave an agent
+        call: http-agent.forceleaveagent
+        with:
+          node: rest.node
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agent/health
+      name: agent-health
+      description: REST surface for agent-health.
+      operations:
+      - method: GET
+        name: readagenthealth
+        description: Read agent health
+        call: http-agent.readagenthealth
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agent/join
+      name: agent-join
+      description: REST surface for agent-join.
+      operations:
+      - method: PUT
+        name: joinagent
+        description: Join an agent
+        call: http-agent.joinagent
+        with:
+          address: rest.address
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agent/members
+      name: agent-members
+      description: REST surface for agent-members.
+      operations:
+      - method: GET
+        name: listagentmembers
+        description: List agent members
+        call: http-agent.listagentmembers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/agent/self
+      name: agent-self
+      description: REST surface for agent-self.
+      operations:
+      - method: GET
+        name: readagentself
+        description: Read agent self
+        call: http-agent.readagentself
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-agent-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Agent. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: force-leave-agent
+      description: Force leave an agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-agent.forceleaveagent
+      with:
+        node: tools.node
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-agent-health
+      description: Read agent health
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-agent.readagenthealth
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: join-agent
+      description: Join an agent
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-agent.joinagent
+      with:
+        address: tools.address
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-agent-members
+      description: List agent members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-agent.listagentmembers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-agent-self
+      description: Read agent self
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-agent.readagentself
+      outputParameters:
+      - type: object
+        mapping: $.

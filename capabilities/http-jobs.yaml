@@ -1,0 +1,639 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Jobs
+  description: 'HashiCorp Nomad HTTP API — Jobs. 16 operations. Lead operation: Read a job. Self-contained Naftiko capability
+    covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Jobs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-jobs
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Jobs business capability. Self-contained, no shared references.
+    resources:
+    - name: job-jobID
+      path: /job/{jobID}
+      operations:
+      - name: readjob
+        method: GET
+        description: Read a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deregisterjob
+        method: DELETE
+        description: Deregister a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: purge
+          in: query
+          type: boolean
+          description: If true, the job is purged from the system and cannot be recovered. Defaults to false.
+        - name: global
+          in: query
+          type: boolean
+          description: If true, deregisters the job in all federated regions.
+    - name: job-jobID-allocations
+      path: /job/{jobID}/allocations
+      operations:
+      - name: listjoballocations
+        method: GET
+        description: List allocations for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: all
+          in: query
+          type: boolean
+          description: If true, includes allocations from all namespaces.
+    - name: job-jobID-deployments
+      path: /job/{jobID}/deployments
+      operations:
+      - name: listjobdeployments
+        method: GET
+        description: List deployments for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobID-dispatch
+      path: /job/{jobID}/dispatch
+      operations:
+      - name: dispatchjob
+        method: PUT
+        description: Dispatch a parameterized job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: job-jobID-evaluate
+      path: /job/{jobID}/evaluate
+      operations:
+      - name: evaluatejob
+        method: PUT
+        description: Create a new evaluation for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: job-jobID-evaluations
+      path: /job/{jobID}/evaluations
+      operations:
+      - name: listjobevaluations
+        method: GET
+        description: List evaluations for a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobID-plan
+      path: /job/{jobID}/plan
+      operations:
+      - name: planjob
+        method: PUT
+        description: Plan a job update
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: job-jobID-revert
+      path: /job/{jobID}/revert
+      operations:
+      - name: revertjob
+        method: PUT
+        description: Revert job to an older version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: job-jobID-stable
+      path: /job/{jobID}/stable
+      operations:
+      - name: setjobstability
+        method: PUT
+        description: Set job stability
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: job-jobID-summary
+      path: /job/{jobID}/summary
+      operations:
+      - name: readjobsummary
+        method: GET
+        description: Read a job summary
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: job-jobID-versions
+      path: /job/{jobID}/versions
+      operations:
+      - name: listjobversions
+        method: GET
+        description: List versions of a job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: diffs
+          in: query
+          type: boolean
+          description: If true, includes the diff between consecutive job versions.
+    - name: jobs
+      path: /jobs
+      operations:
+      - name: listjobs
+        method: GET
+        description: List jobs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: registerjob
+        method: PUT
+        description: Register a new job
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: jobs-parse
+      path: /jobs/parse
+      operations:
+      - name: parsejob
+        method: PUT
+        description: Parse a job specification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: jobs-statuses
+      path: /jobs/statuses
+      operations:
+      - name: listjobstatuses
+        method: GET
+        description: List job statuses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-jobs-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Jobs. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/job/{jobid}
+      name: job-jobid
+      description: REST surface for job-jobID.
+      operations:
+      - method: GET
+        name: readjob
+        description: Read a job
+        call: http-jobs.readjob
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deregisterjob
+        description: Deregister a job
+        call: http-jobs.deregisterjob
+        with:
+          purge: rest.purge
+          global: rest.global
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/allocations
+      name: job-jobid-allocations
+      description: REST surface for job-jobID-allocations.
+      operations:
+      - method: GET
+        name: listjoballocations
+        description: List allocations for a job
+        call: http-jobs.listjoballocations
+        with:
+          all: rest.all
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/deployments
+      name: job-jobid-deployments
+      description: REST surface for job-jobID-deployments.
+      operations:
+      - method: GET
+        name: listjobdeployments
+        description: List deployments for a job
+        call: http-jobs.listjobdeployments
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/dispatch
+      name: job-jobid-dispatch
+      description: REST surface for job-jobID-dispatch.
+      operations:
+      - method: PUT
+        name: dispatchjob
+        description: Dispatch a parameterized job
+        call: http-jobs.dispatchjob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/evaluate
+      name: job-jobid-evaluate
+      description: REST surface for job-jobID-evaluate.
+      operations:
+      - method: PUT
+        name: evaluatejob
+        description: Create a new evaluation for a job
+        call: http-jobs.evaluatejob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/evaluations
+      name: job-jobid-evaluations
+      description: REST surface for job-jobID-evaluations.
+      operations:
+      - method: GET
+        name: listjobevaluations
+        description: List evaluations for a job
+        call: http-jobs.listjobevaluations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/plan
+      name: job-jobid-plan
+      description: REST surface for job-jobID-plan.
+      operations:
+      - method: PUT
+        name: planjob
+        description: Plan a job update
+        call: http-jobs.planjob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/revert
+      name: job-jobid-revert
+      description: REST surface for job-jobID-revert.
+      operations:
+      - method: PUT
+        name: revertjob
+        description: Revert job to an older version
+        call: http-jobs.revertjob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/stable
+      name: job-jobid-stable
+      description: REST surface for job-jobID-stable.
+      operations:
+      - method: PUT
+        name: setjobstability
+        description: Set job stability
+        call: http-jobs.setjobstability
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/summary
+      name: job-jobid-summary
+      description: REST surface for job-jobID-summary.
+      operations:
+      - method: GET
+        name: readjobsummary
+        description: Read a job summary
+        call: http-jobs.readjobsummary
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job/{jobid}/versions
+      name: job-jobid-versions
+      description: REST surface for job-jobID-versions.
+      operations:
+      - method: GET
+        name: listjobversions
+        description: List versions of a job
+        call: http-jobs.listjobversions
+        with:
+          diffs: rest.diffs
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/jobs
+      name: jobs
+      description: REST surface for jobs.
+      operations:
+      - method: GET
+        name: listjobs
+        description: List jobs
+        call: http-jobs.listjobs
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: registerjob
+        description: Register a new job
+        call: http-jobs.registerjob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/jobs/parse
+      name: jobs-parse
+      description: REST surface for jobs-parse.
+      operations:
+      - method: PUT
+        name: parsejob
+        description: Parse a job specification
+        call: http-jobs.parsejob
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/jobs/statuses
+      name: jobs-statuses
+      description: REST surface for jobs-statuses.
+      operations:
+      - method: GET
+        name: listjobstatuses
+        description: List job statuses
+        call: http-jobs.listjobstatuses
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-jobs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Jobs. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: read-job
+      description: Read a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.readjob
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deregister-job
+      description: Deregister a job
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: http-jobs.deregisterjob
+      with:
+        purge: tools.purge
+        global: tools.global
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-allocations-job
+      description: List allocations for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjoballocations
+      with:
+        all: tools.all
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-deployments-job
+      description: List deployments for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjobdeployments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: dispatch-parameterized-job
+      description: Dispatch a parameterized job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.dispatchjob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-evaluation-job
+      description: Create a new evaluation for a job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.evaluatejob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-evaluations-job
+      description: List evaluations for a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjobevaluations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: plan-job-update
+      description: Plan a job update
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.planjob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: revert-job-older-version
+      description: Revert job to an older version
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.revertjob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: set-job-stability
+      description: Set job stability
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.setjobstability
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-job-summary
+      description: Read a job summary
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.readjobsummary
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-versions-job
+      description: List versions of a job
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjobversions
+      with:
+        diffs: tools.diffs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-jobs
+      description: List jobs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjobs
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: register-new-job
+      description: Register a new job
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.registerjob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: parse-job-specification
+      description: Parse a job specification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-jobs.parsejob
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-job-statuses
+      description: List job statuses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-jobs.listjobstatuses
+      outputParameters:
+      - type: object
+        mapping: $.

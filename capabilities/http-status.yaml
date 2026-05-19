@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Status
+  description: 'HashiCorp Nomad HTTP API — Status. 2 operations. Lead operation: Read cluster leader. Self-contained Naftiko
+    capability covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Status
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-status
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Status business capability. Self-contained, no shared references.
+    resources:
+    - name: status-leader
+      path: /status/leader
+      operations:
+      - name: readleader
+        method: GET
+        description: Read cluster leader
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: status-peers
+      path: /status/peers
+      operations:
+      - name: listpeers
+        method: GET
+        description: List cluster peers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-status-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Status. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/status/leader
+      name: status-leader
+      description: REST surface for status-leader.
+      operations:
+      - method: GET
+        name: readleader
+        description: Read cluster leader
+        call: http-status.readleader
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/status/peers
+      name: status-peers
+      description: REST surface for status-peers.
+      operations:
+      - method: GET
+        name: listpeers
+        description: List cluster peers
+        call: http-status.listpeers
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-status-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Status. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: read-cluster-leader
+      description: Read cluster leader
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-status.readleader
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-cluster-peers
+      description: List cluster peers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-status.listpeers
+      outputParameters:
+      - type: object
+        mapping: $.

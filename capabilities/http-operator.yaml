@@ -1,0 +1,216 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Operator
+  description: 'HashiCorp Nomad HTTP API — Operator. 5 operations. Lead operation: Read autopilot configuration. Self-contained
+    Naftiko capability covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Operator
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-operator
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Operator business capability. Self-contained, no shared references.
+    resources:
+    - name: operator-autopilot-configuration
+      path: /operator/autopilot/configuration
+      operations:
+      - name: readautopilotconfiguration
+        method: GET
+        description: Read autopilot configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateautopilotconfiguration
+        method: PUT
+        description: Update autopilot configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: operator-autopilot-health
+      path: /operator/autopilot/health
+      operations:
+      - name: readautopilothealth
+        method: GET
+        description: Read autopilot health
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: operator-raft-configuration
+      path: /operator/raft/configuration
+      operations:
+      - name: readraftconfiguration
+        method: GET
+        description: Read Raft configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: operator-raft-peer
+      path: /operator/raft/peer
+      operations:
+      - name: removeraftpeer
+        method: DELETE
+        description: Remove a Raft peer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: address
+          in: query
+          type: string
+          description: The address of the peer to remove.
+        - name: id
+          in: query
+          type: string
+          description: The ID of the peer to remove.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-operator-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Operator. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/operator/autopilot/configuration
+      name: operator-autopilot-configuration
+      description: REST surface for operator-autopilot-configuration.
+      operations:
+      - method: GET
+        name: readautopilotconfiguration
+        description: Read autopilot configuration
+        call: http-operator.readautopilotconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateautopilotconfiguration
+        description: Update autopilot configuration
+        call: http-operator.updateautopilotconfiguration
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/operator/autopilot/health
+      name: operator-autopilot-health
+      description: REST surface for operator-autopilot-health.
+      operations:
+      - method: GET
+        name: readautopilothealth
+        description: Read autopilot health
+        call: http-operator.readautopilothealth
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/operator/raft/configuration
+      name: operator-raft-configuration
+      description: REST surface for operator-raft-configuration.
+      operations:
+      - method: GET
+        name: readraftconfiguration
+        description: Read Raft configuration
+        call: http-operator.readraftconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/operator/raft/peer
+      name: operator-raft-peer
+      description: REST surface for operator-raft-peer.
+      operations:
+      - method: DELETE
+        name: removeraftpeer
+        description: Remove a Raft peer
+        call: http-operator.removeraftpeer
+        with:
+          address: rest.address
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-operator-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Operator. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: read-autopilot-configuration
+      description: Read autopilot configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-operator.readautopilotconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-autopilot-configuration
+      description: Update autopilot configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-operator.updateautopilotconfiguration
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-autopilot-health
+      description: Read autopilot health
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-operator.readautopilothealth
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-raft-configuration
+      description: Read Raft configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-operator.readraftconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-raft-peer
+      description: Remove a Raft peer
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: http-operator.removeraftpeer
+      with:
+        address: tools.address
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

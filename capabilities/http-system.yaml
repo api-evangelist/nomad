@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — System
+  description: 'HashiCorp Nomad HTTP API — System. 2 operations. Lead operation: Run garbage collection. Self-contained Naftiko
+    capability covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - System
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-system
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — System business capability. Self-contained, no shared references.
+    resources:
+    - name: system-gc
+      path: /system/gc
+      operations:
+      - name: systemgarbagecollect
+        method: PUT
+        description: Run garbage collection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: system-reconcile-summaries
+      path: /system/reconcile/summaries
+      operations:
+      - name: reconcilesummaries
+        method: PUT
+        description: Reconcile job summaries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-system-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — System. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/system/gc
+      name: system-gc
+      description: REST surface for system-gc.
+      operations:
+      - method: PUT
+        name: systemgarbagecollect
+        description: Run garbage collection
+        call: http-system.systemgarbagecollect
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/system/reconcile/summaries
+      name: system-reconcile-summaries
+      description: REST surface for system-reconcile-summaries.
+      operations:
+      - method: PUT
+        name: reconcilesummaries
+        description: Reconcile job summaries
+        call: http-system.reconcilesummaries
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-system-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — System. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: run-garbage-collection
+      description: Run garbage collection
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-system.systemgarbagecollect
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: reconcile-job-summaries
+      description: Reconcile job summaries
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: http-system.reconcilesummaries
+      outputParameters:
+      - type: object
+        mapping: $.

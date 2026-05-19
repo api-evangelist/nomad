@@ -1,0 +1,146 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API
+  description: 'HashiCorp Nomad HTTP API. 3 operations. Lead operation: Read a service. Self-contained Naftiko capability
+    covering one Nomad business surface.'
+  tags:
+  - Nomad
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-general
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API business capability. Self-contained, no shared references.
+    resources:
+    - name: service-serviceName
+      path: /service/{serviceName}
+      operations:
+      - name: readservice
+        method: GET
+        description: Read a service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceName
+          in: path
+          type: string
+          description: The name of the service.
+          required: true
+      - name: deleteservice
+        method: DELETE
+        description: Delete a service registration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: serviceName
+          in: path
+          type: string
+          description: The name of the service.
+          required: true
+    - name: services
+      path: /services
+      operations:
+      - name: listservices
+        method: GET
+        description: List services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-general-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/service/{servicename}
+      name: service-servicename
+      description: REST surface for service-serviceName.
+      operations:
+      - method: GET
+        name: readservice
+        description: Read a service
+        call: http-general.readservice
+        with:
+          serviceName: rest.serviceName
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteservice
+        description: Delete a service registration
+        call: http-general.deleteservice
+        with:
+          serviceName: rest.serviceName
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/services
+      name: services
+      description: REST surface for services.
+      operations:
+      - method: GET
+        name: listservices
+        description: List services
+        call: http-general.listservices
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-general-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: read-service
+      description: Read a service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-general.readservice
+      with:
+        serviceName: tools.serviceName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-service-registration
+      description: Delete a service registration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: http-general.deleteservice
+      with:
+        serviceName: tools.serviceName
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-services
+      description: List services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-general.listservices
+      outputParameters:
+      - type: object
+        mapping: $.

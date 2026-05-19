@@ -1,0 +1,166 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Allocations
+  description: 'HashiCorp Nomad HTTP API — Allocations. 4 operations. Lead operation: Read an allocation. Self-contained Naftiko
+    capability covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Allocations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-allocations
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Allocations business capability. Self-contained, no shared references.
+    resources:
+    - name: allocation-allocID
+      path: /allocation/{allocID}
+      operations:
+      - name: readallocation
+        method: GET
+        description: Read an allocation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocation-allocID-checks
+      path: /allocation/{allocID}/checks
+      operations:
+      - name: listallocationchecks
+        method: GET
+        description: List allocation health checks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocation-allocID-services
+      path: /allocation/{allocID}/services
+      operations:
+      - name: listallocationservices
+        method: GET
+        description: List allocation services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: allocations
+      path: /allocations
+      operations:
+      - name: listallocations
+        method: GET
+        description: List allocations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-allocations-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Allocations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/allocation/{allocid}
+      name: allocation-allocid
+      description: REST surface for allocation-allocID.
+      operations:
+      - method: GET
+        name: readallocation
+        description: Read an allocation
+        call: http-allocations.readallocation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/allocation/{allocid}/checks
+      name: allocation-allocid-checks
+      description: REST surface for allocation-allocID-checks.
+      operations:
+      - method: GET
+        name: listallocationchecks
+        description: List allocation health checks
+        call: http-allocations.listallocationchecks
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/allocation/{allocid}/services
+      name: allocation-allocid-services
+      description: REST surface for allocation-allocID-services.
+      operations:
+      - method: GET
+        name: listallocationservices
+        description: List allocation services
+        call: http-allocations.listallocationservices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/allocations
+      name: allocations
+      description: REST surface for allocations.
+      operations:
+      - method: GET
+        name: listallocations
+        description: List allocations
+        call: http-allocations.listallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-allocations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Allocations. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: read-allocation
+      description: Read an allocation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-allocations.readallocation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-allocation-health-checks
+      description: List allocation health checks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-allocations.listallocationchecks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-allocation-services
+      description: List allocation services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-allocations.listallocationservices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-allocations
+      description: List allocations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-allocations.listallocations
+      outputParameters:
+      - type: object
+        mapping: $.

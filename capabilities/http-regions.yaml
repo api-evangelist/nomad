@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HashiCorp Nomad HTTP API — Regions
+  description: 'HashiCorp Nomad HTTP API — Regions. 1 operations. Lead operation: List regions. Self-contained Naftiko capability
+    covering one Nomad business surface.'
+  tags:
+  - Nomad
+  - Regions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    NOMAD_API_KEY: NOMAD_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: http-regions
+    baseUri: http://localhost:4646/v1
+    description: HashiCorp Nomad HTTP API — Regions business capability. Self-contained, no shared references.
+    resources:
+    - name: regions
+      path: /regions
+      operations:
+      - name: listregions
+        method: GET
+        description: List regions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.NOMAD_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: http-regions-rest
+    port: 8080
+    description: REST adapter for HashiCorp Nomad HTTP API — Regions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/regions
+      name: regions
+      description: REST surface for regions.
+      operations:
+      - method: GET
+        name: listregions
+        description: List regions
+        call: http-regions.listregions
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: http-regions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HashiCorp Nomad HTTP API — Regions. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-regions
+      description: List regions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: http-regions.listregions
+      outputParameters:
+      - type: object
+        mapping: $.
