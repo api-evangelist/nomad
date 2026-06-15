@@ -1,0 +1,1967 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/jobs",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all known jobs in the system registered with Nomad. Supports prefix-based filtering and pagination via next_token and per_page query parameters."
+        },
+        {
+          "info": {
+            "name": "Register a new job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/jobs",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Registers a new job or updates an existing job. The job must be provided as a JSON payload in the request body."
+        },
+        {
+          "info": {
+            "name": "Parse a job specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/jobs/parse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Parses a HCL or JSON job specification and returns the equivalent JSON job structure. This endpoint can be used to validate job specifications without registering them."
+        },
+        {
+          "info": {
+            "name": "List job statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/jobs/statuses",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of jobs with their current status information including allocation summaries and deployment status."
+        },
+        {
+          "info": {
+            "name": "Read a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns the full specification and status of the specified job."
+        },
+        {
+          "info": {
+            "name": "Deregister a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/job/:jobID",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "purge",
+                "value": "",
+                "type": "query",
+                "description": "If true, the job is purged from the system and cannot be recovered. Defaults to false."
+              },
+              {
+                "name": "global",
+                "value": "",
+                "type": "query",
+                "description": "If true, deregisters the job in all federated regions."
+              }
+            ]
+          },
+          "docs": "Deregisters a job and stops all allocations associated with it. Optionally purges the job from the system entirely."
+        },
+        {
+          "info": {
+            "name": "Create a new evaluation for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/evaluate",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new evaluation for the given job. This can be used to force run the scheduling logic if necessary."
+        },
+        {
+          "info": {
+            "name": "Plan a job update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/plan",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invokes a dry-run of the scheduler for the job which will determine the effects of an update. The plan will not result in any changes to the cluster."
+        },
+        {
+          "info": {
+            "name": "List allocations for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/allocations",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "all",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes allocations from all namespaces."
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List evaluations for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/evaluations",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a list of evaluations belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List deployments for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/deployments",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a list of deployments belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List versions of a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/versions",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "diffs",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes the diff between consecutive job versions."
+              }
+            ]
+          },
+          "docs": "Returns a list of versions for the specified job, with the most recent version first."
+        },
+        {
+          "info": {
+            "name": "Revert job to an older version",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/revert",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reverts the job to an older version by creating a new version with the specification of the older version."
+        },
+        {
+          "info": {
+            "name": "Set job stability",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/stable",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the stability of a job version, marking it as stable or unstable. Stable versions are not eligible for automatic garbage collection."
+        },
+        {
+          "info": {
+            "name": "Read a job summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/summary",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a summary of the specified job including the number of allocations in each state per task group."
+        },
+        {
+          "info": {
+            "name": "Dispatch a parameterized job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/dispatch",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Dispatches a new instance of a parameterized job. The job must be of type parameterized."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Allocations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/allocations",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all allocations in the system. Supports prefix-based filtering and pagination."
+        },
+        {
+          "info": {
+            "name": "Read an allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/allocation/:allocID",
+            "params": [
+              {
+                "name": "allocID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the allocation."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified allocation."
+        },
+        {
+          "info": {
+            "name": "List allocation services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/allocation/:allocID/services",
+            "params": [
+              {
+                "name": "allocID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the allocation."
+              }
+            ]
+          },
+          "docs": "Returns the services registered by the specified allocation including address, port, and service name."
+        },
+        {
+          "info": {
+            "name": "List allocation health checks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/allocation/:allocID/checks",
+            "params": [
+              {
+                "name": "allocID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the allocation."
+              }
+            ]
+          },
+          "docs": "Returns the health check results for the specified allocation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Evaluations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List evaluations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/evaluations",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter evaluations by status."
+              },
+              {
+                "name": "job",
+                "value": "",
+                "type": "query",
+                "description": "Filter evaluations by job ID."
+              }
+            ]
+          },
+          "docs": "Lists all evaluations in the system. Supports filtering by job ID and evaluation status (blocked, pending, complete, failed, or canceled)."
+        },
+        {
+          "info": {
+            "name": "Count evaluations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/evaluations/count",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter the count by evaluation status."
+              }
+            ]
+          },
+          "docs": "Returns a count of evaluations in the system, optionally filtered by status."
+        },
+        {
+          "info": {
+            "name": "Read an evaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/evaluation/:evalID",
+            "params": [
+              {
+                "name": "evalID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the evaluation."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified evaluation."
+        },
+        {
+          "info": {
+            "name": "List allocations for an evaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/evaluation/:evalID/allocations",
+            "params": [
+              {
+                "name": "evalID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the evaluation."
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations created or modified by the specified evaluation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployments",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all deployments in the system. Supports pagination via next_token."
+        },
+        {
+          "info": {
+            "name": "Read a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployment/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified deployment."
+        },
+        {
+          "info": {
+            "name": "List deployment allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployment/allocations/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations associated with the specified deployment."
+        },
+        {
+          "info": {
+            "name": "Fail a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/fail/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Marks the specified deployment as failed. This causes Nomad to stop the deployment and revert to the previous stable version of the job if configured to do so."
+        },
+        {
+          "info": {
+            "name": "Pause or resume a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/pause/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pauses or resumes a rolling deployment. While paused, no new allocations will be placed for the deployment."
+        },
+        {
+          "info": {
+            "name": "Promote a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/promote/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Promotes canary allocations in the specified deployment, moving them to the main allocation set."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Nodes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/nodes",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all client nodes registered with Nomad. Supports prefix-based filtering on node ID."
+        },
+        {
+          "info": {
+            "name": "Read a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/:nodeID",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified node."
+        },
+        {
+          "info": {
+            "name": "Create a new evaluation for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/node/:nodeID/evaluate",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Creates a new evaluation for the specified node. This can be used to force a re-evaluation of the node and its allocations."
+        },
+        {
+          "info": {
+            "name": "Set node drain mode",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:4646/v1/node/:nodeID/drain",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables or disables drain mode on the specified node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated."
+        },
+        {
+          "info": {
+            "name": "Purge a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/node/:nodeID/purge",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Purges a node from the system. The node must be in a down state."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Node Pools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List node pools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/pools",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all node pools registered with Nomad."
+        },
+        {
+          "info": {
+            "name": "Create or update a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/node/pools",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new node pool or updates an existing one."
+        },
+        {
+          "info": {
+            "name": "Read a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/pool/:poolName",
+            "params": [
+              {
+                "name": "poolName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the node pool."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified node pool."
+        },
+        {
+          "info": {
+            "name": "Delete a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/node/pool/:poolName",
+            "params": [
+              {
+                "name": "poolName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the node pool."
+              }
+            ]
+          },
+          "docs": "Deletes the specified node pool."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Default",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/services",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all currently registered Nomad services."
+        },
+        {
+          "info": {
+            "name": "Read a service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/service/:serviceName",
+            "params": [
+              {
+                "name": "serviceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the service."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns the registrations for the specified service name."
+        },
+        {
+          "info": {
+            "name": "Delete a service registration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/service/:serviceName",
+            "params": [
+              {
+                "name": "serviceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the service."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Deletes the specified service registration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Volumes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List volumes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/volumes",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter volumes by type (csi or host)."
+              }
+            ]
+          },
+          "docs": "Lists all CSI and host volumes. Supports filtering by namespace, job ID, task group, and volume name."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Namespaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List namespaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/namespaces",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Lists all namespaces in the system."
+        },
+        {
+          "info": {
+            "name": "Create or update a namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/namespace",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new namespace or updates an existing one."
+        },
+        {
+          "info": {
+            "name": "Read a namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/namespace/:namespaceName",
+            "params": [
+              {
+                "name": "namespaceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the namespace."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified namespace."
+        },
+        {
+          "info": {
+            "name": "Delete a namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/namespace/:namespaceName",
+            "params": [
+              {
+                "name": "namespaceName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the namespace."
+              }
+            ]
+          },
+          "docs": "Deletes the specified namespace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ACL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ACL policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/policies",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              }
+            ]
+          },
+          "docs": "Lists all ACL policies in the system."
+        },
+        {
+          "info": {
+            "name": "Read an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified ACL policy."
+        },
+        {
+          "info": {
+            "name": "Create or update an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new ACL policy or updates an existing one."
+        },
+        {
+          "info": {
+            "name": "Delete an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ]
+          },
+          "docs": "Deletes the specified ACL policy."
+        },
+        {
+          "info": {
+            "name": "List ACL tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/tokens",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              }
+            ]
+          },
+          "docs": "Lists all ACL tokens in the system."
+        },
+        {
+          "info": {
+            "name": "Create an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/acl/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new ACL token."
+        },
+        {
+          "info": {
+            "name": "Read own ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/token/self"
+          },
+          "docs": "Returns the details of the ACL token used to make the request."
+        },
+        {
+          "info": {
+            "name": "Read an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/token/:tokenAccessorID",
+            "params": [
+              {
+                "name": "tokenAccessorID",
+                "value": "",
+                "type": "path",
+                "description": "The accessor ID of the ACL token."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified ACL token by accessor ID."
+        },
+        {
+          "info": {
+            "name": "Delete an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/acl/token/:tokenAccessorID",
+            "params": [
+              {
+                "name": "tokenAccessorID",
+                "value": "",
+                "type": "path",
+                "description": "The accessor ID of the ACL token."
+              }
+            ]
+          },
+          "docs": "Deletes the specified ACL token."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Agent",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List agent members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/members"
+          },
+          "docs": "Returns a list of the known members of the gossip pool."
+        },
+        {
+          "info": {
+            "name": "Read agent self",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/self"
+          },
+          "docs": "Returns the configuration and status of the local agent."
+        },
+        {
+          "info": {
+            "name": "Join an agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/agent/join",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "The address of the server(s) to join."
+              }
+            ]
+          },
+          "docs": "Instructs the agent to join one or more servers by address."
+        },
+        {
+          "info": {
+            "name": "Force leave an agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/agent/force-leave",
+            "params": [
+              {
+                "name": "node",
+                "value": "",
+                "type": "query",
+                "description": "The name of the node to force leave."
+              }
+            ]
+          },
+          "docs": "Forces the specified agent to leave the gossip pool."
+        },
+        {
+          "info": {
+            "name": "Read agent health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/health"
+          },
+          "docs": "Returns the health status of the agent."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Variables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List variables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/vars",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Lists all Nomad variables. Variables are encrypted key-value pairs stored in Nomad."
+        },
+        {
+          "info": {
+            "name": "Read a variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/var/:variablePath",
+            "params": [
+              {
+                "name": "variablePath",
+                "value": "",
+                "type": "path",
+                "description": "The path of the variable."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns the full variable including its items at the specified path."
+        },
+        {
+          "info": {
+            "name": "Create or update a variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/var/:variablePath",
+            "params": [
+              {
+                "name": "variablePath",
+                "value": "",
+                "type": "path",
+                "description": "The path of the variable."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new variable or updates an existing one at the specified path."
+        },
+        {
+          "info": {
+            "name": "Delete a variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/var/:variablePath",
+            "params": [
+              {
+                "name": "variablePath",
+                "value": "",
+                "type": "path",
+                "description": "The path of the variable."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Deletes the variable at the specified path."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Scaling",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List scaling policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/scaling/policies",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "job",
+                "value": "",
+                "type": "query",
+                "description": "Filter scaling policies by job ID."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter scaling policies by type."
+              }
+            ]
+          },
+          "docs": "Lists all scaling policies in the system."
+        },
+        {
+          "info": {
+            "name": "Read a scaling policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/scaling/policy/:policyID",
+            "params": [
+              {
+                "name": "policyID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the scaling policy."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified scaling policy."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Prefix search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:4646/v1/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for objects by prefix match across multiple object types."
+        },
+        {
+          "info": {
+            "name": "Fuzzy search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:4646/v1/search/fuzzy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a fuzzy search across Nomad objects by text match."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run garbage collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/system/gc"
+          },
+          "docs": "Initiates garbage collection of jobs, evaluations, allocations, and nodes. This should not be necessary for most users."
+        },
+        {
+          "info": {
+            "name": "Reconcile job summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/system/reconcile/summaries"
+          },
+          "docs": "Reconciles the summaries of all registered jobs."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Operator",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read Raft configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/raft/configuration"
+          },
+          "docs": "Returns the current Raft peer configuration of the cluster."
+        },
+        {
+          "info": {
+            "name": "Remove a Raft peer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/operator/raft/peer",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "The address of the peer to remove."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the peer to remove."
+              }
+            ]
+          },
+          "docs": "Removes a Raft peer from the cluster. This is useful when a server has permanently failed and will not be returning."
+        },
+        {
+          "info": {
+            "name": "Read autopilot configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/autopilot/configuration"
+          },
+          "docs": "Returns the current autopilot configuration."
+        },
+        {
+          "info": {
+            "name": "Update autopilot configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/operator/autopilot/configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the autopilot configuration."
+        },
+        {
+          "info": {
+            "name": "Read autopilot health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/autopilot/health"
+          },
+          "docs": "Returns the health status of the cluster as determined by the autopilot."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Regions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List regions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/regions"
+          },
+          "docs": "Returns a list of all known regions in the Nomad cluster."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read cluster leader",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/status/leader"
+          },
+          "docs": "Returns the address of the current cluster leader."
+        },
+        {
+          "info": {
+            "name": "List cluster peers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/status/peers"
+          },
+          "docs": "Returns the addresses of the current cluster peers (Raft servers)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
