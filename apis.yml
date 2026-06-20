@@ -4,7 +4,7 @@ description: >-
   HashiCorp Nomad is a flexible workload orchestrator that enables organizations to deploy and manage containers, legacy
   applications, and batch jobs across any infrastructure. The Nomad developer platform provides a comprehensive HTTP
   API, official SDKs, and tooling for automating job scheduling, cluster management, and service orchestration at scale.
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/nomad/refs/heads/main/apis.yml
 created: '2026-03-20'
 modified: '2026-05-19'
@@ -25,7 +25,7 @@ apis:
       standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
       Developers can use this API to submit and manage workloads, monitor cluster health, query allocation status, and
       integrate Nomad orchestration into their infrastructure automation workflows.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://developer.hashicorp.com/nomad/api-docs
     baseURL: http://localhost:4646
     tags:
@@ -51,7 +51,7 @@ apis:
       a high-level, idiomatic Go interface for managing jobs, allocations, nodes, deployments, evaluations, and other
       Nomad resources. The SDK is maintained by HashiCorp as part of the main Nomad repository and is used internally by
       the Nomad CLI itself, making it the most comprehensive and up-to-date client available.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://pkg.go.dev/github.com/hashicorp/nomad/api
     tags:
       - Workload Orchestration
@@ -68,7 +68,7 @@ apis:
       resources including jobs, nodes, allocations, deployments, evaluations, namespaces, and ACL management. The
       library supports configuration via environment variables such as NOMAD_ADDR, NOMAD_TOKEN, and NOMAD_NAMESPACE for
       consistency with the Nomad CLI and other ecosystem tools.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://github.com/jrxFive/python-nomad
     tags:
       - Workload Orchestration
@@ -85,7 +85,7 @@ apis:
       JVM-based applications to interact with Nomad clusters for submitting jobs, querying allocations, managing nodes,
       and performing other orchestration operations. The SDK provides a typed Java interface over the Nomad REST API,
       making it suitable for enterprise applications and microservice architectures running on the JVM.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
     tags:
       - Workload Orchestration
