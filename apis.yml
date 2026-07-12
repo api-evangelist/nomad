@@ -96,6 +96,10 @@ apis:
       - type: Documentation
         url: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
 common:
+  - type: DomainSecurity
+    url: security/nomad-domain-security.yml
+  - type: Authentication
+    url: authentication/nomad-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/hashicorp
   - type: Portal

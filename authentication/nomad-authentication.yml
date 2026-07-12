@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/nomad-http-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: nomadToken
+  type: apiKey
+  in: header
+  parameter: X-Nomad-Token
+  description: ACL token passed via the X-Nomad-Token request header.
+  sources:
+  - openapi/nomad-http-api-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: ACL token passed via the Authorization header with Bearer scheme.
+  sources:
+  - openapi/nomad-http-api-openapi.yml
