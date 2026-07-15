@@ -96,6 +96,8 @@ apis:
       - type: Documentation
         url: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
 common:
+  - type: AgenticAccess
+    url: agentic-access/nomad-agentic-access.yml
   - type: DomainSecurity
     url: security/nomad-domain-security.yml
   - type: Authentication
