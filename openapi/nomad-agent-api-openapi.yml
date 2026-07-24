@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Agent API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Agent
+  description: Endpoints for interacting with the local Nomad agent, including health checks, member listing, and server management.
+paths:
+  /agent/members:
+    get:
+      operationId: listAgentMembers
+      summary: List agent members
+      description: Returns a list of the known members of the gossip pool.
+      tags:
+      - Agent
+      responses:
+        '200':
+          description: Agent members
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ServerName:
+                    type: string
+                  ServerRegion:
+                    type: string
+                  ServerDC:
+                    type: string
+                  Members:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/self:
+    get:
+      operationId: readAgentSelf
+      summary: Read agent self
+      description: Returns the configuration and status of the local agent.
+      tags:
+      - Agent
+      responses:
+        '200':
+          description: Agent configuration and status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  config:
+                    type: object
+                    description: The agent configuration.
+                  member:
+                    $ref: '#/components/schemas/AgentMember'
+                  stats:
+                    type: object
+                    description: Agent runtime statistics.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/join:
+    put:
+      operationId: joinAgent
+      summary: Join an agent
+      description: Instructs the agent to join one or more servers by address.
+      tags:
+      - Agent
+      parameters:
+      - name: address
+        in: query
+        required: true
+        description: The address of the server(s) to join.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Join result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  num_joined:
+                    type: integer
+                  error:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/force-leave:
+    put:
+      operationId: forceLeaveAgent
+      summary: Force leave an agent
+      description: Forces the specified agent to leave the gossip pool.
+      tags:
+      - Agent
+      parameters:
+      - name: node
+        in: query
+        required: true
+        description: The name of the node to force leave.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Agent forced to leave
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /agent/health:
+    get:
+      operationId: readAgentHealth
+      summary: Read agent health
+      description: Returns the health status of the agent.
+      tags:
+      - Agent
+      responses:
+        '200':
+          description: Agent is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                      message:
+                        type: string
+                  server:
+                    type: object
+                    properties:
+                      ok:
+                        type: boolean
+                      message:
+                        type: string
+        '429':
+          description: Agent is unhealthy
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    AgentMember:
+      type: object
+      description: A member of the gossip pool.
+      properties:
+        Name:
+          type: string
+        Addr:
+          type: string
+        Port:
+          type: integer
+        Tags:
+          type: object
+          additionalProperties:
+            type: string
+        Status:
+          type: string
+        ProtocolMin:
+          type: integer
+        ProtocolMax:
+          type: integer
+        ProtocolCur:
+          type: integer
+        DelegateMin:
+          type: integer
+        DelegateMax:
+          type: integer
+        DelegateCur:
+          type: integer
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

@@ -1,0 +1,154 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Service API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Service
+paths:
+  /service/{serviceName}:
+    get:
+      operationId: readService
+      summary: Read a service
+      description: Returns the registrations for the specified service name.
+      tags:
+      - Service
+      parameters:
+      - name: serviceName
+        in: path
+        required: true
+        description: The name of the service.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Service registrations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteService
+      summary: Delete a service registration
+      description: Deletes the specified service registration.
+      tags:
+      - Service
+      parameters:
+      - name: serviceName
+        in: path
+        required: true
+        description: The name of the service.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Service deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+  schemas:
+    ServiceRegistration:
+      type: object
+      description: A Nomad service registration.
+      properties:
+        ID:
+          type: string
+        ServiceName:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        Datacenter:
+          type: string
+        JobID:
+          type: string
+        AllocID:
+          type: string
+        Tags:
+          type: array
+          items:
+            type: string
+        Address:
+          type: string
+        Port:
+          type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

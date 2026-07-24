@@ -1,0 +1,251 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Variables API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Variables
+  description: Endpoints for managing Nomad variables, which store encrypted key-value data.
+paths:
+  /vars:
+    get:
+      operationId: listVariables
+      summary: List variables
+      description: Lists all Nomad variables. Variables are encrypted key-value pairs stored in Nomad.
+      tags:
+      - Variables
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: A list of variable metadata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VariableMetadata'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /var/{variablePath}:
+    get:
+      operationId: readVariable
+      summary: Read a variable
+      description: Returns the full variable including its items at the specified path.
+      tags:
+      - Variables
+      parameters:
+      - name: variablePath
+        in: path
+        required: true
+        description: The path of the variable.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Variable details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Variable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: upsertVariable
+      summary: Create or update a variable
+      description: Creates a new variable or updates an existing one at the specified path.
+      tags:
+      - Variables
+      parameters:
+      - name: variablePath
+        in: path
+        required: true
+        description: The path of the variable.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Variable'
+      responses:
+        '200':
+          description: Variable created or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Variable'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteVariable
+      summary: Delete a variable
+      description: Deletes the variable at the specified path.
+      tags:
+      - Variables
+      parameters:
+      - name: variablePath
+        in: path
+        required: true
+        description: The path of the variable.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Variable deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  schemas:
+    Variable:
+      type: object
+      description: A Nomad variable containing encrypted key-value data.
+      properties:
+        Namespace:
+          type: string
+          description: The namespace the variable belongs to.
+        Path:
+          type: string
+          description: The path of the variable.
+        Items:
+          type: object
+          additionalProperties:
+            type: string
+          description: The key-value items stored in the variable.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    VariableMetadata:
+      type: object
+      description: Metadata about a Nomad variable without the item values.
+      properties:
+        Namespace:
+          type: string
+        Path:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

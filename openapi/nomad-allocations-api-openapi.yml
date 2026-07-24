@@ -1,0 +1,703 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Allocations API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Allocations
+  description: Endpoints for querying allocations. An allocation declares that a set of tasks in a job should be run on a particular node.
+paths:
+  /allocations:
+    get:
+      operationId: listAllocations
+      summary: List allocations
+      description: Lists all allocations in the system. Supports prefix-based filtering and pagination.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}:
+    get:
+      operationId: readAllocation
+      summary: Read an allocation
+      description: Returns the full details of the specified allocation.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}/services:
+    get:
+      operationId: listAllocationServices
+      summary: List allocation services
+      description: Returns the services registered by the specified allocation including address, port, and service name.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /allocation/{allocID}/checks:
+    get:
+      operationId: listAllocationChecks
+      summary: List allocation health checks
+      description: Returns the health check results for the specified allocation.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/AllocIDParam'
+      responses:
+        '200':
+          description: Allocation health checks
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    Job:
+      type: object
+      description: A Nomad job specification defining the workload to be scheduled.
+      properties:
+        ID:
+          type: string
+          description: The unique identifier of the job.
+        Name:
+          type: string
+          description: The human-readable name of the job.
+        Namespace:
+          type: string
+          description: The namespace the job is registered in.
+        Type:
+          type: string
+          description: The type of job (service, batch, system, sysbatch).
+          enum:
+          - service
+          - batch
+          - system
+          - sysbatch
+        Priority:
+          type: integer
+          description: The priority of the job, from 1 to 100.
+          minimum: 1
+          maximum: 100
+        Region:
+          type: string
+          description: The region in which the job is registered.
+        Datacenters:
+          type: array
+          items:
+            type: string
+          description: A list of datacenters the job is allowed to run in.
+        NodePool:
+          type: string
+          description: The node pool the job should be scheduled in.
+        Status:
+          type: string
+          description: The current status of the job.
+          enum:
+          - pending
+          - running
+          - dead
+        StatusDescription:
+          type: string
+          description: Human-readable description of the current status.
+        Stable:
+          type: boolean
+          description: Whether the job version is marked as stable.
+        Version:
+          type: integer
+          description: The version number of the job.
+        SubmitTime:
+          type: integer
+          format: int64
+          description: The time the job was submitted in nanoseconds since epoch.
+        CreateIndex:
+          type: integer
+          description: The Raft index at which the job was created.
+        ModifyIndex:
+          type: integer
+          description: The Raft index at which the job was last modified.
+        JobModifyIndex:
+          type: integer
+          description: The Raft index at which the job definition was last modified.
+        TaskGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskGroup'
+          description: A list of task groups that make up the job.
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Periodic:
+          type: object
+          description: Periodic configuration for the job if it is a periodic job.
+          properties:
+            Enabled:
+              type: boolean
+            Spec:
+              type: string
+            SpecType:
+              type: string
+            ProhibitOverlap:
+              type: boolean
+            TimeZone:
+              type: string
+        Parameterized:
+          type: object
+          description: Configuration for parameterized dispatch jobs.
+          properties:
+            Payload:
+              type: string
+              enum:
+              - optional
+              - required
+              - forbidden
+            MetaRequired:
+              type: array
+              items:
+                type: string
+            MetaOptional:
+              type: array
+              items:
+                type: string
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+          description: Metadata key-value pairs associated with the job.
+        ConsulToken:
+          type: string
+          description: Consul token for the job.
+        VaultToken:
+          type: string
+          description: Vault token for the job.
+    NetworkResource:
+      type: object
+      description: Network resource configuration.
+      properties:
+        Mode:
+          type: string
+          description: The network mode (bridge, host, cni).
+        Device:
+          type: string
+        CIDR:
+          type: string
+        IP:
+          type: string
+        MBits:
+          type: integer
+        DNS:
+          type: object
+          properties:
+            Servers:
+              type: array
+              items:
+                type: string
+        DynamicPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+        ReservedPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+    Allocation:
+      type: object
+      description: An allocation mapping a task group in a job to a client node.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the allocation.
+        EvalID:
+          type: string
+          description: The ID of the evaluation that created this allocation.
+        Name:
+          type: string
+          description: The name of the allocation.
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+          description: The ID of the node the allocation is placed on.
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        Job:
+          $ref: '#/components/schemas/Job'
+        TaskGroup:
+          type: string
+          description: The name of the task group being allocated.
+        DesiredStatus:
+          type: string
+          description: The desired status of the allocation.
+          enum:
+          - run
+          - stop
+          - evict
+        ClientStatus:
+          type: string
+          description: The status of the allocation as reported by the client.
+          enum:
+          - pending
+          - running
+          - complete
+          - failed
+          - lost
+          - unknown
+        ClientDescription:
+          type: string
+        TaskStates:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              State:
+                type: string
+              Failed:
+                type: boolean
+              StartedAt:
+                type: string
+                format: date-time
+              FinishedAt:
+                type: string
+                format: date-time
+              Events:
+                type: array
+                items:
+                  type: object
+        DeploymentID:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Timestamp:
+              type: string
+              format: date-time
+            Canary:
+              type: boolean
+            ModifyIndex:
+              type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Service:
+      type: object
+      description: A service registration for Consul or Nomad service discovery.
+      properties:
+        Name:
+          type: string
+          description: The name of the service.
+        Tags:
+          type: array
+          items:
+            type: string
+        CanaryTags:
+          type: array
+          items:
+            type: string
+        PortLabel:
+          type: string
+        Provider:
+          type: string
+          description: The service discovery provider (consul or nomad).
+          enum:
+          - consul
+          - nomad
+        Checks:
+          type: array
+          items:
+            type: object
+    Task:
+      type: object
+      description: A task is the smallest unit of work in Nomad, executed within a task group.
+      properties:
+        Name:
+          type: string
+          description: The name of the task.
+        Driver:
+          type: string
+          description: The task driver to use (e.g., docker, exec, raw_exec, java).
+        Config:
+          type: object
+          additionalProperties: true
+          description: Driver-specific configuration for the task.
+        Env:
+          type: object
+          additionalProperties:
+            type: string
+          description: Environment variables for the task.
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        LogConfig:
+          type: object
+          properties:
+            MaxFiles:
+              type: integer
+            MaxFileSizeMB:
+              type: integer
+        Templates:
+          type: array
+          items:
+            type: object
+        Artifacts:
+          type: array
+          items:
+            type: object
+        Leader:
+          type: boolean
+          description: If true, this task is the leader task of the group.
+    ServiceRegistration:
+      type: object
+      description: A Nomad service registration.
+      properties:
+        ID:
+          type: string
+        ServiceName:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        Datacenter:
+          type: string
+        JobID:
+          type: string
+        AllocID:
+          type: string
+        Tags:
+          type: array
+          items:
+            type: string
+        Address:
+          type: string
+        Port:
+          type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    TaskGroup:
+      type: object
+      description: A task group is a set of tasks that must be co-located on the same node.
+      properties:
+        Name:
+          type: string
+          description: The name of the task group.
+        Count:
+          type: integer
+          description: The number of instances of this task group to run.
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: The tasks that are part of this task group.
+        RestartPolicy:
+          type: object
+          properties:
+            Interval:
+              type: integer
+            Attempts:
+              type: integer
+            Delay:
+              type: integer
+            Mode:
+              type: string
+        EphemeralDisk:
+          type: object
+          properties:
+            SizeMB:
+              type: integer
+            Sticky:
+              type: boolean
+            Migrate:
+              type: boolean
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+        Services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        Volumes:
+          type: object
+          additionalProperties:
+            type: object
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Scaling:
+          type: object
+          description: Scaling policy for the task group.
+    UpdateStrategy:
+      type: object
+      description: Update strategy configuration for rolling deployments.
+      properties:
+        MaxParallel:
+          type: integer
+          description: The maximum number of allocations to update at a time.
+        HealthCheck:
+          type: string
+          description: The type of health check to use.
+          enum:
+          - checks
+          - task_states
+          - manual
+        MinHealthyTime:
+          type: integer
+          description: Minimum time in nanoseconds an allocation must be healthy.
+        HealthyDeadline:
+          type: integer
+          description: Deadline in nanoseconds for an allocation to become healthy.
+        ProgressDeadline:
+          type: integer
+          description: Deadline in nanoseconds for the deployment to make progress.
+        AutoRevert:
+          type: boolean
+          description: If true, automatically reverts to the last stable version on deployment failure.
+        AutoPromote:
+          type: boolean
+          description: If true, automatically promotes canary allocations when all are healthy.
+        Canary:
+          type: integer
+          description: The number of canary allocations to create.
+        Stagger:
+          type: integer
+          description: Time in nanoseconds to wait between batches of updates.
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    AllocIDParam:
+      name: allocID
+      in: path
+      required: true
+      description: The ID of the allocation.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Regions API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Regions
+  description: Endpoints for listing known regions in the Nomad cluster.
+paths:
+  /regions:
+    get:
+      operationId: listRegions
+      summary: List regions
+      description: Returns a list of all known regions in the Nomad cluster.
+      tags:
+      - Regions
+      responses:
+        '200':
+          description: A list of region names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

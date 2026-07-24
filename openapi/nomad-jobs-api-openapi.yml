@@ -1,0 +1,1272 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Jobs API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Jobs
+  description: Endpoints for listing, creating, reading, updating, and deleting jobs. Jobs are the primary unit of work in Nomad.
+paths:
+  /jobs:
+    get:
+      operationId: listJobs
+      summary: List jobs
+      description: Lists all known jobs in the system registered with Nomad. Supports prefix-based filtering and pagination via next_token and per_page query parameters.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of job stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobListStub'
+          headers:
+            X-Nomad-Index:
+              $ref: '#/components/headers/NomadIndex'
+            X-Nomad-KnownLeader:
+              $ref: '#/components/headers/NomadKnownLeader'
+            X-Nomad-LastContact:
+              $ref: '#/components/headers/NomadLastContact'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: registerJob
+      summary: Register a new job
+      description: Registers a new job or updates an existing job. The job must be provided as a JSON payload in the request body.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRegisterRequest'
+      responses:
+        '200':
+          description: Job registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobRegisterResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /jobs/parse:
+    put:
+      operationId: parseJob
+      summary: Parse a job specification
+      description: Parses a HCL or JSON job specification and returns the equivalent JSON job structure. This endpoint can be used to validate job specifications without registering them.
+      tags:
+      - Jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                JobHCL:
+                  type: string
+                  description: The HCL definition of the job encoded as a JSON string.
+                Canonicalize:
+                  type: boolean
+                  description: If true, sets any unset fields to their default values.
+      responses:
+        '200':
+          description: Parsed job specification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /jobs/statuses:
+    get:
+      operationId: listJobStatuses
+      summary: List job statuses
+      description: Returns a list of jobs with their current status information including allocation summaries and deployment status.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: A list of job statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}:
+    get:
+      operationId: readJob
+      summary: Read a job
+      description: Returns the full specification and status of the specified job.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: The job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deregisterJob
+      summary: Deregister a job
+      description: Deregisters a job and stops all allocations associated with it. Optionally purges the job from the system entirely.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: purge
+        in: query
+        description: If true, the job is purged from the system and cannot be recovered. Defaults to false.
+        schema:
+          type: boolean
+      - name: global
+        in: query
+        description: If true, deregisters the job in all federated regions.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Job deregistered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                    description: The ID of the evaluation created as a result of deregistering the job.
+                  EvalCreateIndex:
+                    type: integer
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/evaluate:
+    put:
+      operationId: evaluateJob
+      summary: Create a new evaluation for a job
+      description: Creates a new evaluation for the given job. This can be used to force run the scheduling logic if necessary.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ForceReschedule:
+                  type: boolean
+                  description: If true, forces rescheduling of failed allocations.
+      responses:
+        '200':
+          description: Evaluation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/plan:
+    put:
+      operationId: planJob
+      summary: Plan a job update
+      description: Invokes a dry-run of the scheduler for the job which will determine the effects of an update. The plan will not result in any changes to the cluster.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Job:
+                  $ref: '#/components/schemas/Job'
+                Diff:
+                  type: boolean
+                  description: If true, returns a diff between the current and planned job.
+                PolicyOverride:
+                  type: boolean
+                  description: If true, overrides any soft mandatory Sentinel policies.
+      responses:
+        '200':
+          description: Job plan result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  JobModifyIndex:
+                    type: integer
+                  Diff:
+                    type: object
+                  Annotations:
+                    type: object
+                  FailedTGAllocs:
+                    type: object
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/allocations:
+    get:
+      operationId: listJobAllocations
+      summary: List allocations for a job
+      description: Returns a list of allocations belonging to the specified job.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: all
+        in: query
+        description: If true, includes allocations from all namespaces.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/evaluations:
+    get:
+      operationId: listJobEvaluations
+      summary: List evaluations for a job
+      description: Returns a list of evaluations belonging to the specified job.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: A list of evaluations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evaluation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/deployments:
+    get:
+      operationId: listJobDeployments
+      summary: List deployments for a job
+      description: Returns a list of deployments belonging to the specified job.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: A list of deployments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/versions:
+    get:
+      operationId: listJobVersions
+      summary: List versions of a job
+      description: Returns a list of versions for the specified job, with the most recent version first.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - name: diffs
+        in: query
+        description: If true, includes the diff between consecutive job versions.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A list of job versions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Versions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+                  Diffs:
+                    type: array
+                    items:
+                      type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/revert:
+    put:
+      operationId: revertJob
+      summary: Revert job to an older version
+      description: Reverts the job to an older version by creating a new version with the specification of the older version.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - JobID
+              - JobVersion
+              properties:
+                JobID:
+                  type: string
+                  description: The ID of the job to revert.
+                JobVersion:
+                  type: integer
+                  description: The version number to revert to.
+                EnforcePriorVersion:
+                  type: integer
+                  description: If set, the job is only reverted if the current version matches this value.
+      responses:
+        '200':
+          description: Job reverted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/stable:
+    put:
+      operationId: setJobStability
+      summary: Set job stability
+      description: Sets the stability of a job version, marking it as stable or unstable. Stable versions are not eligible for automatic garbage collection.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - JobID
+              - JobVersion
+              - Stable
+              properties:
+                JobID:
+                  type: string
+                JobVersion:
+                  type: integer
+                Stable:
+                  type: boolean
+      responses:
+        '200':
+          description: Stability set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  JobModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/summary:
+    get:
+      operationId: readJobSummary
+      summary: Read a job summary
+      description: Returns a summary of the specified job including the number of allocations in each state per task group.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      responses:
+        '200':
+          description: Job summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /job/{jobID}/dispatch:
+    put:
+      operationId: dispatchJob
+      summary: Dispatch a parameterized job
+      description: Dispatches a new instance of a parameterized job. The job must be of type parameterized.
+      tags:
+      - Jobs
+      parameters:
+      - $ref: '#/components/parameters/JobIDParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Payload:
+                  type: string
+                  description: Base64-encoded payload for the dispatched job.
+                Meta:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Metadata key-value pairs for the dispatched job.
+      responses:
+        '200':
+          description: Job dispatched
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  DispatchedJobID:
+                    type: string
+                  EvalID:
+                    type: string
+                  EvalCreateIndex:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    JobRegisterResponse:
+      type: object
+      description: The response body for a successful job registration.
+      properties:
+        EvalID:
+          type: string
+          description: The ID of the evaluation created by the registration.
+        EvalCreateIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        Warnings:
+          type: string
+          description: Warnings generated during the registration.
+    JobRegisterRequest:
+      type: object
+      description: The request body for registering a new job.
+      required:
+      - Job
+      properties:
+        Job:
+          $ref: '#/components/schemas/Job'
+        EnforceIndex:
+          type: boolean
+          description: If true, the job will only be registered if the JobModifyIndex matches.
+        JobModifyIndex:
+          type: integer
+          description: The expected JobModifyIndex for enforcement.
+        PolicyOverride:
+          type: boolean
+          description: If true, overrides soft mandatory Sentinel policies.
+    Job:
+      type: object
+      description: A Nomad job specification defining the workload to be scheduled.
+      properties:
+        ID:
+          type: string
+          description: The unique identifier of the job.
+        Name:
+          type: string
+          description: The human-readable name of the job.
+        Namespace:
+          type: string
+          description: The namespace the job is registered in.
+        Type:
+          type: string
+          description: The type of job (service, batch, system, sysbatch).
+          enum:
+          - service
+          - batch
+          - system
+          - sysbatch
+        Priority:
+          type: integer
+          description: The priority of the job, from 1 to 100.
+          minimum: 1
+          maximum: 100
+        Region:
+          type: string
+          description: The region in which the job is registered.
+        Datacenters:
+          type: array
+          items:
+            type: string
+          description: A list of datacenters the job is allowed to run in.
+        NodePool:
+          type: string
+          description: The node pool the job should be scheduled in.
+        Status:
+          type: string
+          description: The current status of the job.
+          enum:
+          - pending
+          - running
+          - dead
+        StatusDescription:
+          type: string
+          description: Human-readable description of the current status.
+        Stable:
+          type: boolean
+          description: Whether the job version is marked as stable.
+        Version:
+          type: integer
+          description: The version number of the job.
+        SubmitTime:
+          type: integer
+          format: int64
+          description: The time the job was submitted in nanoseconds since epoch.
+        CreateIndex:
+          type: integer
+          description: The Raft index at which the job was created.
+        ModifyIndex:
+          type: integer
+          description: The Raft index at which the job was last modified.
+        JobModifyIndex:
+          type: integer
+          description: The Raft index at which the job definition was last modified.
+        TaskGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskGroup'
+          description: A list of task groups that make up the job.
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Periodic:
+          type: object
+          description: Periodic configuration for the job if it is a periodic job.
+          properties:
+            Enabled:
+              type: boolean
+            Spec:
+              type: string
+            SpecType:
+              type: string
+            ProhibitOverlap:
+              type: boolean
+            TimeZone:
+              type: string
+        Parameterized:
+          type: object
+          description: Configuration for parameterized dispatch jobs.
+          properties:
+            Payload:
+              type: string
+              enum:
+              - optional
+              - required
+              - forbidden
+            MetaRequired:
+              type: array
+              items:
+                type: string
+            MetaOptional:
+              type: array
+              items:
+                type: string
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+          description: Metadata key-value pairs associated with the job.
+        ConsulToken:
+          type: string
+          description: Consul token for the job.
+        VaultToken:
+          type: string
+          description: Vault token for the job.
+    NetworkResource:
+      type: object
+      description: Network resource configuration.
+      properties:
+        Mode:
+          type: string
+          description: The network mode (bridge, host, cni).
+        Device:
+          type: string
+        CIDR:
+          type: string
+        IP:
+          type: string
+        MBits:
+          type: integer
+        DNS:
+          type: object
+          properties:
+            Servers:
+              type: array
+              items:
+                type: string
+        DynamicPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+        ReservedPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+    JobListStub:
+      type: object
+      description: A stub representation of a job returned in list operations.
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Priority:
+          type: integer
+        Version:
+          type: integer
+        SubmitTime:
+          type: integer
+          format: int64
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        NodePool:
+          type: string
+        Datacenters:
+          type: array
+          items:
+            type: string
+        JobSummary:
+          $ref: '#/components/schemas/JobSummary'
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+    JobSummary:
+      type: object
+      description: Summary of a job showing allocation counts by task group.
+      properties:
+        JobID:
+          type: string
+        Namespace:
+          type: string
+        Summary:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Queued:
+                type: integer
+              Complete:
+                type: integer
+              Failed:
+                type: integer
+              Running:
+                type: integer
+              Starting:
+                type: integer
+              Lost:
+                type: integer
+              Unknown:
+                type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    Deployment:
+      type: object
+      description: A deployment tracks a rolling update of allocations between two versions of a job.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the deployment.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        JobSpecModifyIndex:
+          type: integer
+        JobCreateIndex:
+          type: integer
+        Status:
+          type: string
+          description: The current status of the deployment.
+          enum:
+          - running
+          - paused
+          - failed
+          - successful
+          - cancelled
+        StatusDescription:
+          type: string
+        TaskGroups:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              AutoRevert:
+                type: boolean
+              AutoPromote:
+                type: boolean
+              Promoted:
+                type: boolean
+              DesiredCanaries:
+                type: integer
+              DesiredTotal:
+                type: integer
+              PlacedAllocs:
+                type: integer
+              HealthyAllocs:
+                type: integer
+              UnhealthyAllocs:
+                type: integer
+              RequireProgressBy:
+                type: string
+                format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    Service:
+      type: object
+      description: A service registration for Consul or Nomad service discovery.
+      properties:
+        Name:
+          type: string
+          description: The name of the service.
+        Tags:
+          type: array
+          items:
+            type: string
+        CanaryTags:
+          type: array
+          items:
+            type: string
+        PortLabel:
+          type: string
+        Provider:
+          type: string
+          description: The service discovery provider (consul or nomad).
+          enum:
+          - consul
+          - nomad
+        Checks:
+          type: array
+          items:
+            type: object
+    Task:
+      type: object
+      description: A task is the smallest unit of work in Nomad, executed within a task group.
+      properties:
+        Name:
+          type: string
+          description: The name of the task.
+        Driver:
+          type: string
+          description: The task driver to use (e.g., docker, exec, raw_exec, java).
+        Config:
+          type: object
+          additionalProperties: true
+          description: Driver-specific configuration for the task.
+        Env:
+          type: object
+          additionalProperties:
+            type: string
+          description: Environment variables for the task.
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        LogConfig:
+          type: object
+          properties:
+            MaxFiles:
+              type: integer
+            MaxFileSizeMB:
+              type: integer
+        Templates:
+          type: array
+          items:
+            type: object
+        Artifacts:
+          type: array
+          items:
+            type: object
+        Leader:
+          type: boolean
+          description: If true, this task is the leader task of the group.
+    TaskGroup:
+      type: object
+      description: A task group is a set of tasks that must be co-located on the same node.
+      properties:
+        Name:
+          type: string
+          description: The name of the task group.
+        Count:
+          type: integer
+          description: The number of instances of this task group to run.
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: The tasks that are part of this task group.
+        RestartPolicy:
+          type: object
+          properties:
+            Interval:
+              type: integer
+            Attempts:
+              type: integer
+            Delay:
+              type: integer
+            Mode:
+              type: string
+        EphemeralDisk:
+          type: object
+          properties:
+            SizeMB:
+              type: integer
+            Sticky:
+              type: boolean
+            Migrate:
+              type: boolean
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+        Services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        Volumes:
+          type: object
+          additionalProperties:
+            type: object
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Scaling:
+          type: object
+          description: Scaling policy for the task group.
+    UpdateStrategy:
+      type: object
+      description: Update strategy configuration for rolling deployments.
+      properties:
+        MaxParallel:
+          type: integer
+          description: The maximum number of allocations to update at a time.
+        HealthCheck:
+          type: string
+          description: The type of health check to use.
+          enum:
+          - checks
+          - task_states
+          - manual
+        MinHealthyTime:
+          type: integer
+          description: Minimum time in nanoseconds an allocation must be healthy.
+        HealthyDeadline:
+          type: integer
+          description: Deadline in nanoseconds for an allocation to become healthy.
+        ProgressDeadline:
+          type: integer
+          description: Deadline in nanoseconds for the deployment to make progress.
+        AutoRevert:
+          type: boolean
+          description: If true, automatically reverts to the last stable version on deployment failure.
+        AutoPromote:
+          type: boolean
+          description: If true, automatically promotes canary allocations when all are healthy.
+        Canary:
+          type: integer
+          description: The number of canary allocations to create.
+        Stagger:
+          type: integer
+          description: Time in nanoseconds to wait between batches of updates.
+    Evaluation:
+      type: object
+      description: An evaluation represents a scheduling decision made by Nomad.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the evaluation.
+        Priority:
+          type: integer
+        Type:
+          type: string
+        TriggeredBy:
+          type: string
+          description: The event that triggered the evaluation.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobModifyIndex:
+          type: integer
+        NodeID:
+          type: string
+        NodeModifyIndex:
+          type: integer
+        DeploymentID:
+          type: string
+        Status:
+          type: string
+          description: The status of the evaluation.
+          enum:
+          - blocked
+          - pending
+          - complete
+          - failed
+          - canceled
+        StatusDescription:
+          type: string
+        Wait:
+          type: integer
+        NextEval:
+          type: string
+        PreviousEval:
+          type: string
+        BlockedEval:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    JobIDParam:
+      name: jobID
+      in: path
+      required: true
+      description: The ID of the job.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  headers:
+    NomadKnownLeader:
+      description: Indicates if there is a known cluster leader.
+      schema:
+        type: boolean
+    NomadLastContact:
+      description: The time in milliseconds that a server was last contacted by the leader node.
+      schema:
+        type: integer
+    NomadIndex:
+      description: The internal index value that represents the current state of the requested resource.
+      schema:
+        type: integer
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

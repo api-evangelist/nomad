@@ -1,0 +1,410 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Nodes API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Nodes
+  description: Endpoints for querying and managing client nodes registered with the Nomad cluster.
+paths:
+  /nodes:
+    get:
+      operationId: listNodes
+      summary: List nodes
+      description: Lists all client nodes registered with Nomad. Supports prefix-based filtering on node ID.
+      tags:
+      - Nodes
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of node stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodeListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}:
+    get:
+      operationId: readNode
+      summary: Read a node
+      description: Returns the full details of the specified node.
+      tags:
+      - Nodes
+      parameters:
+      - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Node details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Node'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/evaluate:
+    put:
+      operationId: evaluateNode
+      summary: Create a new evaluation for a node
+      description: Creates a new evaluation for the specified node. This can be used to force a re-evaluation of the node and its allocations.
+      tags:
+      - Nodes
+      parameters:
+      - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Evaluation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/drain:
+    post:
+      operationId: drainNode
+      summary: Set node drain mode
+      description: Enables or disables drain mode on the specified node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated.
+      tags:
+      - Nodes
+      parameters:
+      - $ref: '#/components/parameters/NodeIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DrainSpec:
+                  type: object
+                  properties:
+                    Deadline:
+                      type: integer
+                      description: Deadline in nanoseconds for the drain to complete.
+                    IgnoreSystemJobs:
+                      type: boolean
+                      description: If true, system jobs are not drained from the node.
+                MarkEligible:
+                  type: boolean
+                  description: If true, marks the node as eligible for scheduling.
+      responses:
+        '200':
+          description: Node drain updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+                  NodeModifyIndex:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/{nodeID}/purge:
+    delete:
+      operationId: purgeNode
+      summary: Purge a node
+      description: Purges a node from the system. The node must be in a down state.
+      tags:
+      - Nodes
+      parameters:
+      - $ref: '#/components/parameters/NodeIDParam'
+      responses:
+        '200':
+          description: Node purged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  EvalIDs:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    Node:
+      type: object
+      description: A Nomad client node.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the node.
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+          description: Whether the node is in drain mode.
+        SchedulingEligibility:
+          type: string
+          description: Whether the node is eligible for scheduling.
+          enum:
+          - eligible
+          - ineligible
+        Status:
+          type: string
+          description: The status of the node.
+          enum:
+          - initializing
+          - ready
+          - down
+          - disconnected
+        StatusDescription:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Detected:
+                type: boolean
+              Healthy:
+                type: boolean
+              HealthDescription:
+                type: string
+        Attributes:
+          type: object
+          additionalProperties:
+            type: string
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Reserved:
+          $ref: '#/components/schemas/Resources'
+        HTTPAddr:
+          type: string
+        TLSEnabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    NetworkResource:
+      type: object
+      description: Network resource configuration.
+      properties:
+        Mode:
+          type: string
+          description: The network mode (bridge, host, cni).
+        Device:
+          type: string
+        CIDR:
+          type: string
+        IP:
+          type: string
+        MBits:
+          type: integer
+        DNS:
+          type: object
+          properties:
+            Servers:
+              type: array
+              items:
+                type: string
+        DynamicPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+        ReservedPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+    NodeListStub:
+      type: object
+      description: A stub representation of a node returned in list operations.
+      properties:
+        ID:
+          type: string
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+        SchedulingEligibility:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Version:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NodeIDParam:
+      name: nodeID
+      in: path
+      required: true
+      description: The ID of the node.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

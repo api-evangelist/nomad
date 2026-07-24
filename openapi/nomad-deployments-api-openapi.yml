@@ -1,0 +1,374 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Deployments API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Deployments
+  description: Endpoints for querying and managing deployments. Deployments track the rolling update of allocations between two versions of a job.
+paths:
+  /deployments:
+    get:
+      operationId: listDeployments
+      summary: List deployments
+      description: Lists all deployments in the system. Supports pagination via next_token.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of deployments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/{deploymentID}:
+    get:
+      operationId: readDeployment
+      summary: Read a deployment
+      description: Returns the full details of the specified deployment.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: Deployment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/allocations/{deploymentID}:
+    get:
+      operationId: listDeploymentAllocations
+      summary: List deployment allocations
+      description: Returns a list of allocations associated with the specified deployment.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: A list of allocation stubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AllocationListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/fail/{deploymentID}:
+    put:
+      operationId: failDeployment
+      summary: Fail a deployment
+      description: Marks the specified deployment as failed. This causes Nomad to stop the deployment and revert to the previous stable version of the job if configured to do so.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/DeploymentIDParam'
+      responses:
+        '200':
+          description: Deployment failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/pause/{deploymentID}:
+    put:
+      operationId: pauseDeployment
+      summary: Pause or resume a deployment
+      description: Pauses or resumes a rolling deployment. While paused, no new allocations will be placed for the deployment.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/DeploymentIDParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - Pause
+              properties:
+                Pause:
+                  type: boolean
+                  description: If true, pauses the deployment. If false, resumes it.
+      responses:
+        '200':
+          description: Deployment updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /deployment/promote/{deploymentID}:
+    put:
+      operationId: promoteDeployment
+      summary: Promote a deployment
+      description: Promotes canary allocations in the specified deployment, moving them to the main allocation set.
+      tags:
+      - Deployments
+      parameters:
+      - $ref: '#/components/parameters/DeploymentIDParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                All:
+                  type: boolean
+                  description: If true, promotes all canary allocations.
+                Groups:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of task group names to promote.
+      responses:
+        '200':
+          description: Deployment promoted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentUpdateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    DeploymentUpdateResponse:
+      type: object
+      description: Response from a deployment update operation.
+      properties:
+        EvalID:
+          type: string
+        EvalCreateIndex:
+          type: integer
+        DeploymentModifyIndex:
+          type: integer
+    Deployment:
+      type: object
+      description: A deployment tracks a rolling update of allocations between two versions of a job.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the deployment.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        JobSpecModifyIndex:
+          type: integer
+        JobCreateIndex:
+          type: integer
+        Status:
+          type: string
+          description: The current status of the deployment.
+          enum:
+          - running
+          - paused
+          - failed
+          - successful
+          - cancelled
+        StatusDescription:
+          type: string
+        TaskGroups:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              AutoRevert:
+                type: boolean
+              AutoPromote:
+                type: boolean
+              Promoted:
+                type: boolean
+              DesiredCanaries:
+                type: integer
+              DesiredTotal:
+                type: integer
+              PlacedAllocs:
+                type: integer
+              HealthyAllocs:
+                type: integer
+              UnhealthyAllocs:
+                type: integer
+              RequireProgressBy:
+                type: string
+                format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    DeploymentIDParam:
+      name: deploymentID
+      in: path
+      required: true
+      description: The ID of the deployment.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

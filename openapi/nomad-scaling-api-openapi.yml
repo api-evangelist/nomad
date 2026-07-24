@@ -1,0 +1,192 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Scaling API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Scaling
+  description: Endpoints for querying scaling policies and their status.
+paths:
+  /scaling/policies:
+    get:
+      operationId: listScalingPolicies
+      summary: List scaling policies
+      description: Lists all scaling policies in the system.
+      tags:
+      - Scaling
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - name: job
+        in: query
+        description: Filter scaling policies by job ID.
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Filter scaling policies by type.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A list of scaling policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScalingPolicyListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /scaling/policy/{policyID}:
+    get:
+      operationId: readScalingPolicy
+      summary: Read a scaling policy
+      description: Returns the details of the specified scaling policy.
+      tags:
+      - Scaling
+      parameters:
+      - name: policyID
+        in: path
+        required: true
+        description: The ID of the scaling policy.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Scaling policy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScalingPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ScalingPolicyListStub:
+      type: object
+      description: A stub representation of a scaling policy.
+      properties:
+        ID:
+          type: string
+        Target:
+          type: object
+          additionalProperties:
+            type: string
+        Type:
+          type: string
+        Enabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ScalingPolicy:
+      type: object
+      description: A scaling policy for a task group.
+      properties:
+        ID:
+          type: string
+        Namespace:
+          type: string
+        Target:
+          type: object
+          additionalProperties:
+            type: string
+          description: The target of the scaling policy (job, group).
+        Type:
+          type: string
+          description: The type of scaling policy.
+        Policy:
+          type: object
+          description: The scaling policy configuration.
+        Min:
+          type: integer
+        Max:
+          type: integer
+        Enabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

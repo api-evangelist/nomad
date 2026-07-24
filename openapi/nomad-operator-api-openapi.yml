@@ -1,0 +1,202 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Operator API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Operator
+  description: Endpoints for cluster-level operations such as Raft peer management and autopilot configuration.
+paths:
+  /operator/raft/configuration:
+    get:
+      operationId: readRaftConfiguration
+      summary: Read Raft configuration
+      description: Returns the current Raft peer configuration of the cluster.
+      tags:
+      - Operator
+      responses:
+        '200':
+          description: Raft configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Servers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: string
+                        Node:
+                          type: string
+                        Address:
+                          type: string
+                        Leader:
+                          type: boolean
+                        Voter:
+                          type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/raft/peer:
+    delete:
+      operationId: removeRaftPeer
+      summary: Remove a Raft peer
+      description: Removes a Raft peer from the cluster. This is useful when a server has permanently failed and will not be returning.
+      tags:
+      - Operator
+      parameters:
+      - name: address
+        in: query
+        description: The address of the peer to remove.
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: The ID of the peer to remove.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Peer removed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/autopilot/configuration:
+    get:
+      operationId: readAutopilotConfiguration
+      summary: Read autopilot configuration
+      description: Returns the current autopilot configuration.
+      tags:
+      - Operator
+      responses:
+        '200':
+          description: Autopilot configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CleanupDeadServers:
+                    type: boolean
+                  LastContactThreshold:
+                    type: string
+                  MaxTrailingLogs:
+                    type: integer
+                  ServerStabilizationTime:
+                    type: string
+                  EnableRedundancyZones:
+                    type: boolean
+                  DisableUpgradeMigration:
+                    type: boolean
+                  EnableCustomUpgrades:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: updateAutopilotConfiguration
+      summary: Update autopilot configuration
+      description: Updates the autopilot configuration.
+      tags:
+      - Operator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CleanupDeadServers:
+                  type: boolean
+                LastContactThreshold:
+                  type: string
+                MaxTrailingLogs:
+                  type: integer
+                ServerStabilizationTime:
+                  type: string
+      responses:
+        '200':
+          description: Configuration updated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /operator/autopilot/health:
+    get:
+      operationId: readAutopilotHealth
+      summary: Read autopilot health
+      description: Returns the health status of the cluster as determined by the autopilot.
+      tags:
+      - Operator
+      responses:
+        '200':
+          description: Cluster health
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Healthy:
+                    type: boolean
+                  FailureTolerance:
+                    type: integer
+                  Servers:
+                    type: array
+                    items:
+                      type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

@@ -1,0 +1,387 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: ACL
+  description: Endpoints for managing Access Control List policies, tokens, and authentication methods.
+paths:
+  /acl/policies:
+    get:
+      operationId: listACLPolicies
+      summary: List ACL policies
+      description: Lists all ACL policies in the system.
+      tags:
+      - ACL
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      responses:
+        '200':
+          description: A list of ACL policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ACLPolicyListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/policy/{policyName}:
+    get:
+      operationId: readACLPolicy
+      summary: Read an ACL policy
+      description: Returns the details of the specified ACL policy.
+      tags:
+      - ACL
+      parameters:
+      - name: policyName
+        in: path
+        required: true
+        description: The name of the ACL policy.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ACL policy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: upsertACLPolicy
+      summary: Create or update an ACL policy
+      description: Creates a new ACL policy or updates an existing one.
+      tags:
+      - ACL
+      parameters:
+      - name: policyName
+        in: path
+        required: true
+        description: The name of the ACL policy.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ACLPolicy'
+      responses:
+        '200':
+          description: ACL policy upserted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteACLPolicy
+      summary: Delete an ACL policy
+      description: Deletes the specified ACL policy.
+      tags:
+      - ACL
+      parameters:
+      - name: policyName
+        in: path
+        required: true
+        description: The name of the ACL policy.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ACL policy deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/tokens:
+    get:
+      operationId: listACLTokens
+      summary: List ACL tokens
+      description: Lists all ACL tokens in the system.
+      tags:
+      - ACL
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      responses:
+        '200':
+          description: A list of ACL tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ACLTokenListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token:
+    put:
+      operationId: createACLToken
+      summary: Create an ACL token
+      description: Creates a new ACL token.
+      tags:
+      - ACL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ACLToken'
+      responses:
+        '200':
+          description: ACL token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token/self:
+    get:
+      operationId: readSelfACLToken
+      summary: Read own ACL token
+      description: Returns the details of the ACL token used to make the request.
+      tags:
+      - ACL
+      responses:
+        '200':
+          description: ACL token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /acl/token/{tokenAccessorID}:
+    get:
+      operationId: readACLToken
+      summary: Read an ACL token
+      description: Returns the details of the specified ACL token by accessor ID.
+      tags:
+      - ACL
+      parameters:
+      - name: tokenAccessorID
+        in: path
+        required: true
+        description: The accessor ID of the ACL token.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ACL token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACLToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteACLToken
+      summary: Delete an ACL token
+      description: Deletes the specified ACL token.
+      tags:
+      - ACL
+      parameters:
+      - name: tokenAccessorID
+        in: path
+        required: true
+        description: The accessor ID of the ACL token.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ACL token deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  schemas:
+    ACLTokenListStub:
+      type: object
+      description: A stub representation of an ACL token.
+      properties:
+        AccessorID:
+          type: string
+        Name:
+          type: string
+        Type:
+          type: string
+        Policies:
+          type: array
+          items:
+            type: string
+        Global:
+          type: boolean
+        CreateTime:
+          type: string
+          format: date-time
+        ExpirationTime:
+          type: string
+          format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLPolicyListStub:
+      type: object
+      description: A stub representation of an ACL policy.
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLPolicy:
+      type: object
+      description: An ACL policy defining permissions for Nomad resources.
+      properties:
+        Name:
+          type: string
+          description: The name of the ACL policy.
+        Description:
+          type: string
+          description: A human-readable description of the policy.
+        Rules:
+          type: string
+          description: The HCL or JSON policy rules specification.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLToken:
+      type: object
+      description: An ACL token used for authentication and authorization.
+      properties:
+        AccessorID:
+          type: string
+          description: The public accessor ID of the token.
+        SecretID:
+          type: string
+          description: The secret ID used for API authentication.
+        Name:
+          type: string
+          description: A human-readable name for the token.
+        Type:
+          type: string
+          description: The type of token.
+          enum:
+          - client
+          - management
+        Policies:
+          type: array
+          items:
+            type: string
+          description: A list of ACL policy names associated with the token.
+        Global:
+          type: boolean
+          description: If true, the token is replicated across all regions.
+        CreateTime:
+          type: string
+          format: date-time
+        ExpirationTime:
+          type: string
+          format: date-time
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

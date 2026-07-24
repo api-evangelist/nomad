@@ -1,0 +1,148 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Volumes API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Volumes
+  description: Endpoints for managing CSI and host volumes attached to Nomad allocations.
+paths:
+  /volumes:
+    get:
+      operationId: listVolumes
+      summary: List volumes
+      description: Lists all CSI and host volumes. Supports filtering by namespace, job ID, task group, and volume name.
+      tags:
+      - Volumes
+      parameters:
+      - $ref: '#/components/parameters/NamespaceParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      - name: type
+        in: query
+        description: Filter volumes by type (csi or host).
+        schema:
+          type: string
+          enum:
+          - csi
+          - host
+      responses:
+        '200':
+          description: A list of volumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VolumeListStub'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    VolumeListStub:
+      type: object
+      description: A stub representation of a volume.
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        ExternalID:
+          type: string
+        Topologies:
+          type: object
+        Provider:
+          type: string
+        ControllerRequired:
+          type: boolean
+        ControllersHealthy:
+          type: integer
+        ControllersExpected:
+          type: integer
+        NodesHealthy:
+          type: integer
+        NodesExpected:
+          type: integer
+        Schedulable:
+          type: boolean
+        PluginID:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs

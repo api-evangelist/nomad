@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: HashiCorp Nomad HTTP ACL Node Pools API
+  description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
+  version: 1.9.0
+  contact:
+    name: HashiCorp Support
+    url: https://support.hashicorp.com
+  termsOfService: https://www.hashicorp.com/terms-of-service
+  license:
+    name: Business Source License 1.1
+    url: https://github.com/hashicorp/nomad/blob/main/LICENSE
+servers:
+- url: http://localhost:4646/v1
+  description: Local Nomad Agent
+security:
+- nomadToken: []
+- bearerAuth: []
+tags:
+- name: Node Pools
+  description: Endpoints for managing node pools, which group nodes for scheduling constraints.
+paths:
+  /node/pools:
+    get:
+      operationId: listNodePools
+      summary: List node pools
+      description: Lists all node pools registered with Nomad.
+      tags:
+      - Node Pools
+      parameters:
+      - $ref: '#/components/parameters/PrefixParam'
+      - $ref: '#/components/parameters/NextTokenParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      - $ref: '#/components/parameters/FilterParam'
+      responses:
+        '200':
+          description: A list of node pools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodePool'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    put:
+      operationId: createNodePool
+      summary: Create or update a node pool
+      description: Creates a new node pool or updates an existing one.
+      tags:
+      - Node Pools
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodePool'
+      responses:
+        '200':
+          description: Node pool created or updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /node/pool/{poolName}:
+    get:
+      operationId: readNodePool
+      summary: Read a node pool
+      description: Returns the details of the specified node pool.
+      tags:
+      - Node Pools
+      parameters:
+      - name: poolName
+        in: path
+        required: true
+        description: The name of the node pool.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Node pool details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodePool'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      operationId: deleteNodePool
+      summary: Delete a node pool
+      description: Deletes the specified node pool.
+      tags:
+      - Node Pools
+      parameters:
+      - name: poolName
+        in: path
+        required: true
+        description: The name of the node pool.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Node pool deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+  schemas:
+    NodePool:
+      type: object
+      description: A node pool groups nodes for scheduling constraints.
+      properties:
+        Name:
+          type: string
+          description: The name of the node pool.
+        Description:
+          type: string
+          description: A human-readable description of the node pool.
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        SchedulerConfiguration:
+          type: object
+          properties:
+            SchedulerAlgorithm:
+              type: string
+              enum:
+              - binpack
+              - spread
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  securitySchemes:
+    nomadToken:
+      type: apiKey
+      name: X-Nomad-Token
+      in: header
+      description: ACL token passed via the X-Nomad-Token request header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: ACL token passed via the Authorization header with Bearer scheme.
+externalDocs:
+  description: Nomad HTTP API Documentation
+  url: https://developer.hashicorp.com/nomad/api-docs
