@@ -4,7 +4,20 @@ description: >-
   HashiCorp Nomad is a flexible workload orchestrator that enables organizations to deploy and manage containers, legacy
   applications, and batch jobs across any infrastructure. The Nomad developer platform provides a comprehensive HTTP
   API, official SDKs, and tooling for automating job scheduling, cluster management, and service orchestration at scale.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/nomad.png
 url: https://raw.githubusercontent.com/api-evangelist/nomad/refs/heads/main/apis.yml
 created: '2026-03-20'
 modified: '2026-05-19'
@@ -16,86 +29,379 @@ tags:
   - Infrastructure
   - DevOps
 apis:
-  - aid: nomad:http-api
-    name: HashiCorp Nomad HTTP API
-    description: >-
-      The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling,
-      allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster
-      status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to
-      standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
-      Developers can use this API to submit and manage workloads, monitor cluster health, query allocation status, and
-      integrate Nomad orchestration into their infrastructure automation workflows.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://developer.hashicorp.com/nomad/api-docs
-    baseURL: http://localhost:4646
-    tags:
-      - Workload Orchestration
-      - Container Orchestration
-      - Scheduling
-      - Infrastructure
-      - DevOps
-      - Cloud
-    properties:
-      - type: Documentation
-        url: https://developer.hashicorp.com/nomad/api-docs
-      - type: OpenAPI
-        url: openapi/nomad-http-api-openapi.yml
-      - type: AsyncAPI
-        url: asyncapi/nomad-event-stream-asyncapi.yml
-      - type: JSONSchema
-        url: json-schema/nomad-job-schema.json
-  - aid: nomad:go-sdk
-    name: HashiCorp Nomad Go SDK
-    description: >-
-      The HashiCorp Nomad Go SDK is the official Go client library for interacting with the Nomad HTTP API. It provides
-      a high-level, idiomatic Go interface for managing jobs, allocations, nodes, deployments, evaluations, and other
-      Nomad resources. The SDK is maintained by HashiCorp as part of the main Nomad repository and is used internally by
-      the Nomad CLI itself, making it the most comprehensive and up-to-date client available.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://pkg.go.dev/github.com/hashicorp/nomad/api
-    tags:
-      - Workload Orchestration
-      - Go
-      - SDK
-      - DevOps
-    properties:
-      - type: Documentation
-        url: https://pkg.go.dev/github.com/hashicorp/nomad/api
-  - aid: nomad:python-sdk
-    name: HashiCorp Nomad Python SDK
-    description: >-
-      The python-nomad library is a Python client for the HashiCorp Nomad HTTP API. It provides Pythonic access to Nomad
-      resources including jobs, nodes, allocations, deployments, evaluations, namespaces, and ACL management. The
-      library supports configuration via environment variables such as NOMAD_ADDR, NOMAD_TOKEN, and NOMAD_NAMESPACE for
-      consistency with the Nomad CLI and other ecosystem tools.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://github.com/jrxFive/python-nomad
-    tags:
-      - Workload Orchestration
-      - Python
-      - SDK
-      - DevOps
-    properties:
-      - type: Documentation
-        url: https://github.com/jrxFive/python-nomad
-  - aid: nomad:java-sdk
-    name: HashiCorp Nomad Java SDK
-    description: >-
-      The Nomad Java SDK is an official Java client library for the HashiCorp Nomad HTTP API. It enables Java and
-      JVM-based applications to interact with Nomad clusters for submitting jobs, querying allocations, managing nodes,
-      and performing other orchestration operations. The SDK provides a typed Java interface over the Nomad REST API,
-      making it suitable for enterprise applications and microservice architectures running on the JVM.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
-    tags:
-      - Workload Orchestration
-      - Java
-      - SDK
-      - DevOps
-    properties:
-      - type: Documentation
-        url: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
+- aid: nomad:go-sdk
+  name: HashiCorp Nomad Go SDK
+  description: >-
+    The HashiCorp Nomad Go SDK is the official Go client library for interacting with the Nomad HTTP API.
+    It provides a high-level, idiomatic Go interface for managing jobs, allocations, nodes, deployments,
+    evaluations, and other Nomad resources. The SDK is maintained by HashiCorp as part of the main Nomad
+    repository and is used internally by the Nomad CLI itself, making it the most comprehensive and up-to-date
+    client available.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://pkg.go.dev/github.com/hashicorp/nomad/api
+  tags:
+  - Workload Orchestration
+  - Go
+  - SDK
+  - DevOps
+  properties:
+  - type: Documentation
+    url: https://pkg.go.dev/github.com/hashicorp/nomad/api
+- aid: nomad:python-sdk
+  name: HashiCorp Nomad Python SDK
+  description: >-
+    The python-nomad library is a Python client for the HashiCorp Nomad HTTP API. It provides Pythonic
+    access to Nomad resources including jobs, nodes, allocations, deployments, evaluations, namespaces,
+    and ACL management. The library supports configuration via environment variables such as NOMAD_ADDR,
+    NOMAD_TOKEN, and NOMAD_NAMESPACE for consistency with the Nomad CLI and other ecosystem tools.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://github.com/jrxFive/python-nomad
+  tags:
+  - Workload Orchestration
+  - Python
+  - SDK
+  - DevOps
+  properties:
+  - type: Documentation
+    url: https://github.com/jrxFive/python-nomad
+- aid: nomad:java-sdk
+  name: HashiCorp Nomad Java SDK
+  description: >-
+    The Nomad Java SDK is an official Java client library for the HashiCorp Nomad HTTP API. It enables
+    Java and JVM-based applications to interact with Nomad clusters for submitting jobs, querying allocations,
+    managing nodes, and performing other orchestration operations. The SDK provides a typed Java interface
+    over the Nomad REST API, making it suitable for enterprise applications and microservice architectures
+    running on the JVM.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
+  tags:
+  - Workload Orchestration
+  - Java
+  - SDK
+  - DevOps
+  properties:
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks
+- aid: nomad:nomad-acl-api
+  name: HashiCorp Nomad ACL API
+  description: Endpoints for managing Access Control List policies, tokens, and authentication methods.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - ACL
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-acl-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-agent-api
+  name: HashiCorp Nomad Agent API
+  description: >-
+    Endpoints for interacting with the local Nomad agent, including health checks, member listing, and
+    server management.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Agent
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-agent-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-allocations-api
+  name: HashiCorp Nomad Allocations API
+  description: >-
+    Endpoints for querying allocations. An allocation declares that a set of tasks in a job should be
+    run on a particular node.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Allocations
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-allocations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-deployments-api
+  name: HashiCorp Nomad Deployments API
+  description: >-
+    Endpoints for querying and managing deployments. Deployments track the rolling update of allocations
+    between two versions of a job.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Deployments
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-deployments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-evaluations-api
+  name: HashiCorp Nomad Evaluations API
+  description: >-
+    Endpoints for querying evaluations. Evaluations are the mechanism by which Nomad makes scheduling
+    decisions.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Evaluations
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-evaluations-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-jobs-api
+  name: HashiCorp Nomad Jobs API
+  description: >-
+    Endpoints for listing, creating, reading, updating, and deleting jobs. Jobs are the primary unit of
+    work in Nomad.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-namespaces-api
+  name: HashiCorp Nomad Namespaces API
+  description: Endpoints for managing namespaces, which segment jobs and their associated objects.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Namespaces
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-namespaces-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-node-pools-api
+  name: HashiCorp Nomad Node Pools API
+  description: Endpoints for managing node pools, which group nodes for scheduling constraints.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Node Pools
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-node-pools-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-nodes-api
+  name: HashiCorp Nomad Nodes API
+  description: Endpoints for querying and managing client nodes registered with the Nomad cluster.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Nodes
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-nodes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-operator-api
+  name: HashiCorp Nomad Operator API
+  description: >-
+    Endpoints for cluster-level operations such as Raft peer management and autopilot configuration.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Operator
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-operator-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-regions-api
+  name: HashiCorp Nomad Regions API
+  description: Endpoints for listing known regions in the Nomad cluster.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Regions
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-regions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-scaling-api
+  name: HashiCorp Nomad Scaling API
+  description: Endpoints for querying scaling policies and their status.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Scaling
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-scaling-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-search-api
+  name: HashiCorp Nomad Search API
+  description: Endpoints for searching across Nomad objects by prefix or fuzzy match.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-search-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-service-api
+  name: HashiCorp Nomad Service API
+  description: The Service API from HashiCorp Nomad — 1 operation(s) for service.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Service
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-service-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-services-api
+  name: HashiCorp Nomad Services API
+  description: The Services API from HashiCorp Nomad — 1 operation(s) for services.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Services
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-services-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-status-api
+  name: HashiCorp Nomad Status API
+  description: >-
+    Endpoints for querying the status of the Nomad cluster including leader and peer information.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-status-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-system-api
+  name: HashiCorp Nomad System API
+  description: >-
+    Endpoints for system maintenance operations such as garbage collection and reconciliation.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - System
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-system-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-variables-api
+  name: HashiCorp Nomad Variables API
+  description: Endpoints for managing Nomad variables, which store encrypted key-value data.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Variables
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-variables-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
+- aid: nomad:nomad-volumes-api
+  name: HashiCorp Nomad Volumes API
+  description: Endpoints for managing CSI and host volumes attached to Nomad allocations.
+  humanURL: https://developer.hashicorp.com/nomad/api-docs
+  baseURL: http://localhost:4646
+  tags:
+  - Volumes
+  properties:
+  - type: OpenAPI
+    url: openapi/nomad-volumes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.hashicorp.com/nomad/api-docs
+  - type: AsyncAPI
+    url: asyncapi/nomad-event-stream-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/nomad-job-schema.json
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/hashicorp-nomad/overview
   - type: AgenticAccess
     url: agentic-access/nomad-agentic-access.yml
   - type: DomainSecurity
