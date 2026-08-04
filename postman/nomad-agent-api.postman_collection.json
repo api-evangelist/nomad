@@ -1,0 +1,937 @@
+{
+  "info": {
+    "_postman_id": "79ca319c-3275-4d0b-816f-b5af8b1a529b",
+    "name": "HashiCorp Nomad HTTP ACL Agent API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:20:52.000Z",
+    "updatedAt": "2026-07-28T02:20:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-79ca319c-3275-4d0b-816f-b5af8b1a529b"
+  },
+  "item": [
+    {
+      "name": "agent",
+      "item": [
+        {
+          "name": "members",
+          "item": [
+            {
+              "name": "List agent members",
+              "id": "0b5f7e8a-25b9-41ab-8a4f-be02ea012458",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agent/members",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agent",
+                    "members"
+                  ]
+                },
+                "description": "Returns a list of the known members of the gossip pool."
+              },
+              "response": [
+                {
+                  "id": "56804d8f-6738-489f-836a-109f1c580f20",
+                  "name": "Agent members",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/members",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "members"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"ServerName\": \"<string>\",\n  \"ServerRegion\": \"<string>\",\n  \"ServerDC\": \"<string>\",\n  \"Members\": [\n    {\n      \"Name\": \"<string>\",\n      \"Addr\": \"<string>\",\n      \"Port\": \"<integer>\",\n      \"Tags\": {\n        \"laboris_2\": \"<string>\"\n      },\n      \"Status\": \"<string>\",\n      \"ProtocolMin\": \"<integer>\",\n      \"ProtocolMax\": \"<integer>\",\n      \"ProtocolCur\": \"<integer>\",\n      \"DelegateMin\": \"<integer>\",\n      \"DelegateMax\": \"<integer>\",\n      \"DelegateCur\": \"<integer>\"\n    },\n    {\n      \"Name\": \"<string>\",\n      \"Addr\": \"<string>\",\n      \"Port\": \"<integer>\",\n      \"Tags\": {\n        \"velit8\": \"<string>\",\n        \"tempor27\": \"<string>\",\n        \"laborum__\": \"<string>\"\n      },\n      \"Status\": \"<string>\",\n      \"ProtocolMin\": \"<integer>\",\n      \"ProtocolMax\": \"<integer>\",\n      \"ProtocolCur\": \"<integer>\",\n      \"DelegateMin\": \"<integer>\",\n      \"DelegateMax\": \"<integer>\",\n      \"DelegateCur\": \"<integer>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-56804d8f-6738-489f-836a-109f1c580f20"
+                },
+                {
+                  "id": "1f962c3f-d864-4b3e-9768-6b29f72c81c5",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/members",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "members"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-1f962c3f-d864-4b3e-9768-6b29f72c81c5"
+                },
+                {
+                  "id": "af592107-4ff1-4bad-9e1b-5c0f9d55a496",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/members",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "members"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-af592107-4ff1-4bad-9e1b-5c0f9d55a496"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:53.000Z",
+              "updatedAt": "2026-07-28T02:20:53.000Z",
+              "uid": "35240-0b5f7e8a-25b9-41ab-8a4f-be02ea012458"
+            }
+          ],
+          "id": "c8d8126e-6a9e-434f-adff-c00940942b38",
+          "createdAt": "2026-07-28T02:20:53.000Z",
+          "updatedAt": "2026-07-28T02:20:53.000Z",
+          "uid": "35240-c8d8126e-6a9e-434f-adff-c00940942b38"
+        },
+        {
+          "name": "self",
+          "item": [
+            {
+              "name": "Read agent self",
+              "id": "4ff6b21e-5146-4986-89a2-dd0c652efe97",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agent/self",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agent",
+                    "self"
+                  ]
+                },
+                "description": "Returns the configuration and status of the local agent."
+              },
+              "response": [
+                {
+                  "id": "069dc479-40d9-46d0-9482-69b31f2be199",
+                  "name": "Agent configuration and status",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/self",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "self"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"config\": {},\n  \"member\": {\n    \"Name\": \"<string>\",\n    \"Addr\": \"<string>\",\n    \"Port\": \"<integer>\",\n    \"Tags\": {\n      \"ine86\": \"<string>\"\n    },\n    \"Status\": \"<string>\",\n    \"ProtocolMin\": \"<integer>\",\n    \"ProtocolMax\": \"<integer>\",\n    \"ProtocolCur\": \"<integer>\",\n    \"DelegateMin\": \"<integer>\",\n    \"DelegateMax\": \"<integer>\",\n    \"DelegateCur\": \"<integer>\"\n  },\n  \"stats\": {}\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-069dc479-40d9-46d0-9482-69b31f2be199"
+                },
+                {
+                  "id": "ef1b1668-4c2f-47db-959d-ea43d0b806a2",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/self",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "self"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-ef1b1668-4c2f-47db-959d-ea43d0b806a2"
+                },
+                {
+                  "id": "1bab9a97-95c3-4d39-b63a-b222a64bd05f",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/self",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "self"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-1bab9a97-95c3-4d39-b63a-b222a64bd05f"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:53.000Z",
+              "updatedAt": "2026-07-28T02:20:53.000Z",
+              "uid": "35240-4ff6b21e-5146-4986-89a2-dd0c652efe97"
+            }
+          ],
+          "id": "7ee6d6bb-815a-4390-8039-5e02fabc2918",
+          "createdAt": "2026-07-28T02:20:53.000Z",
+          "updatedAt": "2026-07-28T02:20:53.000Z",
+          "uid": "35240-7ee6d6bb-815a-4390-8039-5e02fabc2918"
+        },
+        {
+          "name": "join",
+          "item": [
+            {
+              "name": "Join an agent",
+              "id": "0c3c347f-f28c-4905-a45a-1ea50277ac86",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agent/join?address=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agent",
+                    "join"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The address of the server(s) to join.",
+                      "key": "address",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Instructs the agent to join one or more servers by address."
+              },
+              "response": [
+                {
+                  "id": "845b46a5-fdc6-4daa-81ca-0c70645f72b5",
+                  "name": "Join result",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/join?address=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "join"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The address of the server(s) to join.",
+                          "key": "address",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"num_joined\": \"<integer>\",\n  \"error\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-845b46a5-fdc6-4daa-81ca-0c70645f72b5"
+                },
+                {
+                  "id": "10ddb715-46eb-4d94-b819-76b8ef8ad33e",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/join?address=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "join"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The address of the server(s) to join.",
+                          "key": "address",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-10ddb715-46eb-4d94-b819-76b8ef8ad33e"
+                },
+                {
+                  "id": "6b76007a-1949-4bde-8629-d109e25668bc",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/join?address=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "join"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The address of the server(s) to join.",
+                          "key": "address",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-6b76007a-1949-4bde-8629-d109e25668bc"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:53.000Z",
+              "updatedAt": "2026-07-28T02:20:53.000Z",
+              "uid": "35240-0c3c347f-f28c-4905-a45a-1ea50277ac86"
+            }
+          ],
+          "id": "8bddf707-6ac1-4485-af3b-88702d502912",
+          "createdAt": "2026-07-28T02:20:53.000Z",
+          "updatedAt": "2026-07-28T02:20:53.000Z",
+          "uid": "35240-8bddf707-6ac1-4485-af3b-88702d502912"
+        },
+        {
+          "name": "force-leave",
+          "item": [
+            {
+              "name": "Force leave an agent",
+              "id": "a5c5457c-d186-441e-b94c-58ecdd2674d5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agent/force-leave?node=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agent",
+                    "force-leave"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The name of the node to force leave.",
+                      "key": "node",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Forces the specified agent to leave the gossip pool."
+              },
+              "response": [
+                {
+                  "id": "91b916e2-5844-42cf-a6e6-af0999454d67",
+                  "name": "Agent forced to leave",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/force-leave?node=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "force-leave"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The name of the node to force leave.",
+                          "key": "node",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-91b916e2-5844-42cf-a6e6-af0999454d67"
+                },
+                {
+                  "id": "c6f11350-5e01-4b70-a585-4574f958f702",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/force-leave?node=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "force-leave"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The name of the node to force leave.",
+                          "key": "node",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-c6f11350-5e01-4b70-a585-4574f958f702"
+                },
+                {
+                  "id": "b6df6404-7603-4831-9b4f-1e305326a077",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/force-leave?node=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "force-leave"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The name of the node to force leave.",
+                          "key": "node",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-b6df6404-7603-4831-9b4f-1e305326a077"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:53.000Z",
+              "updatedAt": "2026-07-28T02:20:53.000Z",
+              "uid": "35240-a5c5457c-d186-441e-b94c-58ecdd2674d5"
+            }
+          ],
+          "id": "4eb32e6f-650b-4ecb-a73a-28b8318e767c",
+          "createdAt": "2026-07-28T02:20:53.000Z",
+          "updatedAt": "2026-07-28T02:20:53.000Z",
+          "uid": "35240-4eb32e6f-650b-4ecb-a73a-28b8318e767c"
+        },
+        {
+          "name": "health",
+          "item": [
+            {
+              "name": "Read agent health",
+              "id": "9c495f93-7125-4f60-91b9-c62a94f07d96",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agent/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agent",
+                    "health"
+                  ]
+                },
+                "description": "Returns the health status of the agent."
+              },
+              "response": [
+                {
+                  "id": "752c252f-2f23-401f-8cf7-f3dfb5aec96c",
+                  "name": "Agent is healthy",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "health"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"client\": {\n    \"ok\": \"<boolean>\",\n    \"message\": \"<string>\"\n  },\n  \"server\": {\n    \"ok\": \"<boolean>\",\n    \"message\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-752c252f-2f23-401f-8cf7-f3dfb5aec96c"
+                },
+                {
+                  "id": "cbe19c74-9eb2-4cfd-887e-f58c5c518d44",
+                  "name": "Agent is unhealthy",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "health"
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-cbe19c74-9eb2-4cfd-887e-f58c5c518d44"
+                },
+                {
+                  "id": "d4b9973a-0185-4f54-bbee-d95811a3f6ca",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/agent/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "agent",
+                        "health"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:53.000Z",
+                  "updatedAt": "2026-07-28T02:20:53.000Z",
+                  "uid": "35240-d4b9973a-0185-4f54-bbee-d95811a3f6ca"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:53.000Z",
+              "updatedAt": "2026-07-28T02:20:53.000Z",
+              "uid": "35240-9c495f93-7125-4f60-91b9-c62a94f07d96"
+            }
+          ],
+          "id": "5de8a498-aed8-41a6-ac2c-883a8401691a",
+          "createdAt": "2026-07-28T02:20:53.000Z",
+          "updatedAt": "2026-07-28T02:20:53.000Z",
+          "uid": "35240-5de8a498-aed8-41a6-ac2c-883a8401691a"
+        }
+      ],
+      "id": "bdb4ed24-99ce-4e9e-9021-20ad4fc6ab01",
+      "createdAt": "2026-07-28T02:20:53.000Z",
+      "updatedAt": "2026-07-28T02:20:53.000Z",
+      "uid": "35240-bdb4ed24-99ce-4e9e-9021-20ad4fc6ab01"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

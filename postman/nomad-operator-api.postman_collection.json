@@ -1,0 +1,1014 @@
+{
+  "info": {
+    "_postman_id": "ab204b5a-4b4f-4855-bb4a-90d1d536a291",
+    "name": "HashiCorp Nomad HTTP ACL Operator API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:33.000Z",
+    "updatedAt": "2026-07-28T02:23:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ab204b5a-4b4f-4855-bb4a-90d1d536a291"
+  },
+  "item": [
+    {
+      "name": "operator",
+      "item": [
+        {
+          "name": "raft",
+          "item": [
+            {
+              "name": "configuration",
+              "item": [
+                {
+                  "name": "Read Raft configuration",
+                  "id": "ab28294e-2038-425d-92fa-4c01d2baef0b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operator/raft/configuration",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operator",
+                        "raft",
+                        "configuration"
+                      ]
+                    },
+                    "description": "Returns the current Raft peer configuration of the cluster."
+                  },
+                  "response": [
+                    {
+                      "id": "ef102775-8750-4f9c-96eb-af19bbb60320",
+                      "name": "Raft configuration",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"Servers\": [\n    {\n      \"ID\": \"<string>\",\n      \"Node\": \"<string>\",\n      \"Address\": \"<string>\",\n      \"Leader\": \"<boolean>\",\n      \"Voter\": \"<boolean>\"\n    },\n    {\n      \"ID\": \"<string>\",\n      \"Node\": \"<string>\",\n      \"Address\": \"<string>\",\n      \"Leader\": \"<boolean>\",\n      \"Voter\": \"<boolean>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-ef102775-8750-4f9c-96eb-af19bbb60320"
+                    },
+                    {
+                      "id": "0971c1f5-bf8a-4250-a421-c45e5297d2d5",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-0971c1f5-bf8a-4250-a421-c45e5297d2d5"
+                    },
+                    {
+                      "id": "2a0a59fd-22c3-415f-b877-f9e4d5c33f88",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-2a0a59fd-22c3-415f-b877-f9e4d5c33f88"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:33.000Z",
+                  "updatedAt": "2026-07-28T02:23:33.000Z",
+                  "uid": "35240-ab28294e-2038-425d-92fa-4c01d2baef0b"
+                }
+              ],
+              "id": "096e8522-8731-4379-84be-2b40e4e9eb03",
+              "createdAt": "2026-07-28T02:23:33.000Z",
+              "updatedAt": "2026-07-28T02:23:33.000Z",
+              "uid": "35240-096e8522-8731-4379-84be-2b40e4e9eb03"
+            },
+            {
+              "name": "peer",
+              "item": [
+                {
+                  "name": "Remove a Raft peer",
+                  "id": "d93c2e04-5d05-48b9-ac09-28d2fb44fd70",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operator/raft/peer?address=<string>&id=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operator",
+                        "raft",
+                        "peer"
+                      ],
+                      "query": [
+                        {
+                          "description": "The address of the peer to remove.",
+                          "key": "address",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The ID of the peer to remove.",
+                          "key": "id",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "Removes a Raft peer from the cluster. This is useful when a server has permanently failed and will not be returning."
+                  },
+                  "response": [
+                    {
+                      "id": "c50977b1-6567-4e33-ac9d-313c33091b50",
+                      "name": "Peer removed",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/peer?address=<string>&id=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "peer"
+                          ],
+                          "query": [
+                            {
+                              "description": "The address of the peer to remove.",
+                              "key": "address",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the peer to remove.",
+                              "key": "id",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-c50977b1-6567-4e33-ac9d-313c33091b50"
+                    },
+                    {
+                      "id": "62105bf6-95c6-4abf-ab75-88c8f9da7242",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/peer?address=<string>&id=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "peer"
+                          ],
+                          "query": [
+                            {
+                              "description": "The address of the peer to remove.",
+                              "key": "address",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the peer to remove.",
+                              "key": "id",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-62105bf6-95c6-4abf-ab75-88c8f9da7242"
+                    },
+                    {
+                      "id": "362d900f-b7ca-4943-9d7b-26fedd172529",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/raft/peer?address=<string>&id=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "raft",
+                            "peer"
+                          ],
+                          "query": [
+                            {
+                              "description": "The address of the peer to remove.",
+                              "key": "address",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The ID of the peer to remove.",
+                              "key": "id",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-362d900f-b7ca-4943-9d7b-26fedd172529"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:33.000Z",
+                  "updatedAt": "2026-07-28T02:23:33.000Z",
+                  "uid": "35240-d93c2e04-5d05-48b9-ac09-28d2fb44fd70"
+                }
+              ],
+              "id": "b768b0eb-f23c-4424-b140-e46efa7416ca",
+              "createdAt": "2026-07-28T02:23:33.000Z",
+              "updatedAt": "2026-07-28T02:23:33.000Z",
+              "uid": "35240-b768b0eb-f23c-4424-b140-e46efa7416ca"
+            }
+          ],
+          "id": "61874047-0369-4b41-9841-652ebe3d7fc6",
+          "createdAt": "2026-07-28T02:23:33.000Z",
+          "updatedAt": "2026-07-28T02:23:33.000Z",
+          "uid": "35240-61874047-0369-4b41-9841-652ebe3d7fc6"
+        },
+        {
+          "name": "autopilot",
+          "item": [
+            {
+              "name": "configuration",
+              "item": [
+                {
+                  "name": "Read autopilot configuration",
+                  "id": "0360697f-3d3b-4a5c-a5f8-30326f5a41d4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operator",
+                        "autopilot",
+                        "configuration"
+                      ]
+                    },
+                    "description": "Returns the current autopilot configuration."
+                  },
+                  "response": [
+                    {
+                      "id": "5883d1f6-1d30-4f9d-9ff4-54d553be80da",
+                      "name": "Autopilot configuration",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"CleanupDeadServers\": \"<boolean>\",\n  \"LastContactThreshold\": \"<string>\",\n  \"MaxTrailingLogs\": \"<integer>\",\n  \"ServerStabilizationTime\": \"<string>\",\n  \"EnableRedundancyZones\": \"<boolean>\",\n  \"DisableUpgradeMigration\": \"<boolean>\",\n  \"EnableCustomUpgrades\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-5883d1f6-1d30-4f9d-9ff4-54d553be80da"
+                    },
+                    {
+                      "id": "4fd09171-a9cf-487f-9241-b1a719bdedf0",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-4fd09171-a9cf-487f-9241-b1a719bdedf0"
+                    },
+                    {
+                      "id": "8b6e2f4c-4826-4176-bbc4-2cb7aa4ba9f3",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-8b6e2f4c-4826-4176-bbc4-2cb7aa4ba9f3"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:33.000Z",
+                  "updatedAt": "2026-07-28T02:23:33.000Z",
+                  "uid": "35240-0360697f-3d3b-4a5c-a5f8-30326f5a41d4"
+                },
+                {
+                  "name": "Update autopilot configuration",
+                  "id": "48e1c41d-534c-4987-9bcd-b056ed0370bb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"CleanupDeadServers\": \"<boolean>\",\n  \"LastContactThreshold\": \"<string>\",\n  \"MaxTrailingLogs\": \"<integer>\",\n  \"ServerStabilizationTime\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operator",
+                        "autopilot",
+                        "configuration"
+                      ]
+                    },
+                    "description": "Updates the autopilot configuration."
+                  },
+                  "response": [
+                    {
+                      "id": "322f84e8-e95c-4a41-9bf8-a9e562fbb2a6",
+                      "name": "Configuration updated",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"CleanupDeadServers\": \"<boolean>\",\n  \"LastContactThreshold\": \"<string>\",\n  \"MaxTrailingLogs\": \"<integer>\",\n  \"ServerStabilizationTime\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-322f84e8-e95c-4a41-9bf8-a9e562fbb2a6"
+                    },
+                    {
+                      "id": "a488b452-0a9e-4f4c-b708-dc31a635c179",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"CleanupDeadServers\": \"<boolean>\",\n  \"LastContactThreshold\": \"<string>\",\n  \"MaxTrailingLogs\": \"<integer>\",\n  \"ServerStabilizationTime\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-a488b452-0a9e-4f4c-b708-dc31a635c179"
+                    },
+                    {
+                      "id": "d8017c65-3aec-45a9-af1a-e9f00ad9d36b",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"CleanupDeadServers\": \"<boolean>\",\n  \"LastContactThreshold\": \"<string>\",\n  \"MaxTrailingLogs\": \"<integer>\",\n  \"ServerStabilizationTime\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/configuration",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "configuration"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-d8017c65-3aec-45a9-af1a-e9f00ad9d36b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:33.000Z",
+                  "updatedAt": "2026-07-28T02:23:33.000Z",
+                  "uid": "35240-48e1c41d-534c-4987-9bcd-b056ed0370bb"
+                }
+              ],
+              "id": "fc7abaa1-f9a6-49a7-9ade-63739a8ad538",
+              "createdAt": "2026-07-28T02:23:33.000Z",
+              "updatedAt": "2026-07-28T02:23:33.000Z",
+              "uid": "35240-fc7abaa1-f9a6-49a7-9ade-63739a8ad538"
+            },
+            {
+              "name": "health",
+              "item": [
+                {
+                  "name": "Read autopilot health",
+                  "id": "8c7d361f-3474-4bb3-90ea-9d6d4a045f5a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operator/autopilot/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operator",
+                        "autopilot",
+                        "health"
+                      ]
+                    },
+                    "description": "Returns the health status of the cluster as determined by the autopilot."
+                  },
+                  "response": [
+                    {
+                      "id": "7259bf11-a7e5-43df-be45-94129e19e823",
+                      "name": "Cluster health",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "health"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"Healthy\": \"<boolean>\",\n  \"FailureTolerance\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-7259bf11-a7e5-43df-be45-94129e19e823"
+                    },
+                    {
+                      "id": "c5303c8b-7171-4186-9e4d-83ecb72723e3",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "health"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-c5303c8b-7171-4186-9e4d-83ecb72723e3"
+                    },
+                    {
+                      "id": "9d07fe02-345f-443b-8533-7fdb012a0f0c",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/operator/autopilot/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "operator",
+                            "autopilot",
+                            "health"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:33.000Z",
+                      "updatedAt": "2026-07-28T02:23:33.000Z",
+                      "uid": "35240-9d07fe02-345f-443b-8533-7fdb012a0f0c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:33.000Z",
+                  "updatedAt": "2026-07-28T02:23:33.000Z",
+                  "uid": "35240-8c7d361f-3474-4bb3-90ea-9d6d4a045f5a"
+                }
+              ],
+              "id": "cf599fea-f9d1-4620-9667-db731f17325b",
+              "createdAt": "2026-07-28T02:23:33.000Z",
+              "updatedAt": "2026-07-28T02:23:33.000Z",
+              "uid": "35240-cf599fea-f9d1-4620-9667-db731f17325b"
+            }
+          ],
+          "id": "8465b01e-19f5-4943-ad53-a6f538880d67",
+          "createdAt": "2026-07-28T02:23:33.000Z",
+          "updatedAt": "2026-07-28T02:23:33.000Z",
+          "uid": "35240-8465b01e-19f5-4943-ad53-a6f538880d67"
+        }
+      ],
+      "id": "b26b56f9-840e-4951-af4f-c1a43b625c62",
+      "createdAt": "2026-07-28T02:23:33.000Z",
+      "updatedAt": "2026-07-28T02:23:33.000Z",
+      "uid": "35240-b26b56f9-840e-4951-af4f-c1a43b625c62"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

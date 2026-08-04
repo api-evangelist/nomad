@@ -1,0 +1,1174 @@
+{
+  "info": {
+    "_postman_id": "2809b56f-6bc0-495b-9f84-4bb0657c64dc",
+    "name": "HashiCorp Nomad HTTP ACL Variables API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:48.000Z",
+    "updatedAt": "2026-07-28T02:23:49.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2809b56f-6bc0-495b-9f84-4bb0657c64dc"
+  },
+  "item": [
+    {
+      "name": "vars",
+      "item": [
+        {
+          "name": "List variables",
+          "id": "0bc2a045-e230-42c5-b688-ee85b83af386",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vars?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vars"
+              ],
+              "query": [
+                {
+                  "description": "Specifies a string to filter results based on an ID prefix.",
+                  "key": "prefix",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The target namespace. Defaults to the default namespace.",
+                  "key": "namespace",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Indicates where to start paging for queries that support pagination.",
+                  "key": "next_token",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of results to return per page.",
+                  "key": "per_page",
+                  "value": "<integer>"
+                }
+              ]
+            },
+            "description": "Lists all Nomad variables. Variables are encrypted key-value pairs stored in Nomad."
+          },
+          "response": [
+            {
+              "id": "965ea769-e60a-460c-bb5b-b53352a4843a",
+              "name": "A list of variable metadata",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vars?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vars"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"Namespace\": \"<string>\",\n    \"Path\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  },\n  {\n    \"Namespace\": \"<string>\",\n    \"Path\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  }\n]",
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-965ea769-e60a-460c-bb5b-b53352a4843a"
+            },
+            {
+              "id": "19c1820f-ddde-488a-8d2d-ea6345de73a5",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vars?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vars"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-19c1820f-ddde-488a-8d2d-ea6345de73a5"
+            },
+            {
+              "id": "716f7a6a-1eee-466a-8588-22ebf56651de",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vars?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vars"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-716f7a6a-1eee-466a-8588-22ebf56651de"
+            }
+          ],
+          "createdAt": "2026-07-28T02:23:49.000Z",
+          "updatedAt": "2026-07-28T02:23:49.000Z",
+          "uid": "35240-0bc2a045-e230-42c5-b688-ee85b83af386"
+        }
+      ],
+      "id": "840a47ed-0e15-45a3-a727-2602a75073a3",
+      "createdAt": "2026-07-28T02:23:49.000Z",
+      "updatedAt": "2026-07-28T02:23:49.000Z",
+      "uid": "35240-840a47ed-0e15-45a3-a727-2602a75073a3"
+    },
+    {
+      "name": "var",
+      "item": [
+        {
+          "name": "{variablePath}",
+          "item": [
+            {
+              "name": "Read a variable",
+              "id": "cf959ffa-927e-4d69-8488-ee0980471f53",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "var",
+                    ":variablePath"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "95ee5987-1c31-486e-9ef1-7ee2963aadea",
+                      "key": "variablePath",
+                      "value": "<string>",
+                      "description": "(Required) The path of the variable."
+                    }
+                  ]
+                },
+                "description": "Returns the full variable including its items at the specified path."
+              },
+              "response": [
+                {
+                  "id": "6bbbd5bf-ef86-4ea4-9d71-b2977523b12a",
+                  "name": "Variable details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-6bbbd5bf-ef86-4ea4-9d71-b2977523b12a"
+                },
+                {
+                  "id": "2048370e-1ea8-4ef4-b45d-c04c8822eb7b",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-2048370e-1ea8-4ef4-b45d-c04c8822eb7b"
+                },
+                {
+                  "id": "5636692c-bbeb-4c53-ae72-ca1f7f253e46",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-5636692c-bbeb-4c53-ae72-ca1f7f253e46"
+                },
+                {
+                  "id": "242ed4aa-fc4e-42ae-b609-629228f68419",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-242ed4aa-fc4e-42ae-b609-629228f68419"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-cf959ffa-927e-4d69-8488-ee0980471f53"
+            },
+            {
+              "name": "Create or update a variable",
+              "id": "18333f71-add3-400d-92c2-c86932c68bf8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "var",
+                    ":variablePath"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "9528b904-491a-411b-aca9-f90cf399821e",
+                      "key": "variablePath",
+                      "value": "<string>",
+                      "description": "(Required) The path of the variable."
+                    }
+                  ]
+                },
+                "description": "Creates a new variable or updates an existing one at the specified path."
+              },
+              "response": [
+                {
+                  "id": "382b97bc-bed6-4165-9775-bf6bd3d0cf77",
+                  "name": "Variable created or updated",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-382b97bc-bed6-4165-9775-bf6bd3d0cf77"
+                },
+                {
+                  "id": "23c1672e-bca5-4930-8481-2930ff27ce27",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-23c1672e-bca5-4930-8481-2930ff27ce27"
+                },
+                {
+                  "id": "b3f4e5e7-bc0b-44c7-8c76-de8ce10fd6fd",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-b3f4e5e7-bc0b-44c7-8c76-de8ce10fd6fd"
+                },
+                {
+                  "id": "80628abe-cb13-4b2c-8bb0-79828eaa5af1",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Namespace\": \"<string>\",\n  \"Path\": \"<string>\",\n  \"Items\": {\n    \"mollit5\": \"<string>\",\n    \"Excepteur_44\": \"<string>\",\n    \"doloreb6\": \"<string>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-80628abe-cb13-4b2c-8bb0-79828eaa5af1"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-18333f71-add3-400d-92c2-c86932c68bf8"
+            },
+            {
+              "name": "Delete a variable",
+              "id": "9f43abdf-e46d-4abe-af3d-a55265fa6ed9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "var",
+                    ":variablePath"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "3b7e0b92-772d-48df-9b8d-162aaf80aceb",
+                      "key": "variablePath",
+                      "value": "<string>",
+                      "description": "(Required) The path of the variable."
+                    }
+                  ]
+                },
+                "description": "Deletes the variable at the specified path."
+              },
+              "response": [
+                {
+                  "id": "70947256-6cf8-41b1-9de8-05f6c9f216b5",
+                  "name": "Variable deleted",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-70947256-6cf8-41b1-9de8-05f6c9f216b5"
+                },
+                {
+                  "id": "94d2c099-65b5-4ab5-b97b-6eb5d57e3a72",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-94d2c099-65b5-4ab5-b97b-6eb5d57e3a72"
+                },
+                {
+                  "id": "69b81f51-a0dc-4d12-92d3-ce3ed03dbae5",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-69b81f51-a0dc-4d12-92d3-ce3ed03dbae5"
+                },
+                {
+                  "id": "805adbcf-09e6-49b3-a6fb-edfeebf0b62f",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/var/:variablePath?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "var",
+                        ":variablePath"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "variablePath"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:49.000Z",
+                  "updatedAt": "2026-07-28T02:23:49.000Z",
+                  "uid": "35240-805adbcf-09e6-49b3-a6fb-edfeebf0b62f"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:49.000Z",
+              "updatedAt": "2026-07-28T02:23:49.000Z",
+              "uid": "35240-9f43abdf-e46d-4abe-af3d-a55265fa6ed9"
+            }
+          ],
+          "id": "adb9c3f5-b891-4bf9-bf34-3b04de7780d1",
+          "createdAt": "2026-07-28T02:23:49.000Z",
+          "updatedAt": "2026-07-28T02:23:49.000Z",
+          "uid": "35240-adb9c3f5-b891-4bf9-bf34-3b04de7780d1"
+        }
+      ],
+      "id": "f437acd1-b24d-4828-a71f-cf5171b283e2",
+      "createdAt": "2026-07-28T02:23:49.000Z",
+      "updatedAt": "2026-07-28T02:23:49.000Z",
+      "uid": "35240-f437acd1-b24d-4828-a71f-cf5171b283e2"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

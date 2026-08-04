@@ -1,0 +1,303 @@
+{
+  "info": {
+    "_postman_id": "fa77dea9-6985-4dc6-9cc5-6a671e874dae",
+    "name": "HashiCorp Nomad HTTP ACL Status API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:46.000Z",
+    "updatedAt": "2026-07-28T02:23:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-fa77dea9-6985-4dc6-9cc5-6a671e874dae"
+  },
+  "item": [
+    {
+      "name": "status",
+      "item": [
+        {
+          "name": "leader",
+          "item": [
+            {
+              "name": "Read cluster leader",
+              "id": "b7b3d918-5316-4761-a63c-2402d285d79b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/status/leader",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "status",
+                    "leader"
+                  ]
+                },
+                "description": "Returns the address of the current cluster leader."
+              },
+              "response": [
+                {
+                  "id": "c8648bf2-6226-4cc8-862a-e38a7f28c68e",
+                  "name": "Leader address",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/status/leader",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "status",
+                        "leader"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T02:23:47.000Z",
+                  "updatedAt": "2026-07-28T02:23:47.000Z",
+                  "uid": "35240-c8648bf2-6226-4cc8-862a-e38a7f28c68e"
+                },
+                {
+                  "id": "d31fc229-db28-4ae2-9079-1def17254d70",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/status/leader",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "status",
+                        "leader"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:47.000Z",
+                  "updatedAt": "2026-07-28T02:23:47.000Z",
+                  "uid": "35240-d31fc229-db28-4ae2-9079-1def17254d70"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:47.000Z",
+              "updatedAt": "2026-07-28T02:23:47.000Z",
+              "uid": "35240-b7b3d918-5316-4761-a63c-2402d285d79b"
+            }
+          ],
+          "id": "a3e78b25-8f5a-4e91-8bbb-938647fe0420",
+          "createdAt": "2026-07-28T02:23:47.000Z",
+          "updatedAt": "2026-07-28T02:23:47.000Z",
+          "uid": "35240-a3e78b25-8f5a-4e91-8bbb-938647fe0420"
+        },
+        {
+          "name": "peers",
+          "item": [
+            {
+              "name": "List cluster peers",
+              "id": "a802508d-f434-4d7d-80ae-b42eb14c98de",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/status/peers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "status",
+                    "peers"
+                  ]
+                },
+                "description": "Returns the addresses of the current cluster peers (Raft servers)."
+              },
+              "response": [
+                {
+                  "id": "b0b1c14c-e8bc-4cc3-8efc-f932126dc5b1",
+                  "name": "Peer addresses",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/status/peers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "status",
+                        "peers"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  \"<string>\",\n  \"<string>\"\n]",
+                  "createdAt": "2026-07-28T02:23:47.000Z",
+                  "updatedAt": "2026-07-28T02:23:47.000Z",
+                  "uid": "35240-b0b1c14c-e8bc-4cc3-8efc-f932126dc5b1"
+                },
+                {
+                  "id": "7756d879-0d74-4196-8fdb-40e2e4b51483",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/status/peers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "status",
+                        "peers"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:47.000Z",
+                  "updatedAt": "2026-07-28T02:23:47.000Z",
+                  "uid": "35240-7756d879-0d74-4196-8fdb-40e2e4b51483"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:47.000Z",
+              "updatedAt": "2026-07-28T02:23:47.000Z",
+              "uid": "35240-a802508d-f434-4d7d-80ae-b42eb14c98de"
+            }
+          ],
+          "id": "da966590-0c26-4010-8737-734acd30b577",
+          "createdAt": "2026-07-28T02:23:47.000Z",
+          "updatedAt": "2026-07-28T02:23:47.000Z",
+          "uid": "35240-da966590-0c26-4010-8737-734acd30b577"
+        }
+      ],
+      "id": "b3891c6a-b130-4e2b-96d1-fabb9cc95673",
+      "createdAt": "2026-07-28T02:23:47.000Z",
+      "updatedAt": "2026-07-28T02:23:47.000Z",
+      "uid": "35240-b3891c6a-b130-4e2b-96d1-fabb9cc95673"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

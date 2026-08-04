@@ -1,0 +1,1056 @@
+{
+  "info": {
+    "_postman_id": "a2bc2437-2b41-458c-aa12-249ecccc9fb5",
+    "name": "HashiCorp Nomad HTTP ACL Allocations API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:20:54.000Z",
+    "updatedAt": "2026-07-28T02:20:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a2bc2437-2b41-458c-aa12-249ecccc9fb5"
+  },
+  "item": [
+    {
+      "name": "allocations",
+      "item": [
+        {
+          "name": "List allocations",
+          "id": "ba59dd7a-3868-4848-b480-16f64f09cacf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/allocations?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "allocations"
+              ],
+              "query": [
+                {
+                  "description": "Specifies a string to filter results based on an ID prefix.",
+                  "key": "prefix",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The target namespace. Defaults to the default namespace.",
+                  "key": "namespace",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Indicates where to start paging for queries that support pagination.",
+                  "key": "next_token",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of results to return per page.",
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Specifies the expression used to filter the results.",
+                  "key": "filter",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Lists all allocations in the system. Supports prefix-based filtering and pagination."
+          },
+          "response": [
+            {
+              "id": "3796feae-b2fa-4e47-917e-f2fb330ac4fb",
+              "name": "A list of allocation stubs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"EvalID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"NodeName\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"TaskGroup\": \"<string>\",\n    \"DesiredStatus\": \"<string>\",\n    \"ClientStatus\": \"<string>\",\n    \"DeploymentStatus\": {\n      \"Healthy\": \"<boolean>\",\n      \"Canary\": \"<boolean>\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"EvalID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"NodeName\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"TaskGroup\": \"<string>\",\n    \"DesiredStatus\": \"<string>\",\n    \"ClientStatus\": \"<string>\",\n    \"DeploymentStatus\": {\n      \"Healthy\": \"<boolean>\",\n      \"Canary\": \"<boolean>\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  }\n]",
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-3796feae-b2fa-4e47-917e-f2fb330ac4fb"
+            },
+            {
+              "id": "37c9624c-10e1-4c65-9691-d921f54aaa04",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-37c9624c-10e1-4c65-9691-d921f54aaa04"
+            },
+            {
+              "id": "79627f2e-c051-437b-bd3a-8df3d3302bf6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocations?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-79627f2e-c051-437b-bd3a-8df3d3302bf6"
+            }
+          ],
+          "createdAt": "2026-07-28T02:20:54.000Z",
+          "updatedAt": "2026-07-28T02:20:54.000Z",
+          "uid": "35240-ba59dd7a-3868-4848-b480-16f64f09cacf"
+        }
+      ],
+      "id": "d2379aad-6a91-4684-bbc6-14d853822ae5",
+      "createdAt": "2026-07-28T02:20:54.000Z",
+      "updatedAt": "2026-07-28T02:20:54.000Z",
+      "uid": "35240-d2379aad-6a91-4684-bbc6-14d853822ae5"
+    },
+    {
+      "name": "allocation",
+      "item": [
+        {
+          "name": "{allocID}",
+          "item": [
+            {
+              "name": "services",
+              "item": [
+                {
+                  "name": "List allocation services",
+                  "id": "7449999d-7e36-4180-a440-57dc289f1ff5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID/services",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID",
+                        "services"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1906d240-adcd-448e-83f6-e28f6aa4c484",
+                          "key": "allocID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the allocation."
+                        }
+                      ]
+                    },
+                    "description": "Returns the services registered by the specified allocation including address, port, and service name."
+                  },
+                  "response": [
+                    {
+                      "id": "3ba6ca52-74e8-4401-bc76-83a5e9d7f681",
+                      "name": "Allocation services",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/services",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "services"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"ServiceName\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"AllocID\": \"<string>\",\n    \"Tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Address\": \"<string>\",\n    \"Port\": \"<integer>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"ServiceName\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"AllocID\": \"<string>\",\n    \"Tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Address\": \"<string>\",\n    \"Port\": \"<integer>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-3ba6ca52-74e8-4401-bc76-83a5e9d7f681"
+                    },
+                    {
+                      "id": "d84a17cb-b9cf-423c-a394-83b10adb0054",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/services",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "services"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-d84a17cb-b9cf-423c-a394-83b10adb0054"
+                    },
+                    {
+                      "id": "e1ace046-5d4b-4c93-839d-4ef1ff39dd79",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/services",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "services"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-e1ace046-5d4b-4c93-839d-4ef1ff39dd79"
+                    },
+                    {
+                      "id": "92fb658b-cb70-4454-a12c-07f5e7ffb432",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/services",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "services"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-92fb658b-cb70-4454-a12c-07f5e7ffb432"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-7449999d-7e36-4180-a440-57dc289f1ff5"
+                }
+              ],
+              "id": "0a1f3829-dd03-4f83-b836-38177132d70a",
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-0a1f3829-dd03-4f83-b836-38177132d70a"
+            },
+            {
+              "name": "checks",
+              "item": [
+                {
+                  "name": "List allocation health checks",
+                  "id": "deeaa903-13f5-4939-8a5c-4861a8d5e410",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID/checks",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID",
+                        "checks"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2e053f40-b476-43d6-a4e7-6c9778604d4f",
+                          "key": "allocID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the allocation."
+                        }
+                      ]
+                    },
+                    "description": "Returns the health check results for the specified allocation."
+                  },
+                  "response": [
+                    {
+                      "id": "84f7c065-9f68-43ec-ad87-273f6d5f252c",
+                      "name": "Allocation health checks",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/checks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "checks"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-84f7c065-9f68-43ec-ad87-273f6d5f252c"
+                    },
+                    {
+                      "id": "8f36e090-9424-4010-93ae-07cf3669e944",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/checks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "checks"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-8f36e090-9424-4010-93ae-07cf3669e944"
+                    },
+                    {
+                      "id": "f3bb2d32-3579-473d-bcc2-7d7c52c06d64",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/checks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "checks"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-f3bb2d32-3579-473d-bcc2-7d7c52c06d64"
+                    },
+                    {
+                      "id": "634e4202-238f-4abd-98e2-3c62f21814fa",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/allocation/:allocID/checks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "allocation",
+                            ":allocID",
+                            "checks"
+                          ],
+                          "variable": [
+                            {
+                              "key": "allocID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:54.000Z",
+                      "updatedAt": "2026-07-28T02:20:54.000Z",
+                      "uid": "35240-634e4202-238f-4abd-98e2-3c62f21814fa"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-deeaa903-13f5-4939-8a5c-4861a8d5e410"
+                }
+              ],
+              "id": "2d0e5e6d-02d2-4f7b-a4a0-1aa2b50584ca",
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-2d0e5e6d-02d2-4f7b-a4a0-1aa2b50584ca"
+            },
+            {
+              "name": "Read an allocation",
+              "id": "6652e191-3cfa-4511-bc84-cbbd1216859e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/allocation/:allocID",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "allocation",
+                    ":allocID"
+                  ],
+                  "variable": [
+                    {
+                      "id": "765a10d4-9e54-4913-b6a4-13433c9f6bc6",
+                      "key": "allocID",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "description": "Returns the full details of the specified allocation."
+              },
+              "response": [
+                {
+                  "id": "d5473ffe-0711-4984-b0a6-e4bd0f17991a",
+                  "name": "Allocation details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"ID\": \"<string>\",\n  \"EvalID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Namespace\": \"<string>\",\n  \"NodeID\": \"<string>\",\n  \"NodeName\": \"<string>\",\n  \"JobID\": \"<string>\",\n  \"Job\": {\n    \"ID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"Type\": \"service\",\n    \"Priority\": \"<integer>\",\n    \"Region\": \"<string>\",\n    \"Datacenters\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"NodePool\": \"<string>\",\n    \"Status\": \"dead\",\n    \"StatusDescription\": \"<string>\",\n    \"Stable\": \"<boolean>\",\n    \"Version\": \"<integer>\",\n    \"SubmitTime\": \"<long>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"JobModifyIndex\": \"<integer>\",\n    \"TaskGroups\": [\n      {\n        \"Name\": \"<string>\",\n        \"Count\": \"<integer>\",\n        \"Tasks\": [\n          {\n            \"Name\": \"<string>\",\n            \"Driver\": \"<string>\",\n            \"Config\": {\n              \"reprehenderitf\": \"nulla cupidatat Ut ullamco\"\n            },\n            \"Env\": {\n              \"ullamco_8c\": \"<string>\",\n              \"eiusmod1\": \"<string>\",\n              \"voluptate_21\": \"<string>\"\n            },\n            \"Resources\": {\n              \"CPU\": \"<integer>\",\n              \"Cores\": \"<integer>\",\n              \"MemoryMB\": \"<integer>\",\n              \"MemoryMaxMB\": \"<integer>\",\n              \"DiskMB\": \"<integer>\",\n              \"Networks\": [\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                },\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            \"Meta\": {\n              \"sint0d1\": \"<string>\"\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": \"<integer>\",\n              \"MaxFileSizeMB\": \"<integer>\"\n            },\n            \"Leader\": \"<boolean>\"\n          },\n          {\n            \"Name\": \"<string>\",\n            \"Driver\": \"<string>\",\n            \"Config\": {\n              \"laboris_f\": -53124694,\n              \"adipisicing_6\": true\n            },\n            \"Env\": {\n              \"incididunt_d4f\": \"<string>\"\n            },\n            \"Resources\": {\n              \"CPU\": \"<integer>\",\n              \"Cores\": \"<integer>\",\n              \"MemoryMB\": \"<integer>\",\n              \"MemoryMaxMB\": \"<integer>\",\n              \"DiskMB\": \"<integer>\",\n              \"Networks\": [\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                },\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            \"Meta\": {\n              \"cillum_0a\": \"<string>\"\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": \"<integer>\",\n              \"MaxFileSizeMB\": \"<integer>\"\n            },\n            \"Leader\": \"<boolean>\"\n          }\n        ],\n        \"RestartPolicy\": {\n          \"Interval\": \"<integer>\",\n          \"Attempts\": \"<integer>\",\n          \"Delay\": \"<integer>\",\n          \"Mode\": \"<string>\"\n        },\n        \"EphemeralDisk\": {\n          \"SizeMB\": \"<integer>\",\n          \"Sticky\": \"<boolean>\",\n          \"Migrate\": \"<boolean>\"\n        },\n        \"Networks\": [\n          {\n            \"Mode\": \"<string>\",\n            \"Device\": \"<string>\",\n            \"CIDR\": \"<string>\",\n            \"IP\": \"<string>\",\n            \"MBits\": \"<integer>\",\n            \"DNS\": {\n              \"Servers\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            \"DynamicPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ]\n          },\n          {\n            \"Mode\": \"<string>\",\n            \"Device\": \"<string>\",\n            \"CIDR\": \"<string>\",\n            \"IP\": \"<string>\",\n            \"MBits\": \"<integer>\",\n            \"DNS\": {\n              \"Servers\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            \"DynamicPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ]\n          }\n        ],\n        \"Services\": [\n          {\n            \"Name\": \"<string>\",\n            \"Tags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"CanaryTags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"PortLabel\": \"<string>\",\n            \"Provider\": \"consul\"\n          },\n          {\n            \"Name\": \"<string>\",\n            \"Tags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"CanaryTags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"PortLabel\": \"<string>\",\n            \"Provider\": \"consul\"\n          }\n        ],\n        \"Volumes\": {\n          \"quis_2e3\": {}\n        },\n        \"Update\": {\n          \"MaxParallel\": \"<integer>\",\n          \"HealthCheck\": \"manual\",\n          \"MinHealthyTime\": \"<integer>\",\n          \"HealthyDeadline\": \"<integer>\",\n          \"ProgressDeadline\": \"<integer>\",\n          \"AutoRevert\": \"<boolean>\",\n          \"AutoPromote\": \"<boolean>\",\n          \"Canary\": \"<integer>\",\n          \"Stagger\": \"<integer>\"\n        },\n        \"Scaling\": {}\n      },\n      {\n        \"Name\": \"<string>\",\n        \"Count\": \"<integer>\",\n        \"Tasks\": [\n          {\n            \"Name\": \"<string>\",\n            \"Driver\": \"<string>\",\n            \"Config\": {\n              \"dolore71e\": false\n            },\n            \"Env\": {\n              \"ad48\": \"<string>\"\n            },\n            \"Resources\": {\n              \"CPU\": \"<integer>\",\n              \"Cores\": \"<integer>\",\n              \"MemoryMB\": \"<integer>\",\n              \"MemoryMaxMB\": \"<integer>\",\n              \"DiskMB\": \"<integer>\",\n              \"Networks\": [\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                },\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            \"Meta\": {\n              \"veniam_c1c\": \"<string>\",\n              \"nostrud_e\": \"<string>\"\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": \"<integer>\",\n              \"MaxFileSizeMB\": \"<integer>\"\n            },\n            \"Leader\": \"<boolean>\"\n          },\n          {\n            \"Name\": \"<string>\",\n            \"Driver\": \"<string>\",\n            \"Config\": {\n              \"aliquipe\": true\n            },\n            \"Env\": {\n              \"ipsumd\": \"<string>\",\n              \"labore_d\": \"<string>\",\n              \"ullamco9a4\": \"<string>\"\n            },\n            \"Resources\": {\n              \"CPU\": \"<integer>\",\n              \"Cores\": \"<integer>\",\n              \"MemoryMB\": \"<integer>\",\n              \"MemoryMaxMB\": \"<integer>\",\n              \"DiskMB\": \"<integer>\",\n              \"Networks\": [\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                },\n                {\n                  \"Mode\": \"<string>\",\n                  \"Device\": \"<string>\",\n                  \"CIDR\": \"<string>\",\n                  \"IP\": \"<string>\",\n                  \"MBits\": \"<integer>\",\n                  \"DNS\": {\n                    \"Servers\": [\n                      \"<string>\",\n                      \"<string>\"\n                    ]\n                  },\n                  \"DynamicPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ],\n                  \"ReservedPorts\": [\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    },\n                    {\n                      \"Label\": \"<string>\",\n                      \"Value\": \"<integer>\",\n                      \"To\": \"<integer>\",\n                      \"HostNetwork\": \"<string>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            \"Meta\": {\n              \"non3f\": \"<string>\",\n              \"proident11e\": \"<string>\"\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": \"<integer>\",\n              \"MaxFileSizeMB\": \"<integer>\"\n            },\n            \"Leader\": \"<boolean>\"\n          }\n        ],\n        \"RestartPolicy\": {\n          \"Interval\": \"<integer>\",\n          \"Attempts\": \"<integer>\",\n          \"Delay\": \"<integer>\",\n          \"Mode\": \"<string>\"\n        },\n        \"EphemeralDisk\": {\n          \"SizeMB\": \"<integer>\",\n          \"Sticky\": \"<boolean>\",\n          \"Migrate\": \"<boolean>\"\n        },\n        \"Networks\": [\n          {\n            \"Mode\": \"<string>\",\n            \"Device\": \"<string>\",\n            \"CIDR\": \"<string>\",\n            \"IP\": \"<string>\",\n            \"MBits\": \"<integer>\",\n            \"DNS\": {\n              \"Servers\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            \"DynamicPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ]\n          },\n          {\n            \"Mode\": \"<string>\",\n            \"Device\": \"<string>\",\n            \"CIDR\": \"<string>\",\n            \"IP\": \"<string>\",\n            \"MBits\": \"<integer>\",\n            \"DNS\": {\n              \"Servers\": [\n                \"<string>\",\n                \"<string>\"\n              ]\n            },\n            \"DynamicPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              },\n              {\n                \"Label\": \"<string>\",\n                \"Value\": \"<integer>\",\n                \"To\": \"<integer>\",\n                \"HostNetwork\": \"<string>\"\n              }\n            ]\n          }\n        ],\n        \"Services\": [\n          {\n            \"Name\": \"<string>\",\n            \"Tags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"CanaryTags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"PortLabel\": \"<string>\",\n            \"Provider\": \"nomad\"\n          },\n          {\n            \"Name\": \"<string>\",\n            \"Tags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"CanaryTags\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"PortLabel\": \"<string>\",\n            \"Provider\": \"nomad\"\n          }\n        ],\n        \"Volumes\": {\n          \"occaecat_be5\": {},\n          \"ut_14\": {}\n        },\n        \"Update\": {\n          \"MaxParallel\": \"<integer>\",\n          \"HealthCheck\": \"manual\",\n          \"MinHealthyTime\": \"<integer>\",\n          \"HealthyDeadline\": \"<integer>\",\n          \"ProgressDeadline\": \"<integer>\",\n          \"AutoRevert\": \"<boolean>\",\n          \"AutoPromote\": \"<boolean>\",\n          \"Canary\": \"<integer>\",\n          \"Stagger\": \"<integer>\"\n        },\n        \"Scaling\": {}\n      }\n    ],\n    \"Update\": {\n      \"MaxParallel\": \"<integer>\",\n      \"HealthCheck\": \"checks\",\n      \"MinHealthyTime\": \"<integer>\",\n      \"HealthyDeadline\": \"<integer>\",\n      \"ProgressDeadline\": \"<integer>\",\n      \"AutoRevert\": \"<boolean>\",\n      \"AutoPromote\": \"<boolean>\",\n      \"Canary\": \"<integer>\",\n      \"Stagger\": \"<integer>\"\n    },\n    \"Periodic\": {\n      \"Enabled\": \"<boolean>\",\n      \"Spec\": \"<string>\",\n      \"SpecType\": \"<string>\",\n      \"ProhibitOverlap\": \"<boolean>\",\n      \"TimeZone\": \"<string>\"\n    },\n    \"Parameterized\": {\n      \"Payload\": \"forbidden\",\n      \"MetaRequired\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"MetaOptional\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"Meta\": {\n      \"ad2\": \"<string>\",\n      \"Ut_151\": \"<string>\"\n    },\n    \"ConsulToken\": \"<string>\",\n    \"VaultToken\": \"<string>\"\n  },\n  \"TaskGroup\": \"<string>\",\n  \"DesiredStatus\": \"run\",\n  \"ClientStatus\": \"complete\",\n  \"ClientDescription\": \"<string>\",\n  \"TaskStates\": {\n    \"quis_94\": {\n      \"State\": \"<string>\",\n      \"Failed\": \"<boolean>\",\n      \"StartedAt\": \"<dateTime>\",\n      \"FinishedAt\": \"<dateTime>\"\n    },\n    \"dolor386\": {\n      \"State\": \"<string>\",\n      \"Failed\": \"<boolean>\",\n      \"StartedAt\": \"<dateTime>\",\n      \"FinishedAt\": \"<dateTime>\"\n    }\n  },\n  \"DeploymentID\": \"<string>\",\n  \"DeploymentStatus\": {\n    \"Healthy\": \"<boolean>\",\n    \"Timestamp\": \"<dateTime>\",\n    \"Canary\": \"<boolean>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\",\n  \"CreateTime\": \"<long>\",\n  \"ModifyTime\": \"<long>\"\n}",
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-d5473ffe-0711-4984-b0a6-e4bd0f17991a"
+                },
+                {
+                  "id": "397f210a-5fff-405c-a470-89b3d30ae8cf",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-397f210a-5fff-405c-a470-89b3d30ae8cf"
+                },
+                {
+                  "id": "c9324173-5366-4532-a31b-fad0f403f585",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-c9324173-5366-4532-a31b-fad0f403f585"
+                },
+                {
+                  "id": "15698990-3c3a-4357-97b1-a03c1b212482",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/allocation/:allocID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "allocation",
+                        ":allocID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "allocID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:54.000Z",
+                  "updatedAt": "2026-07-28T02:20:54.000Z",
+                  "uid": "35240-15698990-3c3a-4357-97b1-a03c1b212482"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:54.000Z",
+              "updatedAt": "2026-07-28T02:20:54.000Z",
+              "uid": "35240-6652e191-3cfa-4511-bc84-cbbd1216859e"
+            }
+          ],
+          "id": "a6134b46-7118-46bb-9af9-d4c790f2bc9f",
+          "createdAt": "2026-07-28T02:20:54.000Z",
+          "updatedAt": "2026-07-28T02:20:54.000Z",
+          "uid": "35240-a6134b46-7118-46bb-9af9-d4c790f2bc9f"
+        }
+      ],
+      "id": "d001782a-219e-409b-b6b8-c2e0cb037006",
+      "createdAt": "2026-07-28T02:20:54.000Z",
+      "updatedAt": "2026-07-28T02:20:54.000Z",
+      "uid": "35240-d001782a-219e-409b-b6b8-c2e0cb037006"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

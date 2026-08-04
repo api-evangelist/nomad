@@ -1,0 +1,488 @@
+{
+  "info": {
+    "_postman_id": "36819b77-6212-4f18-8df6-2770ecc7d87c",
+    "name": "HashiCorp Nomad HTTP ACL Search API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:37.000Z",
+    "updatedAt": "2026-07-28T02:23:37.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-36819b77-6212-4f18-8df6-2770ecc7d87c"
+  },
+  "item": [
+    {
+      "name": "search",
+      "item": [
+        {
+          "name": "fuzzy",
+          "item": [
+            {
+              "name": "Fuzzy search",
+              "id": "4d306f6d-05c6-40cf-b2b1-1db12606ba85",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Text\": \"<string>\",\n  \"Context\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search/fuzzy",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search",
+                    "fuzzy"
+                  ]
+                },
+                "description": "Performs a fuzzy search across Nomad objects by text match."
+              },
+              "response": [
+                {
+                  "id": "70a77a26-6fea-4c57-9dff-3783e1fcabd8",
+                  "name": "Fuzzy search results",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Text\": \"<string>\",\n  \"Context\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/search/fuzzy",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "search",
+                        "fuzzy"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"Matches\": {},\n  \"Truncations\": {}\n}",
+                  "createdAt": "2026-07-28T02:23:38.000Z",
+                  "updatedAt": "2026-07-28T02:23:38.000Z",
+                  "uid": "35240-70a77a26-6fea-4c57-9dff-3783e1fcabd8"
+                },
+                {
+                  "id": "3ba3fad3-cec0-4c91-b3cd-23ed3263ce93",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Text\": \"<string>\",\n  \"Context\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/search/fuzzy",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "search",
+                        "fuzzy"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:38.000Z",
+                  "updatedAt": "2026-07-28T02:23:38.000Z",
+                  "uid": "35240-3ba3fad3-cec0-4c91-b3cd-23ed3263ce93"
+                },
+                {
+                  "id": "97b1b049-0c96-4dae-ad29-bc2b3e5663b0",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Text\": \"<string>\",\n  \"Context\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/search/fuzzy",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "search",
+                        "fuzzy"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:38.000Z",
+                  "updatedAt": "2026-07-28T02:23:38.000Z",
+                  "uid": "35240-97b1b049-0c96-4dae-ad29-bc2b3e5663b0"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:38.000Z",
+              "updatedAt": "2026-07-28T02:23:38.000Z",
+              "uid": "35240-4d306f6d-05c6-40cf-b2b1-1db12606ba85"
+            }
+          ],
+          "id": "604bab0f-bb34-4c3d-9580-1bebb80b5eb5",
+          "createdAt": "2026-07-28T02:23:38.000Z",
+          "updatedAt": "2026-07-28T02:23:38.000Z",
+          "uid": "35240-604bab0f-bb34-4c3d-9580-1bebb80b5eb5"
+        },
+        {
+          "name": "Prefix search",
+          "id": "03c91b46-93b2-4fe2-84d2-29e90d24fc59",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Prefix\": \"<string>\",\n  \"Context\": \"jobs\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search"
+              ]
+            },
+            "description": "Searches for objects by prefix match across multiple object types."
+          },
+          "response": [
+            {
+              "id": "7b16604b-e1dd-4099-b67e-cc235f7b4a4a",
+              "name": "Search results",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Prefix\": \"<string>\",\n  \"Context\": \"jobs\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"Matches\": {},\n  \"Truncations\": {}\n}",
+              "createdAt": "2026-07-28T02:23:38.000Z",
+              "updatedAt": "2026-07-28T02:23:38.000Z",
+              "uid": "35240-7b16604b-e1dd-4099-b67e-cc235f7b4a4a"
+            },
+            {
+              "id": "cc0c699a-ad37-4a29-b76e-2adc3f34bd72",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Prefix\": \"<string>\",\n  \"Context\": \"jobs\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:38.000Z",
+              "updatedAt": "2026-07-28T02:23:38.000Z",
+              "uid": "35240-cc0c699a-ad37-4a29-b76e-2adc3f34bd72"
+            },
+            {
+              "id": "89fc7932-cd7a-435c-b80a-e042e0c9ba71",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Prefix\": \"<string>\",\n  \"Context\": \"jobs\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/search",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "search"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:38.000Z",
+              "updatedAt": "2026-07-28T02:23:38.000Z",
+              "uid": "35240-89fc7932-cd7a-435c-b80a-e042e0c9ba71"
+            }
+          ],
+          "createdAt": "2026-07-28T02:23:38.000Z",
+          "updatedAt": "2026-07-28T02:23:38.000Z",
+          "uid": "35240-03c91b46-93b2-4fe2-84d2-29e90d24fc59"
+        }
+      ],
+      "id": "a79861c8-8927-4d97-9880-d123362c8ada",
+      "createdAt": "2026-07-28T02:23:38.000Z",
+      "updatedAt": "2026-07-28T02:23:38.000Z",
+      "uid": "35240-a79861c8-8927-4d97-9880-d123362c8ada"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

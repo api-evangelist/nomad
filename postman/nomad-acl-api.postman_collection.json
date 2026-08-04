@@ -1,0 +1,2157 @@
+{
+  "info": {
+    "_postman_id": "1d2d3f11-65e1-43fe-91af-840c097d4e80",
+    "name": "HashiCorp Nomad HTTP ACL API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:20:51.000Z",
+    "updatedAt": "2026-07-28T02:20:51.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1d2d3f11-65e1-43fe-91af-840c097d4e80"
+  },
+  "item": [
+    {
+      "name": "acl",
+      "item": [
+        {
+          "name": "policies",
+          "item": [
+            {
+              "name": "List ACL policies",
+              "id": "984c29be-2ba6-48ca-90ce-2f0cfd6c40c5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/acl/policies?prefix=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "acl",
+                    "policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Lists all ACL policies in the system."
+              },
+              "response": [
+                {
+                  "id": "8684d9ce-8c6e-4fde-bf91-423891a03230",
+                  "name": "A list of ACL policies",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policies?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"Name\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"Name\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-8684d9ce-8c6e-4fde-bf91-423891a03230"
+                },
+                {
+                  "id": "92b4dbc7-940c-452f-83c8-33cb95782a52",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policies?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-92b4dbc7-940c-452f-83c8-33cb95782a52"
+                },
+                {
+                  "id": "0eda0170-b239-4ee1-9413-e6dbf677f75c",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policies?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policies"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-0eda0170-b239-4ee1-9413-e6dbf677f75c"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-984c29be-2ba6-48ca-90ce-2f0cfd6c40c5"
+            }
+          ],
+          "id": "b7fba790-6f82-4ca9-bf56-b502009504b1",
+          "createdAt": "2026-07-28T02:20:52.000Z",
+          "updatedAt": "2026-07-28T02:20:52.000Z",
+          "uid": "35240-b7fba790-6f82-4ca9-bf56-b502009504b1"
+        },
+        {
+          "name": "policy",
+          "item": [
+            {
+              "name": "{policyName}",
+              "item": [
+                {
+                  "name": "Read an ACL policy",
+                  "id": "aa07bfc8-714d-4daa-9c04-2d3800af6049",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policy/:policyName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policy",
+                        ":policyName"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a81d3de6-c899-4d65-976b-a2943cad8b73",
+                          "key": "policyName",
+                          "value": "<string>",
+                          "description": "(Required) The name of the ACL policy."
+                        }
+                      ]
+                    },
+                    "description": "Returns the details of the specified ACL policy."
+                  },
+                  "response": [
+                    {
+                      "id": "75318e12-ec9f-4de6-b5da-0c345e017c04",
+                      "name": "ACL policy details",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-75318e12-ec9f-4de6-b5da-0c345e017c04"
+                    },
+                    {
+                      "id": "a4258cc8-d4f9-4b71-a787-9ed9a7942c4d",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-a4258cc8-d4f9-4b71-a787-9ed9a7942c4d"
+                    },
+                    {
+                      "id": "9591f59c-1137-437e-b293-af6aed24a80a",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-9591f59c-1137-437e-b293-af6aed24a80a"
+                    },
+                    {
+                      "id": "b0a72b24-bf69-41f0-bc10-e99c5398aa28",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-b0a72b24-bf69-41f0-bc10-e99c5398aa28"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-aa07bfc8-714d-4daa-9c04-2d3800af6049"
+                },
+                {
+                  "name": "Create or update an ACL policy",
+                  "id": "1d2c565b-60bb-4fdc-b514-7d7c581b9792",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policy/:policyName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policy",
+                        ":policyName"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d7e644d6-6ba5-411a-b5ca-c9225b89a548",
+                          "key": "policyName",
+                          "value": "<string>",
+                          "description": "(Required) The name of the ACL policy."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new ACL policy or updates an existing one."
+                  },
+                  "response": [
+                    {
+                      "id": "758db985-0328-4ef5-9935-e0f14854e8a3",
+                      "name": "ACL policy upserted",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-758db985-0328-4ef5-9935-e0f14854e8a3"
+                    },
+                    {
+                      "id": "770aec90-09f8-49b6-aad3-6f12fec3a5f1",
+                      "name": "Bad request",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-770aec90-09f8-49b6-aad3-6f12fec3a5f1"
+                    },
+                    {
+                      "id": "de69bef6-01aa-4382-b5ad-a0b34764b9de",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-de69bef6-01aa-4382-b5ad-a0b34764b9de"
+                    },
+                    {
+                      "id": "4de77eda-78bd-40aa-b7da-82b9dd35e2ef",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Rules\": \"<string>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-4de77eda-78bd-40aa-b7da-82b9dd35e2ef"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-1d2c565b-60bb-4fdc-b514-7d7c581b9792"
+                },
+                {
+                  "name": "Delete an ACL policy",
+                  "id": "8ef0f591-6e19-495a-9467-b8694ec56f8c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/policy/:policyName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "policy",
+                        ":policyName"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f71bcd1e-b825-4e31-bedd-de8e7e0cad4f",
+                          "key": "policyName",
+                          "value": "<string>",
+                          "description": "(Required) The name of the ACL policy."
+                        }
+                      ]
+                    },
+                    "description": "Deletes the specified ACL policy."
+                  },
+                  "response": [
+                    {
+                      "id": "f400ddf1-1d1b-4116-a4fa-06387b65e712",
+                      "name": "ACL policy deleted",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-f400ddf1-1d1b-4116-a4fa-06387b65e712"
+                    },
+                    {
+                      "id": "e7fa6cef-7bb1-43f8-bd37-c41d47934af1",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-e7fa6cef-7bb1-43f8-bd37-c41d47934af1"
+                    },
+                    {
+                      "id": "ac3bfb25-275d-4bd6-abd2-d06dd895d0a1",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-ac3bfb25-275d-4bd6-abd2-d06dd895d0a1"
+                    },
+                    {
+                      "id": "8db08531-002c-43de-a750-0a91496f418e",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/policy/:policyName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "policy",
+                            ":policyName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "policyName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-8db08531-002c-43de-a750-0a91496f418e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-8ef0f591-6e19-495a-9467-b8694ec56f8c"
+                }
+              ],
+              "id": "678d6f47-3c43-42c6-b066-e9e62663bd13",
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-678d6f47-3c43-42c6-b066-e9e62663bd13"
+            }
+          ],
+          "id": "c810c144-48d8-41b2-9fd0-ae74de169c91",
+          "createdAt": "2026-07-28T02:20:52.000Z",
+          "updatedAt": "2026-07-28T02:20:52.000Z",
+          "uid": "35240-c810c144-48d8-41b2-9fd0-ae74de169c91"
+        },
+        {
+          "name": "tokens",
+          "item": [
+            {
+              "name": "List ACL tokens",
+              "id": "4d4539a0-3b39-448e-bb4c-2794a04b9e44",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/acl/tokens?prefix=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "acl",
+                    "tokens"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Lists all ACL tokens in the system."
+              },
+              "response": [
+                {
+                  "id": "234ce47b-d584-456e-a341-371744b70634",
+                  "name": "A list of ACL tokens",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/tokens?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "tokens"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"AccessorID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Type\": \"<string>\",\n    \"Policies\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Global\": \"<boolean>\",\n    \"CreateTime\": \"<dateTime>\",\n    \"ExpirationTime\": \"<dateTime>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"AccessorID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Type\": \"<string>\",\n    \"Policies\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Global\": \"<boolean>\",\n    \"CreateTime\": \"<dateTime>\",\n    \"ExpirationTime\": \"<dateTime>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-234ce47b-d584-456e-a341-371744b70634"
+                },
+                {
+                  "id": "95c16364-459a-4713-96d9-137b4ab5b3cc",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/tokens?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "tokens"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-95c16364-459a-4713-96d9-137b4ab5b3cc"
+                },
+                {
+                  "id": "2af439a3-edce-4d41-94ad-21f076c79356",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/tokens?prefix=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "tokens"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-2af439a3-edce-4d41-94ad-21f076c79356"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-4d4539a0-3b39-448e-bb4c-2794a04b9e44"
+            }
+          ],
+          "id": "62b7ced0-8b3b-4d12-a6db-21eef0dc1047",
+          "createdAt": "2026-07-28T02:20:52.000Z",
+          "updatedAt": "2026-07-28T02:20:52.000Z",
+          "uid": "35240-62b7ced0-8b3b-4d12-a6db-21eef0dc1047"
+        },
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "self",
+              "item": [
+                {
+                  "name": "Read own ACL token",
+                  "id": "7ca68080-9295-4f9f-bf8f-a28f0bd50efb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token/self",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token",
+                        "self"
+                      ]
+                    },
+                    "description": "Returns the details of the ACL token used to make the request."
+                  },
+                  "response": [
+                    {
+                      "id": "148bb1d5-81a7-4bad-bde9-0168525e906c",
+                      "name": "ACL token details",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/self",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            "self"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-148bb1d5-81a7-4bad-bde9-0168525e906c"
+                    },
+                    {
+                      "id": "adcebb9f-1df5-4326-8b41-e602f12bf6f5",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/self",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            "self"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-adcebb9f-1df5-4326-8b41-e602f12bf6f5"
+                    },
+                    {
+                      "id": "6a970827-e8b3-4ea0-a8a3-235c88570fe5",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/self",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            "self"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-6a970827-e8b3-4ea0-a8a3-235c88570fe5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-7ca68080-9295-4f9f-bf8f-a28f0bd50efb"
+                }
+              ],
+              "id": "44bb561d-18a5-460d-bab6-b5bb0d4ca9af",
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-44bb561d-18a5-460d-bab6-b5bb0d4ca9af"
+            },
+            {
+              "name": "{tokenAccessorID}",
+              "item": [
+                {
+                  "name": "Read an ACL token",
+                  "id": "27ae3d93-df8c-480d-9969-47f8877906e4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token",
+                        ":tokenAccessorID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a81cc73e-402e-4a76-8227-750608b9f772",
+                          "key": "tokenAccessorID",
+                          "value": "<string>",
+                          "description": "(Required) The accessor ID of the ACL token."
+                        }
+                      ]
+                    },
+                    "description": "Returns the details of the specified ACL token by accessor ID."
+                  },
+                  "response": [
+                    {
+                      "id": "46336bcc-3036-4401-bb74-4f4a4d42c4cc",
+                      "name": "ACL token details",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-46336bcc-3036-4401-bb74-4f4a4d42c4cc"
+                    },
+                    {
+                      "id": "c4c18bc2-a99b-4394-aec7-5b7c00288d33",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-c4c18bc2-a99b-4394-aec7-5b7c00288d33"
+                    },
+                    {
+                      "id": "556f8162-6fb2-4a0a-b527-2311bea8b51d",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-556f8162-6fb2-4a0a-b527-2311bea8b51d"
+                    },
+                    {
+                      "id": "12f29872-a120-41e7-9882-ce5392783d22",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-12f29872-a120-41e7-9882-ce5392783d22"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-27ae3d93-df8c-480d-9969-47f8877906e4"
+                },
+                {
+                  "name": "Delete an ACL token",
+                  "id": "db8b1cd0-a159-41c7-8f60-f0c1baf8952c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token",
+                        ":tokenAccessorID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "48b785e6-e427-43a3-9269-7975fa3df211",
+                          "key": "tokenAccessorID",
+                          "value": "<string>",
+                          "description": "(Required) The accessor ID of the ACL token."
+                        }
+                      ]
+                    },
+                    "description": "Deletes the specified ACL token."
+                  },
+                  "response": [
+                    {
+                      "id": "686b54f6-79cc-4284-99f0-d963ba5a69a1",
+                      "name": "ACL token deleted",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-686b54f6-79cc-4284-99f0-d963ba5a69a1"
+                    },
+                    {
+                      "id": "63871b00-9cd2-4530-b9dd-04f91dada552",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-63871b00-9cd2-4530-b9dd-04f91dada552"
+                    },
+                    {
+                      "id": "ffd3732c-d2fc-4499-b933-6f673845f229",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-ffd3732c-d2fc-4499-b933-6f673845f229"
+                    },
+                    {
+                      "id": "c252f675-0bcc-47d7-8657-9ee340b408f9",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/acl/token/:tokenAccessorID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "acl",
+                            "token",
+                            ":tokenAccessorID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tokenAccessorID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:20:52.000Z",
+                      "updatedAt": "2026-07-28T02:20:52.000Z",
+                      "uid": "35240-c252f675-0bcc-47d7-8657-9ee340b408f9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-db8b1cd0-a159-41c7-8f60-f0c1baf8952c"
+                }
+              ],
+              "id": "14bc30bc-3029-4dc9-9314-b9bd2ee7c733",
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-14bc30bc-3029-4dc9-9314-b9bd2ee7c733"
+            },
+            {
+              "name": "Create an ACL token",
+              "id": "3108575b-de89-44cc-bec4-785b8d1ab60a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/acl/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "acl",
+                    "token"
+                  ]
+                },
+                "description": "Creates a new ACL token."
+              },
+              "response": [
+                {
+                  "id": "434af070-a226-4da0-b997-09171c8645cb",
+                  "name": "ACL token created",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-434af070-a226-4da0-b997-09171c8645cb"
+                },
+                {
+                  "id": "f122f069-d5bb-4fa6-9fc0-012bddb877e9",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-f122f069-d5bb-4fa6-9fc0-012bddb877e9"
+                },
+                {
+                  "id": "2fdcb310-824a-40de-bd17-fcdb6ae1c800",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-2fdcb310-824a-40de-bd17-fcdb6ae1c800"
+                },
+                {
+                  "id": "8a17fed2-7752-4325-8e36-0587971227ad",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"AccessorID\": \"<string>\",\n  \"SecretID\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Type\": \"management\",\n  \"Policies\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"Global\": \"<boolean>\",\n  \"CreateTime\": \"<dateTime>\",\n  \"ExpirationTime\": \"<dateTime>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/acl/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "acl",
+                        "token"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:20:52.000Z",
+                  "updatedAt": "2026-07-28T02:20:52.000Z",
+                  "uid": "35240-8a17fed2-7752-4325-8e36-0587971227ad"
+                }
+              ],
+              "createdAt": "2026-07-28T02:20:52.000Z",
+              "updatedAt": "2026-07-28T02:20:52.000Z",
+              "uid": "35240-3108575b-de89-44cc-bec4-785b8d1ab60a"
+            }
+          ],
+          "id": "f7cbc38e-e7c8-4c0f-ac9f-c7b9b1f2c704",
+          "createdAt": "2026-07-28T02:20:52.000Z",
+          "updatedAt": "2026-07-28T02:20:52.000Z",
+          "uid": "35240-f7cbc38e-e7c8-4c0f-ac9f-c7b9b1f2c704"
+        }
+      ],
+      "id": "39507856-0574-474b-b7e6-a39b5025ee9a",
+      "createdAt": "2026-07-28T02:20:52.000Z",
+      "updatedAt": "2026-07-28T02:20:52.000Z",
+      "uid": "35240-39507856-0574-474b-b7e6-a39b5025ee9a"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "info": {
+    "_postman_id": "861701b8-62ac-40e7-8a1f-003ff4addac3",
+    "name": "HashiCorp Nomad HTTP ACL System API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:47.000Z",
+    "updatedAt": "2026-07-28T02:23:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-861701b8-62ac-40e7-8a1f-003ff4addac3"
+  },
+  "item": [
+    {
+      "name": "system",
+      "item": [
+        {
+          "name": "gc",
+          "item": [
+            {
+              "name": "Run garbage collection",
+              "id": "b2caf771-7694-47ec-806b-0db28b00d586",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/system/gc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "system",
+                    "gc"
+                  ]
+                },
+                "description": "Initiates garbage collection of jobs, evaluations, allocations, and nodes. This should not be necessary for most users."
+              },
+              "response": [
+                {
+                  "id": "0721332f-b812-4fcb-9b06-4503a7b3f56b",
+                  "name": "Garbage collection initiated",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/system/gc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system",
+                        "gc"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:23:48.000Z",
+                  "updatedAt": "2026-07-28T02:23:48.000Z",
+                  "uid": "35240-0721332f-b812-4fcb-9b06-4503a7b3f56b"
+                },
+                {
+                  "id": "534a8d0e-0d4d-44fd-ba9c-4fb7acc4d58b",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/system/gc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system",
+                        "gc"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:48.000Z",
+                  "updatedAt": "2026-07-28T02:23:48.000Z",
+                  "uid": "35240-534a8d0e-0d4d-44fd-ba9c-4fb7acc4d58b"
+                },
+                {
+                  "id": "b49159ea-328e-4a62-baea-3396c6fca775",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/system/gc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system",
+                        "gc"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:48.000Z",
+                  "updatedAt": "2026-07-28T02:23:48.000Z",
+                  "uid": "35240-b49159ea-328e-4a62-baea-3396c6fca775"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:48.000Z",
+              "updatedAt": "2026-07-28T02:23:48.000Z",
+              "uid": "35240-b2caf771-7694-47ec-806b-0db28b00d586"
+            }
+          ],
+          "id": "cc265eda-c273-4a85-9b1a-82e751f58df4",
+          "createdAt": "2026-07-28T02:23:48.000Z",
+          "updatedAt": "2026-07-28T02:23:48.000Z",
+          "uid": "35240-cc265eda-c273-4a85-9b1a-82e751f58df4"
+        },
+        {
+          "name": "reconcile",
+          "item": [
+            {
+              "name": "summaries",
+              "item": [
+                {
+                  "name": "Reconcile job summaries",
+                  "id": "7705d1b3-4881-444e-9ab1-6dcf075e6d6c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/system/reconcile/summaries",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "system",
+                        "reconcile",
+                        "summaries"
+                      ]
+                    },
+                    "description": "Reconciles the summaries of all registered jobs."
+                  },
+                  "response": [
+                    {
+                      "id": "60e70bd0-7e9c-49a4-a8c5-90c206fdf6cc",
+                      "name": "Reconciliation initiated",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/system/reconcile/summaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "system",
+                            "reconcile",
+                            "summaries"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:23:48.000Z",
+                      "updatedAt": "2026-07-28T02:23:48.000Z",
+                      "uid": "35240-60e70bd0-7e9c-49a4-a8c5-90c206fdf6cc"
+                    },
+                    {
+                      "id": "5842b0b3-d02a-4017-b082-1b813399b3b2",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/system/reconcile/summaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "system",
+                            "reconcile",
+                            "summaries"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:48.000Z",
+                      "updatedAt": "2026-07-28T02:23:48.000Z",
+                      "uid": "35240-5842b0b3-d02a-4017-b082-1b813399b3b2"
+                    },
+                    {
+                      "id": "a7f30b15-14de-497f-b950-e646f0709564",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/system/reconcile/summaries",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "system",
+                            "reconcile",
+                            "summaries"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:48.000Z",
+                      "updatedAt": "2026-07-28T02:23:48.000Z",
+                      "uid": "35240-a7f30b15-14de-497f-b950-e646f0709564"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:48.000Z",
+                  "updatedAt": "2026-07-28T02:23:48.000Z",
+                  "uid": "35240-7705d1b3-4881-444e-9ab1-6dcf075e6d6c"
+                }
+              ],
+              "id": "ba169399-a8de-4f62-9f1d-d6d8cd982b6d",
+              "createdAt": "2026-07-28T02:23:48.000Z",
+              "updatedAt": "2026-07-28T02:23:48.000Z",
+              "uid": "35240-ba169399-a8de-4f62-9f1d-d6d8cd982b6d"
+            }
+          ],
+          "id": "200d2e7c-1bff-4ad0-88da-cec3561f12d8",
+          "createdAt": "2026-07-28T02:23:48.000Z",
+          "updatedAt": "2026-07-28T02:23:48.000Z",
+          "uid": "35240-200d2e7c-1bff-4ad0-88da-cec3561f12d8"
+        }
+      ],
+      "id": "50ae8df7-0fa9-4bc8-9c01-eda7515c28ca",
+      "createdAt": "2026-07-28T02:23:48.000Z",
+      "updatedAt": "2026-07-28T02:23:48.000Z",
+      "uid": "35240-50ae8df7-0fa9-4bc8-9c01-eda7515c28ca"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

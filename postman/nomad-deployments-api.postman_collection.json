@@ -1,0 +1,1598 @@
+{
+  "info": {
+    "_postman_id": "2e34980c-f3a6-4790-9a9c-e1a30a7ec075",
+    "name": "HashiCorp Nomad HTTP ACL Deployments API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:26.000Z",
+    "updatedAt": "2026-07-28T02:23:26.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-2e34980c-f3a6-4790-9a9c-e1a30a7ec075"
+  },
+  "item": [
+    {
+      "name": "deployments",
+      "item": [
+        {
+          "name": "List deployments",
+          "id": "65317c4d-e8d2-43f2-a643-2e535a11d89f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/deployments?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "deployments"
+              ],
+              "query": [
+                {
+                  "description": "Specifies a string to filter results based on an ID prefix.",
+                  "key": "prefix",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The target namespace. Defaults to the default namespace.",
+                  "key": "namespace",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Indicates where to start paging for queries that support pagination.",
+                  "key": "next_token",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of results to return per page.",
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Specifies the expression used to filter the results.",
+                  "key": "filter",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Lists all deployments in the system. Supports pagination via next_token."
+          },
+          "response": [
+            {
+              "id": "eb2322f5-d529-4c3a-8deb-5c7bfca5ce5a",
+              "name": "A list of deployments",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/deployments?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deployments"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"JobModifyIndex\": \"<integer>\",\n    \"JobSpecModifyIndex\": \"<integer>\",\n    \"JobCreateIndex\": \"<integer>\",\n    \"Status\": \"failed\",\n    \"StatusDescription\": \"<string>\",\n    \"TaskGroups\": {\n      \"aliquip4d\": {\n        \"AutoRevert\": \"<boolean>\",\n        \"AutoPromote\": \"<boolean>\",\n        \"Promoted\": \"<boolean>\",\n        \"DesiredCanaries\": \"<integer>\",\n        \"DesiredTotal\": \"<integer>\",\n        \"PlacedAllocs\": \"<integer>\",\n        \"HealthyAllocs\": \"<integer>\",\n        \"UnhealthyAllocs\": \"<integer>\",\n        \"RequireProgressBy\": \"<dateTime>\"\n      },\n      \"do_a5\": {\n        \"AutoRevert\": \"<boolean>\",\n        \"AutoPromote\": \"<boolean>\",\n        \"Promoted\": \"<boolean>\",\n        \"DesiredCanaries\": \"<integer>\",\n        \"DesiredTotal\": \"<integer>\",\n        \"PlacedAllocs\": \"<integer>\",\n        \"HealthyAllocs\": \"<integer>\",\n        \"UnhealthyAllocs\": \"<integer>\",\n        \"RequireProgressBy\": \"<dateTime>\"\n      }\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"JobModifyIndex\": \"<integer>\",\n    \"JobSpecModifyIndex\": \"<integer>\",\n    \"JobCreateIndex\": \"<integer>\",\n    \"Status\": \"running\",\n    \"StatusDescription\": \"<string>\",\n    \"TaskGroups\": {\n      \"dolor1\": {\n        \"AutoRevert\": \"<boolean>\",\n        \"AutoPromote\": \"<boolean>\",\n        \"Promoted\": \"<boolean>\",\n        \"DesiredCanaries\": \"<integer>\",\n        \"DesiredTotal\": \"<integer>\",\n        \"PlacedAllocs\": \"<integer>\",\n        \"HealthyAllocs\": \"<integer>\",\n        \"UnhealthyAllocs\": \"<integer>\",\n        \"RequireProgressBy\": \"<dateTime>\"\n      },\n      \"cillum_c37\": {\n        \"AutoRevert\": \"<boolean>\",\n        \"AutoPromote\": \"<boolean>\",\n        \"Promoted\": \"<boolean>\",\n        \"DesiredCanaries\": \"<integer>\",\n        \"DesiredTotal\": \"<integer>\",\n        \"PlacedAllocs\": \"<integer>\",\n        \"HealthyAllocs\": \"<integer>\",\n        \"UnhealthyAllocs\": \"<integer>\",\n        \"RequireProgressBy\": \"<dateTime>\"\n      },\n      \"et20\": {\n        \"AutoRevert\": \"<boolean>\",\n        \"AutoPromote\": \"<boolean>\",\n        \"Promoted\": \"<boolean>\",\n        \"DesiredCanaries\": \"<integer>\",\n        \"DesiredTotal\": \"<integer>\",\n        \"PlacedAllocs\": \"<integer>\",\n        \"HealthyAllocs\": \"<integer>\",\n        \"UnhealthyAllocs\": \"<integer>\",\n        \"RequireProgressBy\": \"<dateTime>\"\n      }\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-eb2322f5-d529-4c3a-8deb-5c7bfca5ce5a"
+            },
+            {
+              "id": "ead9b4fe-7ea2-42d3-b050-cd020d921b02",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/deployments?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deployments"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-ead9b4fe-7ea2-42d3-b050-cd020d921b02"
+            },
+            {
+              "id": "3686a7a6-bd6f-4e49-b95e-b563fb5e6e93",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/deployments?prefix=<string>&namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deployments"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-3686a7a6-bd6f-4e49-b95e-b563fb5e6e93"
+            }
+          ],
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-65317c4d-e8d2-43f2-a643-2e535a11d89f"
+        }
+      ],
+      "id": "cd781f27-408c-447a-bffd-6e8e057eb0b4",
+      "createdAt": "2026-07-28T02:23:26.000Z",
+      "updatedAt": "2026-07-28T02:23:26.000Z",
+      "uid": "35240-cd781f27-408c-447a-bffd-6e8e057eb0b4"
+    },
+    {
+      "name": "deployment",
+      "item": [
+        {
+          "name": "{deploymentID}",
+          "item": [
+            {
+              "name": "Read a deployment",
+              "id": "46e0099b-2a43-4fd3-8cc9-a8e5859d231c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/deployment/:deploymentID",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deployment",
+                    ":deploymentID"
+                  ],
+                  "variable": [
+                    {
+                      "id": "06170b16-d42e-4a15-87b5-fbebd484ac1c",
+                      "key": "deploymentID",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the deployment."
+                    }
+                  ]
+                },
+                "description": "Returns the full details of the specified deployment."
+              },
+              "response": [
+                {
+                  "id": "0812989d-926a-48ab-a54a-8c66e155d33c",
+                  "name": "Deployment details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deploymentID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"ID\": \"<string>\",\n  \"Namespace\": \"<string>\",\n  \"JobID\": \"<string>\",\n  \"JobVersion\": \"<integer>\",\n  \"JobModifyIndex\": \"<integer>\",\n  \"JobSpecModifyIndex\": \"<integer>\",\n  \"JobCreateIndex\": \"<integer>\",\n  \"Status\": \"cancelled\",\n  \"StatusDescription\": \"<string>\",\n  \"TaskGroups\": {\n    \"Excepteur51\": {\n      \"AutoRevert\": \"<boolean>\",\n      \"AutoPromote\": \"<boolean>\",\n      \"Promoted\": \"<boolean>\",\n      \"DesiredCanaries\": \"<integer>\",\n      \"DesiredTotal\": \"<integer>\",\n      \"PlacedAllocs\": \"<integer>\",\n      \"HealthyAllocs\": \"<integer>\",\n      \"UnhealthyAllocs\": \"<integer>\",\n      \"RequireProgressBy\": \"<dateTime>\"\n    },\n    \"culpa_c\": {\n      \"AutoRevert\": \"<boolean>\",\n      \"AutoPromote\": \"<boolean>\",\n      \"Promoted\": \"<boolean>\",\n      \"DesiredCanaries\": \"<integer>\",\n      \"DesiredTotal\": \"<integer>\",\n      \"PlacedAllocs\": \"<integer>\",\n      \"HealthyAllocs\": \"<integer>\",\n      \"UnhealthyAllocs\": \"<integer>\",\n      \"RequireProgressBy\": \"<dateTime>\"\n    }\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-0812989d-926a-48ab-a54a-8c66e155d33c"
+                },
+                {
+                  "id": "ceea3912-4b28-49fd-8167-3606664eb954",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deploymentID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-ceea3912-4b28-49fd-8167-3606664eb954"
+                },
+                {
+                  "id": "c8ab2bd8-86b5-4cbf-8b57-75087d1f5d4c",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deploymentID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-c8ab2bd8-86b5-4cbf-8b57-75087d1f5d4c"
+                },
+                {
+                  "id": "5ace3701-cdf2-4a69-b77a-44cf0cf09dfc",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "deploymentID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-5ace3701-cdf2-4a69-b77a-44cf0cf09dfc"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-46e0099b-2a43-4fd3-8cc9-a8e5859d231c"
+            }
+          ],
+          "id": "bc27957c-170f-4e53-a548-1688d6dffcd9",
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-bc27957c-170f-4e53-a548-1688d6dffcd9"
+        },
+        {
+          "name": "allocations",
+          "item": [
+            {
+              "name": "{deploymentID}",
+              "item": [
+                {
+                  "name": "List deployment allocations",
+                  "id": "84855146-332e-4394-a496-e8bc9b2d9891",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/allocations/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        "allocations",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "05b7d867-be60-4b47-8241-8dbd9c94fc6a",
+                          "key": "deploymentID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the deployment."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of allocations associated with the specified deployment."
+                  },
+                  "response": [
+                    {
+                      "id": "2b08de5b-22ec-4f28-86c6-45cb53a9de45",
+                      "name": "A list of allocation stubs",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/allocations/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "allocations",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"EvalID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"NodeName\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"TaskGroup\": \"<string>\",\n    \"DesiredStatus\": \"<string>\",\n    \"ClientStatus\": \"<string>\",\n    \"DeploymentStatus\": {\n      \"Healthy\": \"<boolean>\",\n      \"Canary\": \"<boolean>\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"EvalID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"NodeName\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"JobVersion\": \"<integer>\",\n    \"TaskGroup\": \"<string>\",\n    \"DesiredStatus\": \"<string>\",\n    \"ClientStatus\": \"<string>\",\n    \"DeploymentStatus\": {\n      \"Healthy\": \"<boolean>\",\n      \"Canary\": \"<boolean>\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\",\n    \"CreateTime\": \"<long>\",\n    \"ModifyTime\": \"<long>\"\n  }\n]",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-2b08de5b-22ec-4f28-86c6-45cb53a9de45"
+                    },
+                    {
+                      "id": "5f1ecd2b-7dec-48d6-ab34-1ad870374f05",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/allocations/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "allocations",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-5f1ecd2b-7dec-48d6-ab34-1ad870374f05"
+                    },
+                    {
+                      "id": "50ece28d-9e3b-44a0-9064-0bbc0311bc1f",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/allocations/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "allocations",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-50ece28d-9e3b-44a0-9064-0bbc0311bc1f"
+                    },
+                    {
+                      "id": "c683df4b-bedc-45e4-b53a-f6b89a512469",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/allocations/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "allocations",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-c683df4b-bedc-45e4-b53a-f6b89a512469"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-84855146-332e-4394-a496-e8bc9b2d9891"
+                }
+              ],
+              "id": "89d219f9-59f6-492a-b416-cb530956aa55",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-89d219f9-59f6-492a-b416-cb530956aa55"
+            }
+          ],
+          "id": "eb786954-02f0-4e5e-bb58-9c67a5a65b30",
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-eb786954-02f0-4e5e-bb58-9c67a5a65b30"
+        },
+        {
+          "name": "fail",
+          "item": [
+            {
+              "name": "{deploymentID}",
+              "item": [
+                {
+                  "name": "Fail a deployment",
+                  "id": "3b2372cb-be30-43b9-9af0-4c5ba6aa43a5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/fail/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        "fail",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3debfe50-ad8b-4d8d-9f15-d26e53344b00",
+                          "key": "deploymentID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the deployment."
+                        }
+                      ]
+                    },
+                    "description": "Marks the specified deployment as failed. This causes Nomad to stop the deployment and revert to the previous stable version of the job if configured to do so."
+                  },
+                  "response": [
+                    {
+                      "id": "d7e67ddd-00df-4381-ab21-75d999b748dd",
+                      "name": "Deployment failed",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/fail/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "fail",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalID\": \"<string>\",\n  \"EvalCreateIndex\": \"<integer>\",\n  \"DeploymentModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-d7e67ddd-00df-4381-ab21-75d999b748dd"
+                    },
+                    {
+                      "id": "dd435e98-7217-442c-a3c4-2f33914d7713",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/fail/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "fail",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-dd435e98-7217-442c-a3c4-2f33914d7713"
+                    },
+                    {
+                      "id": "163d1710-27b9-4a64-894d-c1feb6ec44ee",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/fail/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "fail",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-163d1710-27b9-4a64-894d-c1feb6ec44ee"
+                    },
+                    {
+                      "id": "ced9343e-0374-4ecd-9d2d-8e96e5709831",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/fail/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "fail",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-ced9343e-0374-4ecd-9d2d-8e96e5709831"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-3b2372cb-be30-43b9-9af0-4c5ba6aa43a5"
+                }
+              ],
+              "id": "239c8fb0-547c-44b4-8de4-869407625cd5",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-239c8fb0-547c-44b4-8de4-869407625cd5"
+            }
+          ],
+          "id": "ba3a6014-a1fb-43b6-bcc2-633b6a159bf3",
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-ba3a6014-a1fb-43b6-bcc2-633b6a159bf3"
+        },
+        {
+          "name": "pause",
+          "item": [
+            {
+              "name": "{deploymentID}",
+              "item": [
+                {
+                  "name": "Pause or resume a deployment",
+                  "id": "582c8782-d9ab-4836-a874-2b0e8e12f8c1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Pause\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/pause/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        "pause",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d65b84d9-1c84-43fe-ba03-22e207ea6145",
+                          "key": "deploymentID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the deployment."
+                        }
+                      ]
+                    },
+                    "description": "Pauses or resumes a rolling deployment. While paused, no new allocations will be placed for the deployment."
+                  },
+                  "response": [
+                    {
+                      "id": "c0ebb500-3de1-4129-a971-942083b5a7df",
+                      "name": "Deployment updated",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Pause\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/pause/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "pause",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalID\": \"<string>\",\n  \"EvalCreateIndex\": \"<integer>\",\n  \"DeploymentModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-c0ebb500-3de1-4129-a971-942083b5a7df"
+                    },
+                    {
+                      "id": "154bc798-2c17-4427-814d-29ccb01faf8e",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Pause\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/pause/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "pause",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-154bc798-2c17-4427-814d-29ccb01faf8e"
+                    },
+                    {
+                      "id": "ef3ddd9f-621e-4e5e-ad2d-253599103459",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"Pause\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/pause/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "pause",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-ef3ddd9f-621e-4e5e-ad2d-253599103459"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-582c8782-d9ab-4836-a874-2b0e8e12f8c1"
+                }
+              ],
+              "id": "5a182c2d-eef0-4ccd-a25d-2654ae8769b9",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-5a182c2d-eef0-4ccd-a25d-2654ae8769b9"
+            }
+          ],
+          "id": "b10c6144-cd44-45c1-aaee-73107d53d421",
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-b10c6144-cd44-45c1-aaee-73107d53d421"
+        },
+        {
+          "name": "promote",
+          "item": [
+            {
+              "name": "{deploymentID}",
+              "item": [
+                {
+                  "name": "Promote a deployment",
+                  "id": "1e14debd-ea0b-4eea-a63e-69cd51227731",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"All\": \"<boolean>\",\n  \"Groups\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deployment/promote/:deploymentID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deployment",
+                        "promote",
+                        ":deploymentID"
+                      ],
+                      "variable": [
+                        {
+                          "id": "61c5d095-e1ee-423e-bf81-7667b192ef6d",
+                          "key": "deploymentID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the deployment."
+                        }
+                      ]
+                    },
+                    "description": "Promotes canary allocations in the specified deployment, moving them to the main allocation set."
+                  },
+                  "response": [
+                    {
+                      "id": "33aa6ccf-9464-401a-b058-4311df38fbe4",
+                      "name": "Deployment promoted",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"All\": \"<boolean>\",\n  \"Groups\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/promote/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "promote",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalID\": \"<string>\",\n  \"EvalCreateIndex\": \"<integer>\",\n  \"DeploymentModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-33aa6ccf-9464-401a-b058-4311df38fbe4"
+                    },
+                    {
+                      "id": "3aae8081-4d85-4df5-89c6-b506b8209bd9",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"All\": \"<boolean>\",\n  \"Groups\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/promote/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "promote",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-3aae8081-4d85-4df5-89c6-b506b8209bd9"
+                    },
+                    {
+                      "id": "93c47b54-2fad-46eb-b825-214e8a2ce6bc",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"All\": \"<boolean>\",\n  \"Groups\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/deployment/promote/:deploymentID",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deployment",
+                            "promote",
+                            ":deploymentID"
+                          ],
+                          "variable": [
+                            {
+                              "key": "deploymentID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:26.000Z",
+                      "updatedAt": "2026-07-28T02:23:26.000Z",
+                      "uid": "35240-93c47b54-2fad-46eb-b825-214e8a2ce6bc"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:26.000Z",
+                  "updatedAt": "2026-07-28T02:23:26.000Z",
+                  "uid": "35240-1e14debd-ea0b-4eea-a63e-69cd51227731"
+                }
+              ],
+              "id": "a581586d-6633-4736-9c7b-eba3e526ab67",
+              "createdAt": "2026-07-28T02:23:26.000Z",
+              "updatedAt": "2026-07-28T02:23:26.000Z",
+              "uid": "35240-a581586d-6633-4736-9c7b-eba3e526ab67"
+            }
+          ],
+          "id": "3cacdea0-942e-4640-89f5-065cafa5558a",
+          "createdAt": "2026-07-28T02:23:26.000Z",
+          "updatedAt": "2026-07-28T02:23:26.000Z",
+          "uid": "35240-3cacdea0-942e-4640-89f5-065cafa5558a"
+        }
+      ],
+      "id": "3d6bce15-cf2d-4f48-a727-f05c140a9327",
+      "createdAt": "2026-07-28T02:23:26.000Z",
+      "updatedAt": "2026-07-28T02:23:26.000Z",
+      "uid": "35240-3d6bce15-cf2d-4f48-a727-f05c140a9327"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

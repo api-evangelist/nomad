@@ -1,0 +1,314 @@
+{
+  "info": {
+    "_postman_id": "1f0275c6-8fef-49e2-a63c-d101d74bc27b",
+    "name": "HashiCorp Nomad HTTP ACL Volumes API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:24:49.000Z",
+    "updatedAt": "2026-07-28T02:24:49.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1f0275c6-8fef-49e2-a63c-d101d74bc27b"
+  },
+  "item": [
+    {
+      "name": "volumes",
+      "item": [
+        {
+          "name": "List volumes",
+          "id": "9878d1ad-ea36-454a-9e04-eb3978e99045",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/volumes?namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>&type=host",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "volumes"
+              ],
+              "query": [
+                {
+                  "description": "The target namespace. Defaults to the default namespace.",
+                  "key": "namespace",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Indicates where to start paging for queries that support pagination.",
+                  "key": "next_token",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of results to return per page.",
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Specifies the expression used to filter the results.",
+                  "key": "filter",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter volumes by type (csi or host).",
+                  "key": "type",
+                  "value": "host"
+                }
+              ]
+            },
+            "description": "Lists all CSI and host volumes. Supports filtering by namespace, job ID, task group, and volume name."
+          },
+          "response": [
+            {
+              "id": "9dc1d7e2-273a-4129-9301-7544fb2bb570",
+              "name": "A list of volumes",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/volumes?namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>&type=host",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "volumes"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter volumes by type (csi or host).",
+                      "key": "type",
+                      "value": "host"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"ExternalID\": \"<string>\",\n    \"Topologies\": {},\n    \"Provider\": \"<string>\",\n    \"ControllerRequired\": \"<boolean>\",\n    \"ControllersHealthy\": \"<integer>\",\n    \"ControllersExpected\": \"<integer>\",\n    \"NodesHealthy\": \"<integer>\",\n    \"NodesExpected\": \"<integer>\",\n    \"Schedulable\": \"<boolean>\",\n    \"PluginID\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"ExternalID\": \"<string>\",\n    \"Topologies\": {},\n    \"Provider\": \"<string>\",\n    \"ControllerRequired\": \"<boolean>\",\n    \"ControllersHealthy\": \"<integer>\",\n    \"ControllersExpected\": \"<integer>\",\n    \"NodesHealthy\": \"<integer>\",\n    \"NodesExpected\": \"<integer>\",\n    \"Schedulable\": \"<boolean>\",\n    \"PluginID\": \"<string>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+              "createdAt": "2026-07-28T02:24:50.000Z",
+              "updatedAt": "2026-07-28T02:24:50.000Z",
+              "uid": "35240-9dc1d7e2-273a-4129-9301-7544fb2bb570"
+            },
+            {
+              "id": "05a05c8a-ec9f-4d0f-93ff-3798902fd2f4",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/volumes?namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>&type=host",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "volumes"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter volumes by type (csi or host).",
+                      "key": "type",
+                      "value": "host"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:24:50.000Z",
+              "updatedAt": "2026-07-28T02:24:50.000Z",
+              "uid": "35240-05a05c8a-ec9f-4d0f-93ff-3798902fd2f4"
+            },
+            {
+              "id": "ebccb561-41dc-4888-a64a-3a2a3c52a92c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/volumes?namespace=<string>&next_token=<string>&per_page=<integer>&filter=<string>&type=host",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "volumes"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter volumes by type (csi or host).",
+                      "key": "type",
+                      "value": "host"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:24:50.000Z",
+              "updatedAt": "2026-07-28T02:24:50.000Z",
+              "uid": "35240-ebccb561-41dc-4888-a64a-3a2a3c52a92c"
+            }
+          ],
+          "createdAt": "2026-07-28T02:24:50.000Z",
+          "updatedAt": "2026-07-28T02:24:50.000Z",
+          "uid": "35240-9878d1ad-ea36-454a-9e04-eb3978e99045"
+        }
+      ],
+      "id": "79ed22e3-0ad6-4f36-b275-e455b9a44e6e",
+      "createdAt": "2026-07-28T02:24:50.000Z",
+      "updatedAt": "2026-07-28T02:24:50.000Z",
+      "uid": "35240-79ed22e3-0ad6-4f36-b275-e455b9a44e6e"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

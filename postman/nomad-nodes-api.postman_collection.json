@@ -1,0 +1,1352 @@
+{
+  "info": {
+    "_postman_id": "1e27eb65-2809-4b32-9037-f40223d26c62",
+    "name": "HashiCorp Nomad HTTP ACL Nodes API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:31.000Z",
+    "updatedAt": "2026-07-28T02:23:32.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1e27eb65-2809-4b32-9037-f40223d26c62"
+  },
+  "item": [
+    {
+      "name": "nodes",
+      "item": [
+        {
+          "name": "List nodes",
+          "id": "ee5baaef-9458-46ca-922a-fd1bc1676abf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/nodes?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "nodes"
+              ],
+              "query": [
+                {
+                  "description": "Specifies a string to filter results based on an ID prefix.",
+                  "key": "prefix",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Indicates where to start paging for queries that support pagination.",
+                  "key": "next_token",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Maximum number of results to return per page.",
+                  "key": "per_page",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Specifies the expression used to filter the results.",
+                  "key": "filter",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Lists all client nodes registered with Nomad. Supports prefix-based filtering on node ID."
+          },
+          "response": [
+            {
+              "id": "0bc7cb67-0e38-4ea5-8adf-e0c56017e9c8",
+              "name": "A list of node stubs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/nodes?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "nodes"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"NodeClass\": \"<string>\",\n    \"NodePool\": \"<string>\",\n    \"Drain\": \"<boolean>\",\n    \"SchedulingEligibility\": \"<string>\",\n    \"Status\": \"<string>\",\n    \"StatusDescription\": \"<string>\",\n    \"Version\": \"<string>\",\n    \"Drivers\": {\n      \"incididunt_4\": {}\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"Name\": \"<string>\",\n    \"NodeClass\": \"<string>\",\n    \"NodePool\": \"<string>\",\n    \"Drain\": \"<boolean>\",\n    \"SchedulingEligibility\": \"<string>\",\n    \"Status\": \"<string>\",\n    \"StatusDescription\": \"<string>\",\n    \"Version\": \"<string>\",\n    \"Drivers\": {\n      \"aliqua_740\": {},\n      \"pariatur68\": {}\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-0bc7cb67-0e38-4ea5-8adf-e0c56017e9c8"
+            },
+            {
+              "id": "2d8ed922-8344-4fcf-83be-04dd40e44973",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/nodes?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "nodes"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-2d8ed922-8344-4fcf-83be-04dd40e44973"
+            },
+            {
+              "id": "02896839-c156-4ba5-bf08-4c0643fc0dfe",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/nodes?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "nodes"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-02896839-c156-4ba5-bf08-4c0643fc0dfe"
+            }
+          ],
+          "createdAt": "2026-07-28T02:23:32.000Z",
+          "updatedAt": "2026-07-28T02:23:32.000Z",
+          "uid": "35240-ee5baaef-9458-46ca-922a-fd1bc1676abf"
+        }
+      ],
+      "id": "fd98dbf6-1ece-42a4-bb77-cab3069b9a6d",
+      "createdAt": "2026-07-28T02:23:32.000Z",
+      "updatedAt": "2026-07-28T02:23:32.000Z",
+      "uid": "35240-fd98dbf6-1ece-42a4-bb77-cab3069b9a6d"
+    },
+    {
+      "name": "node",
+      "item": [
+        {
+          "name": "{nodeID}",
+          "item": [
+            {
+              "name": "evaluate",
+              "item": [
+                {
+                  "name": "Create a new evaluation for a node",
+                  "id": "ca5dd52a-532c-4b9a-947c-72c429d5a4a2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID/evaluate",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID",
+                        "evaluate"
+                      ],
+                      "variable": [
+                        {
+                          "id": "13bf67e1-5977-4922-b893-35ee0f28fc16",
+                          "key": "nodeID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the node."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new evaluation for the specified node. This can be used to force a re-evaluation of the node and its allocations."
+                  },
+                  "response": [
+                    {
+                      "id": "ca2a81a9-9332-48af-bed0-1cdd55756b04",
+                      "name": "Evaluation created",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/evaluate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "evaluate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalIDs\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-ca2a81a9-9332-48af-bed0-1cdd55756b04"
+                    },
+                    {
+                      "id": "71ca09c5-0bc2-4473-bc70-d26b76dbbaa9",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/evaluate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "evaluate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-71ca09c5-0bc2-4473-bc70-d26b76dbbaa9"
+                    },
+                    {
+                      "id": "a7b775dc-50cf-4a21-aba1-58f2765c0bc7",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/evaluate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "evaluate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-a7b775dc-50cf-4a21-aba1-58f2765c0bc7"
+                    },
+                    {
+                      "id": "10723df6-389c-49fd-80ef-0cef2b3cd0fa",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/evaluate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "evaluate"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-10723df6-389c-49fd-80ef-0cef2b3cd0fa"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-ca5dd52a-532c-4b9a-947c-72c429d5a4a2"
+                }
+              ],
+              "id": "955a478f-5838-47c2-879a-8b877b3ffeae",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-955a478f-5838-47c2-879a-8b877b3ffeae"
+            },
+            {
+              "name": "drain",
+              "item": [
+                {
+                  "name": "Set node drain mode",
+                  "id": "62e490fd-f34c-463d-8285-03d635cde601",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"DrainSpec\": {\n    \"Deadline\": \"<integer>\",\n    \"IgnoreSystemJobs\": \"<boolean>\"\n  },\n  \"MarkEligible\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID/drain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID",
+                        "drain"
+                      ],
+                      "variable": [
+                        {
+                          "id": "36007b09-ea97-4bd7-82e2-f9850ca62758",
+                          "key": "nodeID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the node."
+                        }
+                      ]
+                    },
+                    "description": "Enables or disables drain mode on the specified node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated."
+                  },
+                  "response": [
+                    {
+                      "id": "91383d8f-18ad-4972-bad4-ae87f5390ca6",
+                      "name": "Node drain updated",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"DrainSpec\": {\n    \"Deadline\": \"<integer>\",\n    \"IgnoreSystemJobs\": \"<boolean>\"\n  },\n  \"MarkEligible\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/drain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "drain"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalIDs\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"NodeModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-91383d8f-18ad-4972-bad4-ae87f5390ca6"
+                    },
+                    {
+                      "id": "32560614-fc5a-4fbd-9764-f9f7c1ccdf47",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"DrainSpec\": {\n    \"Deadline\": \"<integer>\",\n    \"IgnoreSystemJobs\": \"<boolean>\"\n  },\n  \"MarkEligible\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/drain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "drain"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-32560614-fc5a-4fbd-9764-f9f7c1ccdf47"
+                    },
+                    {
+                      "id": "3c1ee0a4-723c-484f-85cc-e2e3809d771f",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"DrainSpec\": {\n    \"Deadline\": \"<integer>\",\n    \"IgnoreSystemJobs\": \"<boolean>\"\n  },\n  \"MarkEligible\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/drain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "drain"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-3c1ee0a4-723c-484f-85cc-e2e3809d771f"
+                    },
+                    {
+                      "id": "1090cd41-67af-4b45-b3f9-354dc4ecd63b",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"DrainSpec\": {\n    \"Deadline\": \"<integer>\",\n    \"IgnoreSystemJobs\": \"<boolean>\"\n  },\n  \"MarkEligible\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/drain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "drain"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-1090cd41-67af-4b45-b3f9-354dc4ecd63b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-62e490fd-f34c-463d-8285-03d635cde601"
+                }
+              ],
+              "id": "66c74633-1aa9-49db-9553-e15d64827537",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-66c74633-1aa9-49db-9553-e15d64827537"
+            },
+            {
+              "name": "purge",
+              "item": [
+                {
+                  "name": "Purge a node",
+                  "id": "da275a93-8c20-49ea-a263-8f160da068d9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID/purge",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID",
+                        "purge"
+                      ],
+                      "variable": [
+                        {
+                          "id": "b859be4a-3028-42b1-9638-5be5e24c5cbd",
+                          "key": "nodeID",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the node."
+                        }
+                      ]
+                    },
+                    "description": "Purges a node from the system. The node must be in a down state."
+                  },
+                  "response": [
+                    {
+                      "id": "e9522180-54ea-4050-bd11-f545ee7a655e",
+                      "name": "Node purged",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"EvalIDs\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-e9522180-54ea-4050-bd11-f545ee7a655e"
+                    },
+                    {
+                      "id": "fa500104-1f8d-47c8-8a51-65def4665f01",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-fa500104-1f8d-47c8-8a51-65def4665f01"
+                    },
+                    {
+                      "id": "f6aa802e-07f3-4087-a213-f7f0a221e87b",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-f6aa802e-07f3-4087-a213-f7f0a221e87b"
+                    },
+                    {
+                      "id": "559f4aaf-d023-43e1-99d9-e12e1aefb1d5",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/:nodeID/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            ":nodeID",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "nodeID"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:32.000Z",
+                      "updatedAt": "2026-07-28T02:23:32.000Z",
+                      "uid": "35240-559f4aaf-d023-43e1-99d9-e12e1aefb1d5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-da275a93-8c20-49ea-a263-8f160da068d9"
+                }
+              ],
+              "id": "2756c1f2-27b0-456d-a29c-7e4266c15284",
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-2756c1f2-27b0-456d-a29c-7e4266c15284"
+            },
+            {
+              "name": "Read a node",
+              "id": "879c2532-0945-425b-8870-a54c87e76c3f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/node/:nodeID",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "node",
+                    ":nodeID"
+                  ],
+                  "variable": [
+                    {
+                      "id": "389df36e-6449-4264-a44d-8ec82af5e5fb",
+                      "key": "nodeID",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the node."
+                    }
+                  ]
+                },
+                "description": "Returns the full details of the specified node."
+              },
+              "response": [
+                {
+                  "id": "4e5b4c28-2cac-4424-b59e-98ab5c00504d",
+                  "name": "Node details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "nodeID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"ID\": \"<string>\",\n  \"Datacenter\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"NodeClass\": \"<string>\",\n  \"NodePool\": \"<string>\",\n  \"Drain\": \"<boolean>\",\n  \"SchedulingEligibility\": \"ineligible\",\n  \"Status\": \"disconnected\",\n  \"StatusDescription\": \"<string>\",\n  \"Drivers\": {\n    \"dolored\": {\n      \"Detected\": \"<boolean>\",\n      \"Healthy\": \"<boolean>\",\n      \"HealthDescription\": \"<string>\"\n    },\n    \"ea7\": {\n      \"Detected\": \"<boolean>\",\n      \"Healthy\": \"<boolean>\",\n      \"HealthDescription\": \"<string>\"\n    }\n  },\n  \"Attributes\": {\n    \"eiusmod07_\": \"<string>\"\n  },\n  \"Resources\": {\n    \"CPU\": \"<integer>\",\n    \"Cores\": \"<integer>\",\n    \"MemoryMB\": \"<integer>\",\n    \"MemoryMaxMB\": \"<integer>\",\n    \"DiskMB\": \"<integer>\",\n    \"Networks\": [\n      {\n        \"Mode\": \"<string>\",\n        \"Device\": \"<string>\",\n        \"CIDR\": \"<string>\",\n        \"IP\": \"<string>\",\n        \"MBits\": \"<integer>\",\n        \"DNS\": {\n          \"Servers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"DynamicPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ],\n        \"ReservedPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"Mode\": \"<string>\",\n        \"Device\": \"<string>\",\n        \"CIDR\": \"<string>\",\n        \"IP\": \"<string>\",\n        \"MBits\": \"<integer>\",\n        \"DNS\": {\n          \"Servers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"DynamicPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ],\n        \"ReservedPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"Reserved\": {\n    \"CPU\": \"<integer>\",\n    \"Cores\": \"<integer>\",\n    \"MemoryMB\": \"<integer>\",\n    \"MemoryMaxMB\": \"<integer>\",\n    \"DiskMB\": \"<integer>\",\n    \"Networks\": [\n      {\n        \"Mode\": \"<string>\",\n        \"Device\": \"<string>\",\n        \"CIDR\": \"<string>\",\n        \"IP\": \"<string>\",\n        \"MBits\": \"<integer>\",\n        \"DNS\": {\n          \"Servers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"DynamicPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ],\n        \"ReservedPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"Mode\": \"<string>\",\n        \"Device\": \"<string>\",\n        \"CIDR\": \"<string>\",\n        \"IP\": \"<string>\",\n        \"MBits\": \"<integer>\",\n        \"DNS\": {\n          \"Servers\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        \"DynamicPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ],\n        \"ReservedPorts\": [\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          },\n          {\n            \"Label\": \"<string>\",\n            \"Value\": \"<integer>\",\n            \"To\": \"<integer>\",\n            \"HostNetwork\": \"<string>\"\n          }\n        ]\n      }\n    ]\n  },\n  \"HTTPAddr\": \"<string>\",\n  \"TLSEnabled\": \"<boolean>\",\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-4e5b4c28-2cac-4424-b59e-98ab5c00504d"
+                },
+                {
+                  "id": "e4ed8eca-c9eb-403b-9657-85a536af8dae",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "nodeID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-e4ed8eca-c9eb-403b-9657-85a536af8dae"
+                },
+                {
+                  "id": "6d5b0728-242a-4729-a252-f0649fa390ae",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "nodeID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-6d5b0728-242a-4729-a252-f0649fa390ae"
+                },
+                {
+                  "id": "ad6c057e-45df-465d-8d59-7f3a7b2d68a9",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/:nodeID",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        ":nodeID"
+                      ],
+                      "variable": [
+                        {
+                          "key": "nodeID"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:32.000Z",
+                  "updatedAt": "2026-07-28T02:23:32.000Z",
+                  "uid": "35240-ad6c057e-45df-465d-8d59-7f3a7b2d68a9"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:32.000Z",
+              "updatedAt": "2026-07-28T02:23:32.000Z",
+              "uid": "35240-879c2532-0945-425b-8870-a54c87e76c3f"
+            }
+          ],
+          "id": "3e927462-7c7f-4017-b729-bb0b1369893a",
+          "createdAt": "2026-07-28T02:23:32.000Z",
+          "updatedAt": "2026-07-28T02:23:32.000Z",
+          "uid": "35240-3e927462-7c7f-4017-b729-bb0b1369893a"
+        }
+      ],
+      "id": "eba27534-b19b-4fdc-a64a-eb8c330e1e46",
+      "createdAt": "2026-07-28T02:23:32.000Z",
+      "updatedAt": "2026-07-28T02:23:32.000Z",
+      "uid": "35240-eba27534-b19b-4fdc-a64a-eb8c330e1e46"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

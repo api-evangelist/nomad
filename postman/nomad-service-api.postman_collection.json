@@ -1,0 +1,583 @@
+{
+  "info": {
+    "_postman_id": "35f14db6-a935-457b-a113-9f6d7188258b",
+    "name": "HashiCorp Nomad HTTP ACL Service API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:38.000Z",
+    "updatedAt": "2026-07-28T02:23:38.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-35f14db6-a935-457b-a113-9f6d7188258b"
+  },
+  "item": [
+    {
+      "name": "service",
+      "item": [
+        {
+          "name": "{serviceName}",
+          "item": [
+            {
+              "name": "Read a service",
+              "id": "45127299-5f6c-4710-947b-cdfff5137eb0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "service",
+                    ":serviceName"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "c7aaae89-a9b1-4030-9264-49a98c1425dd",
+                      "key": "serviceName",
+                      "value": "<string>",
+                      "description": "(Required) The name of the service."
+                    }
+                  ]
+                },
+                "description": "Returns the registrations for the specified service name."
+              },
+              "response": [
+                {
+                  "id": "931b948f-3045-47f5-b0dc-44bbcbba7af6",
+                  "name": "Service registrations",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"ID\": \"<string>\",\n    \"ServiceName\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"AllocID\": \"<string>\",\n    \"Tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Address\": \"<string>\",\n    \"Port\": \"<integer>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"ID\": \"<string>\",\n    \"ServiceName\": \"<string>\",\n    \"Namespace\": \"<string>\",\n    \"NodeID\": \"<string>\",\n    \"Datacenter\": \"<string>\",\n    \"JobID\": \"<string>\",\n    \"AllocID\": \"<string>\",\n    \"Tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"Address\": \"<string>\",\n    \"Port\": \"<integer>\",\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-931b948f-3045-47f5-b0dc-44bbcbba7af6"
+                },
+                {
+                  "id": "ac07dd6d-a02e-414d-b685-a956bc2352fb",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-ac07dd6d-a02e-414d-b685-a956bc2352fb"
+                },
+                {
+                  "id": "94864939-ecf7-4f4e-a858-252b283ecb47",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-94864939-ecf7-4f4e-a858-252b283ecb47"
+                },
+                {
+                  "id": "270d534a-de2f-420e-b7d3-831e6e41fe83",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-270d534a-de2f-420e-b7d3-831e6e41fe83"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:39.000Z",
+              "updatedAt": "2026-07-28T02:23:39.000Z",
+              "uid": "35240-45127299-5f6c-4710-947b-cdfff5137eb0"
+            },
+            {
+              "name": "Delete a service registration",
+              "id": "42765e10-f655-4e10-8412-95dffde62538",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "service",
+                    ":serviceName"
+                  ],
+                  "query": [
+                    {
+                      "description": "The target namespace. Defaults to the default namespace.",
+                      "key": "namespace",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "3c36ecb8-f3b1-4901-be8b-aadba62d4dae",
+                      "key": "serviceName",
+                      "value": "<string>",
+                      "description": "(Required) The name of the service."
+                    }
+                  ]
+                },
+                "description": "Deletes the specified service registration."
+              },
+              "response": [
+                {
+                  "id": "451d3098-7a3d-41eb-b73e-1b17a81b1264",
+                  "name": "Service deleted",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-451d3098-7a3d-41eb-b73e-1b17a81b1264"
+                },
+                {
+                  "id": "f6b2b9fe-127f-4111-ae20-a24c976d9a06",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-f6b2b9fe-127f-4111-ae20-a24c976d9a06"
+                },
+                {
+                  "id": "b219df62-b8d0-4557-8eba-04f282ae86ae",
+                  "name": "Resource not found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-b219df62-b8d0-4557-8eba-04f282ae86ae"
+                },
+                {
+                  "id": "75b24645-33e0-4a65-9059-2ea39cdf85b7",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/service/:serviceName?namespace=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "service",
+                        ":serviceName"
+                      ],
+                      "query": [
+                        {
+                          "description": "The target namespace. Defaults to the default namespace.",
+                          "key": "namespace",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "serviceName"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:39.000Z",
+                  "updatedAt": "2026-07-28T02:23:39.000Z",
+                  "uid": "35240-75b24645-33e0-4a65-9059-2ea39cdf85b7"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:39.000Z",
+              "updatedAt": "2026-07-28T02:23:39.000Z",
+              "uid": "35240-42765e10-f655-4e10-8412-95dffde62538"
+            }
+          ],
+          "id": "44955fb3-40ea-4713-87a3-b3b26fffc440",
+          "createdAt": "2026-07-28T02:23:39.000Z",
+          "updatedAt": "2026-07-28T02:23:39.000Z",
+          "uid": "35240-44955fb3-40ea-4713-87a3-b3b26fffc440"
+        }
+      ],
+      "id": "00933092-1d69-4809-88bb-69382ef08f1f",
+      "createdAt": "2026-07-28T02:23:39.000Z",
+      "updatedAt": "2026-07-28T02:23:39.000Z",
+      "uid": "35240-00933092-1d69-4809-88bb-69382ef08f1f"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}

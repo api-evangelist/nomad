@@ -1,0 +1,1055 @@
+{
+  "info": {
+    "_postman_id": "c304d116-4c5b-4139-90ef-898fd5423656",
+    "name": "HashiCorp Nomad HTTP ACL Node Pools API",
+    "description": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:23:30.000Z",
+    "updatedAt": "2026-07-28T02:23:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c304d116-4c5b-4139-90ef-898fd5423656"
+  },
+  "item": [
+    {
+      "name": "node",
+      "item": [
+        {
+          "name": "pools",
+          "item": [
+            {
+              "name": "List node pools",
+              "id": "d0658259-9476-4f20-b8fc-5cad098e20d7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/node/pools?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "node",
+                    "pools"
+                  ],
+                  "query": [
+                    {
+                      "description": "Specifies a string to filter results based on an ID prefix.",
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Indicates where to start paging for queries that support pagination.",
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Maximum number of results to return per page.",
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Specifies the expression used to filter the results.",
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Lists all node pools registered with Nomad."
+              },
+              "response": [
+                {
+                  "id": "b2c5886c-20ba-4276-b0cf-dbcd24ed6ff4",
+                  "name": "A list of node pools",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Indicates where to start paging for queries that support pagination.",
+                          "key": "next_token",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Maximum number of results to return per page.",
+                          "key": "per_page",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Specifies the expression used to filter the results.",
+                          "key": "filter",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"Name\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"Meta\": {\n      \"in_b\": \"<string>\"\n    },\n    \"SchedulerConfiguration\": {\n      \"SchedulerAlgorithm\": \"binpack\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  },\n  {\n    \"Name\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"Meta\": {\n      \"ea0\": \"<string>\",\n      \"est_63b\": \"<string>\",\n      \"essec\": \"<string>\"\n    },\n    \"SchedulerConfiguration\": {\n      \"SchedulerAlgorithm\": \"binpack\"\n    },\n    \"CreateIndex\": \"<integer>\",\n    \"ModifyIndex\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-b2c5886c-20ba-4276-b0cf-dbcd24ed6ff4"
+                },
+                {
+                  "id": "0fc5fecc-d9c6-4c79-a612-367935af8bf2",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Indicates where to start paging for queries that support pagination.",
+                          "key": "next_token",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Maximum number of results to return per page.",
+                          "key": "per_page",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Specifies the expression used to filter the results.",
+                          "key": "filter",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-0fc5fecc-d9c6-4c79-a612-367935af8bf2"
+                },
+                {
+                  "id": "5bfdaf5f-a714-4d5e-9164-634477f1b6bb",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools?prefix=<string>&next_token=<string>&per_page=<integer>&filter=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specifies a string to filter results based on an ID prefix.",
+                          "key": "prefix",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Indicates where to start paging for queries that support pagination.",
+                          "key": "next_token",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Maximum number of results to return per page.",
+                          "key": "per_page",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Specifies the expression used to filter the results.",
+                          "key": "filter",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-5bfdaf5f-a714-4d5e-9164-634477f1b6bb"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:31.000Z",
+              "updatedAt": "2026-07-28T02:23:31.000Z",
+              "uid": "35240-d0658259-9476-4f20-b8fc-5cad098e20d7"
+            },
+            {
+              "name": "Create or update a node pool",
+              "id": "2f26d382-6273-4f0c-b1a4-3dc99f2f210f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/node/pools",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "node",
+                    "pools"
+                  ]
+                },
+                "description": "Creates a new node pool or updates an existing one."
+              },
+              "response": [
+                {
+                  "id": "bf8edf76-e314-43d5-baef-e6777844e4a2",
+                  "name": "Node pool created or updated",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-bf8edf76-e314-43d5-baef-e6777844e4a2"
+                },
+                {
+                  "id": "e92c9f81-f1b2-4fa2-9f69-a617e2f1ddaf",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-e92c9f81-f1b2-4fa2-9f69-a617e2f1ddaf"
+                },
+                {
+                  "id": "d7933d29-f519-487a-b40f-7bed523b55ae",
+                  "name": "Unauthorized - missing or invalid ACL token",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-d7933d29-f519-487a-b40f-7bed523b55ae"
+                },
+                {
+                  "id": "2b736ce2-44af-4165-9f46-e60f6e0eaecc",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "X-Nomad-Token",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pools",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pools"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-2b736ce2-44af-4165-9f46-e60f6e0eaecc"
+                }
+              ],
+              "createdAt": "2026-07-28T02:23:31.000Z",
+              "updatedAt": "2026-07-28T02:23:31.000Z",
+              "uid": "35240-2f26d382-6273-4f0c-b1a4-3dc99f2f210f"
+            }
+          ],
+          "id": "5fe69875-2dbb-4f34-ac0d-7beaf1ab1f84",
+          "createdAt": "2026-07-28T02:23:31.000Z",
+          "updatedAt": "2026-07-28T02:23:31.000Z",
+          "uid": "35240-5fe69875-2dbb-4f34-ac0d-7beaf1ab1f84"
+        },
+        {
+          "name": "pool",
+          "item": [
+            {
+              "name": "{poolName}",
+              "item": [
+                {
+                  "name": "Read a node pool",
+                  "id": "44b200cf-d9e2-409d-a617-d9624486d6dc",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pool/:poolName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pool",
+                        ":poolName"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7fb18e63-6e5e-4c98-bafd-ec184dd9c4de",
+                          "key": "poolName",
+                          "value": "<string>",
+                          "description": "(Required) The name of the node pool."
+                        }
+                      ]
+                    },
+                    "description": "Returns the details of the specified node pool."
+                  },
+                  "response": [
+                    {
+                      "id": "51d9dc1e-b783-49c9-9a8b-ed1e469305b4",
+                      "name": "Node pool details",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"Name\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"Meta\": {\n    \"dolor_1\": \"<string>\",\n    \"nostrud_8\": \"<string>\",\n    \"sit_b12\": \"<string>\"\n  },\n  \"SchedulerConfiguration\": {\n    \"SchedulerAlgorithm\": \"spread\"\n  },\n  \"CreateIndex\": \"<integer>\",\n  \"ModifyIndex\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-51d9dc1e-b783-49c9-9a8b-ed1e469305b4"
+                    },
+                    {
+                      "id": "7c949dbe-f2dd-457d-a15c-6aa540567ddf",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-7c949dbe-f2dd-457d-a15c-6aa540567ddf"
+                    },
+                    {
+                      "id": "fe417f8d-af4e-4f7b-979f-10e184ed0984",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-fe417f8d-af4e-4f7b-979f-10e184ed0984"
+                    },
+                    {
+                      "id": "e3ef3ab7-b5f1-4d69-bec9-11065228beff",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-e3ef3ab7-b5f1-4d69-bec9-11065228beff"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-44b200cf-d9e2-409d-a617-d9624486d6dc"
+                },
+                {
+                  "name": "Delete a node pool",
+                  "id": "e268f620-338c-407f-868c-0f2ed3b748b6",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/node/pool/:poolName",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "node",
+                        "pool",
+                        ":poolName"
+                      ],
+                      "variable": [
+                        {
+                          "id": "71d983af-202c-41b1-be6e-989d7ac3d8d4",
+                          "key": "poolName",
+                          "value": "<string>",
+                          "description": "(Required) The name of the node pool."
+                        }
+                      ]
+                    },
+                    "description": "Deletes the specified node pool."
+                  },
+                  "response": [
+                    {
+                      "id": "9c05b753-9095-481f-8485-753fa647c31c",
+                      "name": "Node pool deleted",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-9c05b753-9095-481f-8485-753fa647c31c"
+                    },
+                    {
+                      "id": "5eef180a-e95d-408f-ab2e-bd29d4a47f84",
+                      "name": "Unauthorized - missing or invalid ACL token",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-5eef180a-e95d-408f-ab2e-bd29d4a47f84"
+                    },
+                    {
+                      "id": "0ef6ef28-bcd8-4f3d-848c-00e5d21f69a0",
+                      "name": "Resource not found",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-0ef6ef28-bcd8-4f3d-848c-00e5d21f69a0"
+                    },
+                    {
+                      "id": "4540f586-428b-4767-b817-6e8e55a83d51",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-Nomad-Token",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/node/pool/:poolName",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "node",
+                            "pool",
+                            ":poolName"
+                          ],
+                          "variable": [
+                            {
+                              "key": "poolName"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:23:31.000Z",
+                      "updatedAt": "2026-07-28T02:23:31.000Z",
+                      "uid": "35240-4540f586-428b-4767-b817-6e8e55a83d51"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:23:31.000Z",
+                  "updatedAt": "2026-07-28T02:23:31.000Z",
+                  "uid": "35240-e268f620-338c-407f-868c-0f2ed3b748b6"
+                }
+              ],
+              "id": "0206f0ac-3f87-4c37-9865-1348894232b4",
+              "createdAt": "2026-07-28T02:23:31.000Z",
+              "updatedAt": "2026-07-28T02:23:31.000Z",
+              "uid": "35240-0206f0ac-3f87-4c37-9865-1348894232b4"
+            }
+          ],
+          "id": "7f52fbfb-b16b-411d-a2bc-e59b1d85dc0b",
+          "createdAt": "2026-07-28T02:23:31.000Z",
+          "updatedAt": "2026-07-28T02:23:31.000Z",
+          "uid": "35240-7f52fbfb-b16b-411d-a2bc-e59b1d85dc0b"
+        }
+      ],
+      "id": "1d57e9f9-4b04-4b05-afa9-062f976d18c4",
+      "createdAt": "2026-07-28T02:23:31.000Z",
+      "updatedAt": "2026-07-28T02:23:31.000Z",
+      "uid": "35240-1d57e9f9-4b04-4b05-afa9-062f976d18c4"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4646/v1"
+    }
+  ]
+}
