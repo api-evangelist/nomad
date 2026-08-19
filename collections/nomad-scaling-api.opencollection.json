@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Scaling API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scaling",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List scaling policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/scaling/policies",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "job",
+                "value": "",
+                "type": "query",
+                "description": "Filter scaling policies by job ID."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter scaling policies by type."
+              }
+            ]
+          },
+          "docs": "Lists all scaling policies in the system."
+        },
+        {
+          "info": {
+            "name": "Read a scaling policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/scaling/policy/:policyID",
+            "params": [
+              {
+                "name": "policyID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the scaling policy."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified scaling policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,99 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Operator API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Operator",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read Raft configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/raft/configuration"
+          },
+          "docs": "Returns the current Raft peer configuration of the cluster."
+        },
+        {
+          "info": {
+            "name": "Remove a Raft peer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/operator/raft/peer",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "The address of the peer to remove."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the peer to remove."
+              }
+            ]
+          },
+          "docs": "Removes a Raft peer from the cluster. This is useful when a server has permanently failed and will not be returning."
+        },
+        {
+          "info": {
+            "name": "Read autopilot configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/autopilot/configuration"
+          },
+          "docs": "Returns the current autopilot configuration."
+        },
+        {
+          "info": {
+            "name": "Update autopilot configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/operator/autopilot/configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the autopilot configuration."
+        },
+        {
+          "info": {
+            "name": "Read autopilot health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/operator/autopilot/health"
+          },
+          "docs": "Returns the health status of the cluster as determined by the autopilot."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

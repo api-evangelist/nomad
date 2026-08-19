@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Node Pools API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Node Pools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List node pools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/pools",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all node pools registered with Nomad."
+        },
+        {
+          "info": {
+            "name": "Create or update a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/node/pools",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new node pool or updates an existing one."
+        },
+        {
+          "info": {
+            "name": "Read a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/pool/:poolName",
+            "params": [
+              {
+                "name": "poolName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the node pool."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified node pool."
+        },
+        {
+          "info": {
+            "name": "Delete a node pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/node/pool/:poolName",
+            "params": [
+              {
+                "name": "poolName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the node pool."
+              }
+            ]
+          },
+          "docs": "Deletes the specified node pool."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

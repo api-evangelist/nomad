@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL System API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run garbage collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/system/gc"
+          },
+          "docs": "Initiates garbage collection of jobs, evaluations, allocations, and nodes. This should not be necessary for most users."
+        },
+        {
+          "info": {
+            "name": "Reconcile job summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/system/reconcile/summaries"
+          },
+          "docs": "Reconciles the summaries of all registered jobs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

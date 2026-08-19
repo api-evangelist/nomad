@@ -1,0 +1,143 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Nodes API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Nodes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/nodes",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all client nodes registered with Nomad. Supports prefix-based filtering on node ID."
+        },
+        {
+          "info": {
+            "name": "Read a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/node/:nodeID",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified node."
+        },
+        {
+          "info": {
+            "name": "Create a new evaluation for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/node/:nodeID/evaluate",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Creates a new evaluation for the specified node. This can be used to force a re-evaluation of the node and its allocations."
+        },
+        {
+          "info": {
+            "name": "Set node drain mode",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:4646/v1/node/:nodeID/drain",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables or disables drain mode on the specified node. When draining is enabled, no further allocations will be assigned to this node, and existing allocations will be migrated."
+        },
+        {
+          "info": {
+            "name": "Purge a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/node/:nodeID/purge",
+            "params": [
+              {
+                "name": "nodeID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the node."
+              }
+            ]
+          },
+          "docs": "Purges a node from the system. The node must be in a down state."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

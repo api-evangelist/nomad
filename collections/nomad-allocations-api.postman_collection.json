@@ -1,0 +1,1073 @@
+{
+  "item": [
+    {
+      "id": "3b681bbc-6735-4a14-8e5f-073bcacf9a8d",
+      "name": "Allocations",
+      "description": {
+        "content": "Endpoints for querying allocations. An allocation declares that a set of tasks in a job should be run on a particular node.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fb2325ab-0205-4dff-b8f7-9631701ecd01",
+          "name": "List allocations",
+          "request": {
+            "name": "List allocations",
+            "description": {
+              "content": "Lists all allocations in the system. Supports prefix-based filtering and pagination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "allocations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "prefix",
+                  "value": "<string>",
+                  "description": "Specifies a string to filter results based on an ID prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "namespace",
+                  "value": "<string>",
+                  "description": "The target namespace. Defaults to the default namespace."
+                },
+                {
+                  "disabled": false,
+                  "key": "next_token",
+                  "value": "<string>",
+                  "description": "Indicates where to start paging for queries that support pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Maximum number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Specifies the expression used to filter the results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ee907cf3-2768-485f-9e4f-dbf8570dd1f0",
+              "name": "A list of allocation stubs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"ID\": \"string\",\n    \"EvalID\": \"string\",\n    \"Name\": \"string\",\n    \"Namespace\": \"string\",\n    \"NodeID\": \"string\",\n    \"NodeName\": \"string\",\n    \"JobID\": \"string\",\n    \"JobVersion\": 5405,\n    \"TaskGroup\": \"string\",\n    \"DesiredStatus\": \"string\",\n    \"ClientStatus\": \"string\",\n    \"DeploymentStatus\": {\n      \"Healthy\": false,\n      \"Canary\": true\n    },\n    \"CreateIndex\": 1115,\n    \"ModifyIndex\": 7505,\n    \"CreateTime\": 9611,\n    \"ModifyTime\": 1081\n  },\n  {\n    \"ID\": \"string\",\n    \"EvalID\": \"string\",\n    \"Name\": \"string\",\n    \"Namespace\": \"string\",\n    \"NodeID\": \"string\",\n    \"NodeName\": \"string\",\n    \"JobID\": \"string\",\n    \"JobVersion\": 5578,\n    \"TaskGroup\": \"string\",\n    \"DesiredStatus\": \"string\",\n    \"ClientStatus\": \"string\",\n    \"DeploymentStatus\": {\n      \"Healthy\": true,\n      \"Canary\": true\n    },\n    \"CreateIndex\": 8635,\n    \"ModifyIndex\": 5066,\n    \"CreateTime\": 2149,\n    \"ModifyTime\": 4195\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1753d4a0-707c-453e-af94-1e13864d357d",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8e0e5b5-8c0e-49d1-ae46-f1ef1a6dd8ce",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "prefix",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "namespace",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "next_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7302b015-0a4c-40c4-8f81-446337e4d283",
+          "name": "Read an allocation",
+          "request": {
+            "name": "Read an allocation",
+            "description": {
+              "content": "Returns the full details of the specified allocation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "allocation",
+                ":allocID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "allocID",
+                  "description": "(Required) The ID of the allocation."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8841f6be-6aa9-4bab-8a91-acb15a701101",
+              "name": "Allocation details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ID\": \"string\",\n  \"EvalID\": \"string\",\n  \"Name\": \"string\",\n  \"Namespace\": \"string\",\n  \"NodeID\": \"string\",\n  \"NodeName\": \"string\",\n  \"JobID\": \"string\",\n  \"Job\": {\n    \"ID\": \"string\",\n    \"Name\": \"string\",\n    \"Namespace\": \"string\",\n    \"Type\": \"system\",\n    \"Priority\": 49,\n    \"Region\": \"string\",\n    \"Datacenters\": [\n      \"string\",\n      \"string\"\n    ],\n    \"NodePool\": \"string\",\n    \"Status\": \"dead\",\n    \"StatusDescription\": \"string\",\n    \"Stable\": false,\n    \"Version\": 5570,\n    \"SubmitTime\": 6204,\n    \"CreateIndex\": 8245,\n    \"ModifyIndex\": 9527,\n    \"JobModifyIndex\": 3153,\n    \"TaskGroups\": [\n      {\n        \"Name\": \"string\",\n        \"Count\": 43,\n        \"Tasks\": [\n          {\n            \"Name\": \"string\",\n            \"Driver\": \"string\",\n            \"Config\": {\n              \"key_0\": 5595.025922641672,\n              \"key_1\": true\n            },\n            \"Env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Resources\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"Meta\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"MaxFileSizeMB\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Templates\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Artifacts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Leader\": false\n          },\n          {\n            \"Name\": \"string\",\n            \"Driver\": \"string\",\n            \"Config\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"Env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Resources\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"Meta\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"MaxFileSizeMB\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Templates\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Artifacts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Leader\": true\n          }\n        ],\n        \"RestartPolicy\": {\n          \"Interval\": 9276,\n          \"Attempts\": 7569,\n          \"Delay\": 5130,\n          \"Mode\": \"string\"\n        },\n        \"EphemeralDisk\": {\n          \"SizeMB\": 113,\n          \"Sticky\": true,\n          \"Migrate\": false\n        },\n        \"Networks\": [\n          {\n            \"Mode\": \"string\",\n            \"Device\": \"string\",\n            \"CIDR\": \"string\",\n            \"IP\": \"string\",\n            \"MBits\": 4035,\n            \"DNS\": {\n              \"Servers\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"DynamicPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"Mode\": \"string\",\n            \"Device\": \"string\",\n            \"CIDR\": \"string\",\n            \"IP\": \"string\",\n            \"MBits\": 4274,\n            \"DNS\": {\n              \"Servers\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"DynamicPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"Services\": [\n          {\n            \"Name\": \"string\",\n            \"Tags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"CanaryTags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"PortLabel\": \"string\",\n            \"Provider\": \"nomad\",\n            \"Checks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"Name\": \"string\",\n            \"Tags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"CanaryTags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"PortLabel\": \"string\",\n            \"Provider\": \"consul\",\n            \"Checks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"Volumes\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"Update\": {\n          \"MaxParallel\": 6149,\n          \"HealthCheck\": \"checks\",\n          \"MinHealthyTime\": 3481,\n          \"HealthyDeadline\": 2313,\n          \"ProgressDeadline\": 2615,\n          \"AutoRevert\": true,\n          \"AutoPromote\": true,\n          \"Canary\": 8699,\n          \"Stagger\": 3\n        },\n        \"Scaling\": {}\n      },\n      {\n        \"Name\": \"string\",\n        \"Count\": 2577,\n        \"Tasks\": [\n          {\n            \"Name\": \"string\",\n            \"Driver\": \"string\",\n            \"Config\": {\n              \"key_0\": 3842.221524373972\n            },\n            \"Env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_2\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Resources\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"Meta\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"MaxFileSizeMB\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Templates\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Artifacts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Leader\": true\n          },\n          {\n            \"Name\": \"string\",\n            \"Driver\": \"string\",\n            \"Config\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"Env\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"key_1\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Resources\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"Meta\": {\n              \"key_0\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"LogConfig\": {\n              \"MaxFiles\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"MaxFileSizeMB\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"Templates\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Artifacts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"Leader\": true\n          }\n        ],\n        \"RestartPolicy\": {\n          \"Interval\": 8954,\n          \"Attempts\": 1180,\n          \"Delay\": 1766,\n          \"Mode\": \"string\"\n        },\n        \"EphemeralDisk\": {\n          \"SizeMB\": 2328,\n          \"Sticky\": false,\n          \"Migrate\": true\n        },\n        \"Networks\": [\n          {\n            \"Mode\": \"string\",\n            \"Device\": \"string\",\n            \"CIDR\": \"string\",\n            \"IP\": \"string\",\n            \"MBits\": 5050,\n            \"DNS\": {\n              \"Servers\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"DynamicPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"Mode\": \"string\",\n            \"Device\": \"string\",\n            \"CIDR\": \"string\",\n            \"IP\": \"string\",\n            \"MBits\": 5801,\n            \"DNS\": {\n              \"Servers\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"DynamicPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"ReservedPorts\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"Services\": [\n          {\n            \"Name\": \"string\",\n            \"Tags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"CanaryTags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"PortLabel\": \"string\",\n            \"Provider\": \"nomad\",\n            \"Checks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"Name\": \"string\",\n            \"Tags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"CanaryTags\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"PortLabel\": \"string\",\n            \"Provider\": \"nomad\",\n            \"Checks\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"Volumes\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"Update\": {\n          \"MaxParallel\": 4995,\n          \"HealthCheck\": \"checks\",\n          \"MinHealthyTime\": 2999,\n          \"HealthyDeadline\": 8363,\n          \"ProgressDeadline\": 2613,\n          \"AutoRevert\": true,\n          \"AutoPromote\": true,\n          \"Canary\": 2177,\n          \"Stagger\": 9672\n        },\n        \"Scaling\": {}\n      }\n    ],\n    \"Update\": {\n      \"MaxParallel\": 1848,\n      \"HealthCheck\": \"manual\",\n      \"MinHealthyTime\": 5588,\n      \"HealthyDeadline\": 5015,\n      \"ProgressDeadline\": 4075,\n      \"AutoRevert\": false,\n      \"AutoPromote\": false,\n      \"Canary\": 4425,\n      \"Stagger\": 8525\n    },\n    \"Periodic\": {\n      \"Enabled\": false,\n      \"Spec\": \"string\",\n      \"SpecType\": \"string\",\n      \"ProhibitOverlap\": true,\n      \"TimeZone\": \"string\"\n    },\n    \"Parameterized\": {\n      \"Payload\": \"optional\",\n      \"MetaRequired\": [\n        \"string\",\n        \"string\"\n      ],\n      \"MetaOptional\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"Meta\": {\n      \"key_0\": \"string\"\n    },\n    \"ConsulToken\": \"string\",\n    \"VaultToken\": \"string\"\n  },\n  \"TaskGroup\": \"string\",\n  \"DesiredStatus\": \"stop\",\n  \"ClientStatus\": \"failed\",\n  \"ClientDescription\": \"string\",\n  \"TaskStates\": {\n    \"key_0\": {\n      \"State\": \"string\",\n      \"Failed\": true,\n      \"StartedAt\": \"1955-09-21T15:45:26.479Z\",\n      \"FinishedAt\": \"1999-09-30T04:01:33.950Z\"\n    },\n    \"key_1\": {\n      \"State\": \"string\",\n      \"Failed\": false,\n      \"StartedAt\": \"1957-12-15T09:29:42.583Z\",\n      \"FinishedAt\": \"1979-08-31T11:59:46.667Z\"\n    }\n  },\n  \"DeploymentID\": \"string\",\n  \"DeploymentStatus\": {\n    \"Healthy\": true,\n    \"Timestamp\": \"1961-06-19T07:15:04.337Z\",\n    \"Canary\": false,\n    \"ModifyIndex\": 4124\n  },\n  \"CreateIndex\": 1178,\n  \"ModifyIndex\": 5320,\n  \"CreateTime\": 2399,\n  \"ModifyTime\": 5802\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "804c43e9-ed32-4b7a-9ae9-ce4caa071a3b",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d74cadfb-6d45-4ab9-8bf4-335c91991cdd",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3cd87d45-c571-4864-8328-15b3bd39b0ac",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0fbc757a-15ab-4cc1-871f-c3145d7ad57c",
+          "name": "List allocation services",
+          "request": {
+            "name": "List allocation services",
+            "description": {
+              "content": "Returns the services registered by the specified allocation including address, port, and service name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "allocation",
+                ":allocID",
+                "services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "allocID",
+                  "description": "(Required) The ID of the allocation."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27105b7f-e088-46f2-8b26-29a26e9f6de4",
+              "name": "Allocation services",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"ID\": \"string\",\n    \"ServiceName\": \"string\",\n    \"Namespace\": \"string\",\n    \"NodeID\": \"string\",\n    \"Datacenter\": \"string\",\n    \"JobID\": \"string\",\n    \"AllocID\": \"string\",\n    \"Tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"Address\": \"string\",\n    \"Port\": 8465,\n    \"CreateIndex\": 6638,\n    \"ModifyIndex\": 4794\n  },\n  {\n    \"ID\": \"string\",\n    \"ServiceName\": \"string\",\n    \"Namespace\": \"string\",\n    \"NodeID\": \"string\",\n    \"Datacenter\": \"string\",\n    \"JobID\": \"string\",\n    \"AllocID\": \"string\",\n    \"Tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"Address\": \"string\",\n    \"Port\": 4152,\n    \"CreateIndex\": 3191,\n    \"ModifyIndex\": 9017\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6cd056ca-f0a5-4c60-a024-10b270713c59",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d56f0452-af23-468b-9b2a-816d6b60d6f3",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c2c2dc1-a4a1-4ea7-9e92-afd144215a78",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0f62a57-f894-4e95-8683-ca029058e560",
+          "name": "List allocation health checks",
+          "request": {
+            "name": "List allocation health checks",
+            "description": {
+              "content": "Returns the health check results for the specified allocation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "allocation",
+                ":allocID",
+                "checks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "allocID",
+                  "description": "(Required) The ID of the allocation."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dd57ee4d-067d-4c4d-ac65-68468f0cea37",
+              "name": "Allocation health checks",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "checks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb5ccf16-3bf3-4406-9948-7f212d76be76",
+              "name": "Unauthorized - missing or invalid ACL token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "checks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "177a6ba7-7de3-4ff2-a0e8-ce68370cd299",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "checks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5f5d8e8-e4b0-4ab2-923e-6206903bf85b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "allocation",
+                    ":allocID",
+                    "checks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocID",
+                      "description": "(Required) The ID of the allocation."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Nomad-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:4646/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Nomad-Token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "87dcd54e-2c4c-4fe1-9284-2f36c871b237",
+    "name": "HashiCorp Nomad HTTP ACL Allocations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.\n\nContact Support:\n Name: HashiCorp Support",
+      "type": "text/plain"
+    }
+  }
+}

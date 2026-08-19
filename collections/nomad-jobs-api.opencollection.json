@@ -1,0 +1,482 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Jobs API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/jobs",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all known jobs in the system registered with Nomad. Supports prefix-based filtering and pagination via next_token and per_page query parameters."
+        },
+        {
+          "info": {
+            "name": "Register a new job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/jobs",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Registers a new job or updates an existing job. The job must be provided as a JSON payload in the request body."
+        },
+        {
+          "info": {
+            "name": "Parse a job specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/jobs/parse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Parses a HCL or JSON job specification and returns the equivalent JSON job structure. This endpoint can be used to validate job specifications without registering them."
+        },
+        {
+          "info": {
+            "name": "List job statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/jobs/statuses",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of jobs with their current status information including allocation summaries and deployment status."
+        },
+        {
+          "info": {
+            "name": "Read a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns the full specification and status of the specified job."
+        },
+        {
+          "info": {
+            "name": "Deregister a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/job/:jobID",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "purge",
+                "value": "",
+                "type": "query",
+                "description": "If true, the job is purged from the system and cannot be recovered. Defaults to false."
+              },
+              {
+                "name": "global",
+                "value": "",
+                "type": "query",
+                "description": "If true, deregisters the job in all federated regions."
+              }
+            ]
+          },
+          "docs": "Deregisters a job and stops all allocations associated with it. Optionally purges the job from the system entirely."
+        },
+        {
+          "info": {
+            "name": "Create a new evaluation for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/evaluate",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new evaluation for the given job. This can be used to force run the scheduling logic if necessary."
+        },
+        {
+          "info": {
+            "name": "Plan a job update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/plan",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invokes a dry-run of the scheduler for the job which will determine the effects of an update. The plan will not result in any changes to the cluster."
+        },
+        {
+          "info": {
+            "name": "List allocations for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/allocations",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "all",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes allocations from all namespaces."
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List evaluations for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/evaluations",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a list of evaluations belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List deployments for a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/deployments",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a list of deployments belonging to the specified job."
+        },
+        {
+          "info": {
+            "name": "List versions of a job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/versions",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "diffs",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes the diff between consecutive job versions."
+              }
+            ]
+          },
+          "docs": "Returns a list of versions for the specified job, with the most recent version first."
+        },
+        {
+          "info": {
+            "name": "Revert job to an older version",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/revert",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reverts the job to an older version by creating a new version with the specification of the older version."
+        },
+        {
+          "info": {
+            "name": "Set job stability",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/stable",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the stability of a job version, marking it as stable or unstable. Stable versions are not eligible for automatic garbage collection."
+        },
+        {
+          "info": {
+            "name": "Read a job summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/job/:jobID/summary",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ]
+          },
+          "docs": "Returns a summary of the specified job including the number of allocations in each state per task group."
+        },
+        {
+          "info": {
+            "name": "Dispatch a parameterized job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/job/:jobID/dispatch",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Dispatches a new instance of a parameterized job. The job must be of type parameterized."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

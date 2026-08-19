@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Agent API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List agent members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/members"
+          },
+          "docs": "Returns a list of the known members of the gossip pool."
+        },
+        {
+          "info": {
+            "name": "Read agent self",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/self"
+          },
+          "docs": "Returns the configuration and status of the local agent."
+        },
+        {
+          "info": {
+            "name": "Join an agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/agent/join",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "The address of the server(s) to join."
+              }
+            ]
+          },
+          "docs": "Instructs the agent to join one or more servers by address."
+        },
+        {
+          "info": {
+            "name": "Force leave an agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/agent/force-leave",
+            "params": [
+              {
+                "name": "node",
+                "value": "",
+                "type": "query",
+                "description": "The name of the node to force leave."
+              }
+            ]
+          },
+          "docs": "Forces the specified agent to leave the gossip pool."
+        },
+        {
+          "info": {
+            "name": "Read agent health",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/agent/health"
+          },
+          "docs": "Returns the health status of the agent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

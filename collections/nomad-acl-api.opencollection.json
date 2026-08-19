@@ -1,0 +1,189 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ACL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ACL policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/policies",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              }
+            ]
+          },
+          "docs": "Lists all ACL policies in the system."
+        },
+        {
+          "info": {
+            "name": "Read an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified ACL policy."
+        },
+        {
+          "info": {
+            "name": "Create or update an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new ACL policy or updates an existing one."
+        },
+        {
+          "info": {
+            "name": "Delete an ACL policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/acl/policy/:policyName",
+            "params": [
+              {
+                "name": "policyName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the ACL policy."
+              }
+            ]
+          },
+          "docs": "Deletes the specified ACL policy."
+        },
+        {
+          "info": {
+            "name": "List ACL tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/tokens",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              }
+            ]
+          },
+          "docs": "Lists all ACL tokens in the system."
+        },
+        {
+          "info": {
+            "name": "Create an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/acl/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new ACL token."
+        },
+        {
+          "info": {
+            "name": "Read own ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/token/self"
+          },
+          "docs": "Returns the details of the ACL token used to make the request."
+        },
+        {
+          "info": {
+            "name": "Read an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/acl/token/:tokenAccessorID",
+            "params": [
+              {
+                "name": "tokenAccessorID",
+                "value": "",
+                "type": "path",
+                "description": "The accessor ID of the ACL token."
+              }
+            ]
+          },
+          "docs": "Returns the details of the specified ACL token by accessor ID."
+        },
+        {
+          "info": {
+            "name": "Delete an ACL token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:4646/v1/acl/token/:tokenAccessorID",
+            "params": [
+              {
+                "name": "tokenAccessorID",
+                "value": "",
+                "type": "path",
+                "description": "The accessor ID of the ACL token."
+              }
+            ]
+          },
+          "docs": "Deletes the specified ACL token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

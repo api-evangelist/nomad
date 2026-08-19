@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HashiCorp Nomad HTTP ACL Deployments API",
+    "version": "1.9.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Nomad-Token",
+      "value": "{{X-Nomad-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployments",
+            "params": [
+              {
+                "name": "prefix",
+                "value": "",
+                "type": "query",
+                "description": "Specifies a string to filter results based on an ID prefix."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "The target namespace. Defaults to the default namespace."
+              },
+              {
+                "name": "next_token",
+                "value": "",
+                "type": "query",
+                "description": "Indicates where to start paging for queries that support pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return per page."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the expression used to filter the results."
+              }
+            ]
+          },
+          "docs": "Lists all deployments in the system. Supports pagination via next_token."
+        },
+        {
+          "info": {
+            "name": "Read a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployment/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Returns the full details of the specified deployment."
+        },
+        {
+          "info": {
+            "name": "List deployment allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:4646/v1/deployment/allocations/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Returns a list of allocations associated with the specified deployment."
+        },
+        {
+          "info": {
+            "name": "Fail a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/fail/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ]
+          },
+          "docs": "Marks the specified deployment as failed. This causes Nomad to stop the deployment and revert to the previous stable version of the job if configured to do so."
+        },
+        {
+          "info": {
+            "name": "Pause or resume a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/pause/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Pauses or resumes a rolling deployment. While paused, no new allocations will be placed for the deployment."
+        },
+        {
+          "info": {
+            "name": "Promote a deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:4646/v1/deployment/promote/:deploymentID",
+            "params": [
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the deployment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Promotes canary allocations in the specified deployment, moving them to the main allocation set."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
