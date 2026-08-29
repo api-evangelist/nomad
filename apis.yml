@@ -4,6 +4,18 @@ description: >-
   HashiCorp Nomad is a flexible workload orchestrator that enables organizations to deploy and manage containers, legacy
   applications, and batch jobs across any infrastructure. The Nomad developer platform provides a comprehensive HTTP
   API, official SDKs, and tooling for automating job scheduling, cluster management, and service orchestration at scale.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
