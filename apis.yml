@@ -179,6 +179,8 @@ apis:
   humanURL: https://developer.hashicorp.com/nomad/api-docs
   baseURL: http://localhost:4646
   tags:
+  - Evaluation
+  tags_raw:
   - Evaluations
   properties:
   - type: OpenAPI
@@ -247,6 +249,8 @@ apis:
   humanURL: https://developer.hashicorp.com/nomad/api-docs
   baseURL: http://localhost:4646
   tags:
+  - Node
+  tags_raw:
   - Nodes
   properties:
   - type: OpenAPI
@@ -328,6 +332,8 @@ apis:
   humanURL: https://developer.hashicorp.com/nomad/api-docs
   baseURL: http://localhost:4646
   tags:
+  - Services
+  tags_raw:
   - Service
   properties:
   - type: OpenAPI
