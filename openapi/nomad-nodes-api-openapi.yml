@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: HashiCorp Nomad HTTP ACL Nodes API
+  title: HashiCorp Nomad HTTP Nodes API
   description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
   version: 1.9.0
   contact:
@@ -199,67 +199,6 @@ components:
               message:
                 type: string
   schemas:
-    Node:
-      type: object
-      description: A Nomad client node.
-      properties:
-        ID:
-          type: string
-          description: The unique ID of the node.
-        Datacenter:
-          type: string
-        Name:
-          type: string
-        NodeClass:
-          type: string
-        NodePool:
-          type: string
-        Drain:
-          type: boolean
-          description: Whether the node is in drain mode.
-        SchedulingEligibility:
-          type: string
-          description: Whether the node is eligible for scheduling.
-          enum:
-          - eligible
-          - ineligible
-        Status:
-          type: string
-          description: The status of the node.
-          enum:
-          - initializing
-          - ready
-          - down
-          - disconnected
-        StatusDescription:
-          type: string
-        Drivers:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              Detected:
-                type: boolean
-              Healthy:
-                type: boolean
-              HealthDescription:
-                type: string
-        Attributes:
-          type: object
-          additionalProperties:
-            type: string
-        Resources:
-          $ref: '#/components/schemas/Resources'
-        Reserved:
-          $ref: '#/components/schemas/Resources'
-        HTTPAddr:
-          type: string
-        TLSEnabled:
-          type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
     NetworkResource:
       type: object
       description: Network resource configuration.
@@ -363,13 +302,80 @@ components:
           type: integer
         ModifyIndex:
           type: integer
+    Node:
+      type: object
+      description: A Nomad client node.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the node.
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+          description: Whether the node is in drain mode.
+        SchedulingEligibility:
+          type: string
+          description: Whether the node is eligible for scheduling.
+          enum:
+          - eligible
+          - ineligible
+        Status:
+          type: string
+          description: The status of the node.
+          enum:
+          - initializing
+          - ready
+          - down
+          - disconnected
+        StatusDescription:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              Detected:
+                type: boolean
+              Healthy:
+                type: boolean
+              HealthDescription:
+                type: string
+        Attributes:
+          type: object
+          additionalProperties:
+            type: string
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Reserved:
+          $ref: '#/components/schemas/Resources'
+        HTTPAddr:
+          type: string
+        TLSEnabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
   parameters:
-    PerPageParam:
-      name: per_page
+    NextTokenParam:
+      name: next_token
       in: query
-      description: Maximum number of results to return per page.
+      description: Indicates where to start paging for queries that support pagination.
       schema:
-        type: integer
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
     NodeIDParam:
       name: nodeID
       in: path
@@ -383,18 +389,12 @@ components:
       description: Specifies the expression used to filter the results.
       schema:
         type: string
-    NextTokenParam:
-      name: next_token
+    PerPageParam:
+      name: per_page
       in: query
-      description: Indicates where to start paging for queries that support pagination.
+      description: Maximum number of results to return per page.
       schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
+        type: integer
   securitySchemes:
     nomadToken:
       type: apiKey

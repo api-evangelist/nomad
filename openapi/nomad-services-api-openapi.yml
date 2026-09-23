@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: HashiCorp Nomad HTTP ACL Services API
+  title: HashiCorp Nomad HTTP Services API
   description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
   version: 1.9.0
   contact:
@@ -45,31 +45,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
   schemas:
     ServiceRegistrationStub:
       type: object
@@ -88,6 +63,31 @@ components:
                 type: array
                 items:
                   type: string
+  parameters:
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
   responses:
     Unauthorized:
       description: Unauthorized - missing or invalid ACL token

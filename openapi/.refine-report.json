@@ -1,25 +1,7 @@
 {
   "provider": "nomad",
   "sources": [
-    "nomad-acl-api-openapi.yml",
-    "nomad-agent-api-openapi.yml",
-    "nomad-allocations-api-openapi.yml",
-    "nomad-deployments-api-openapi.yml",
-    "nomad-evaluations-api-openapi.yml",
-    "nomad-jobs-api-openapi.yml",
-    "nomad-namespaces-api-openapi.yml",
-    "nomad-node-pools-api-openapi.yml",
-    "nomad-nodes-api-openapi.yml",
-    "nomad-operator-api-openapi.yml",
-    "nomad-regions-api-openapi.yml",
-    "nomad-scaling-api-openapi.yml",
-    "nomad-search-api-openapi.yml",
-    "nomad-service-api-openapi.yml",
-    "nomad-services-api-openapi.yml",
-    "nomad-status-api-openapi.yml",
-    "nomad-system-api-openapi.yml",
-    "nomad-variables-api-openapi.yml",
-    "nomad-volumes-api-openapi.yml"
+    "_original/nomad-http-api-openapi.yml"
   ],
   "outputs": [
     "nomad-acl-api-openapi.yml",
@@ -45,6 +27,35 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "nomad-http-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "nomad-http-api-openapi.yml: tagged paths GET /services -> Services",
+    "nomad-http-api-openapi.yml: tagged paths GET /service/{serviceName} -> Service",
+    "nomad-http-api-openapi.yml: tagged paths DELETE /service/{serviceName} -> Service",
+    "nomad-http-api-openapi.yml: declared missing tag: Service",
+    "nomad-http-api-openapi.yml: declared missing tag: Services",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "nomad-acl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-agent-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-allocations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-deployments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-evaluations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-namespaces-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-node-pools-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-nodes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-operator-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-regions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-scaling-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-service-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-services-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-status-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-system-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-variables-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nomad-volumes-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

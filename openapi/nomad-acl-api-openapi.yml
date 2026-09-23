@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HashiCorp Nomad HTTP ACL API
   description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
@@ -338,8 +338,8 @@ components:
             properties:
               message:
                 type: string
-    BadRequest:
-      description: Bad request
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
       content:
         application/json:
           schema:
@@ -347,8 +347,8 @@ components:
             properties:
               message:
                 type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

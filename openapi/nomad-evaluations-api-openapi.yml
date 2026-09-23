@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: HashiCorp Nomad HTTP ACL Evaluations API
+  title: HashiCorp Nomad HTTP Evaluations API
   description: The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme.
   version: 1.9.0
   contact:
@@ -171,88 +171,7 @@ components:
             properties:
               message:
                 type: string
-  parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    EvalIDParam:
-      name: evalID
-      in: path
-      required: true
-      description: The ID of the evaluation.
-      schema:
-        type: string
   schemas:
-    AllocationListStub:
-      type: object
-      description: A stub representation of an allocation returned in list operations.
-      properties:
-        ID:
-          type: string
-        EvalID:
-          type: string
-        Name:
-          type: string
-        Namespace:
-          type: string
-        NodeID:
-          type: string
-        NodeName:
-          type: string
-        JobID:
-          type: string
-        JobVersion:
-          type: integer
-        TaskGroup:
-          type: string
-        DesiredStatus:
-          type: string
-        ClientStatus:
-          type: string
-        DeploymentStatus:
-          type: object
-          properties:
-            Healthy:
-              type: boolean
-            Canary:
-              type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
     Evaluation:
       type: object
       description: An evaluation represents a scheduling decision made by Nomad.
@@ -308,6 +227,87 @@ components:
         ModifyTime:
           type: integer
           format: int64
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+  parameters:
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    EvalIDParam:
+      name: evalID
+      in: path
+      required: true
+      description: The ID of the evaluation.
+      schema:
+        type: string
   securitySchemes:
     nomadToken:
       type: apiKey
