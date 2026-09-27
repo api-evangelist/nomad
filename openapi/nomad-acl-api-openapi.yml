@@ -262,35 +262,6 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-    ACLPolicyListStub:
-      type: object
-      description: A stub representation of an ACL policy.
-      properties:
-        Name:
-          type: string
-        Description:
-          type: string
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-    ACLPolicy:
-      type: object
-      description: An ACL policy defining permissions for Nomad resources.
-      properties:
-        Name:
-          type: string
-          description: The name of the ACL policy.
-        Description:
-          type: string
-          description: A human-readable description of the policy.
-        Rules:
-          type: string
-          description: The HCL or JSON policy rules specification.
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
     ACLToken:
       type: object
       description: An ACL token used for authentication and authorization.
@@ -328,7 +299,45 @@ components:
           type: integer
         ModifyIndex:
           type: integer
+    ACLPolicyListStub:
+      type: object
+      description: A stub representation of an ACL policy.
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+    ACLPolicy:
+      type: object
+      description: An ACL policy defining permissions for Nomad resources.
+      properties:
+        Name:
+          type: string
+          description: The name of the ACL policy.
+        Description:
+          type: string
+          description: A human-readable description of the policy.
+        Rules:
+          type: string
+          description: The HCL or JSON policy rules specification.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
   responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
     NotFound:
       description: Resource not found
       content:
@@ -340,15 +349,6 @@ components:
                 type: string
     Unauthorized:
       description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    BadRequest:
-      description: Bad request
       content:
         application/json:
           schema:

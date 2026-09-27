@@ -115,72 +115,72 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
-    AllocIDParam:
-      name: allocID
-      in: path
-      required: true
-      description: The ID of the allocation.
-      schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
   schemas:
-    Service:
+    UpdateStrategy:
       type: object
-      description: A service registration for Consul or Nomad service discovery.
+      description: Update strategy configuration for rolling deployments.
       properties:
-        Name:
+        MaxParallel:
+          type: integer
+          description: The maximum number of allocations to update at a time.
+        HealthCheck:
           type: string
-          description: The name of the service.
+          description: The type of health check to use.
+          enum:
+          - checks
+          - task_states
+          - manual
+        MinHealthyTime:
+          type: integer
+          description: Minimum time in nanoseconds an allocation must be healthy.
+        HealthyDeadline:
+          type: integer
+          description: Deadline in nanoseconds for an allocation to become healthy.
+        ProgressDeadline:
+          type: integer
+          description: Deadline in nanoseconds for the deployment to make progress.
+        AutoRevert:
+          type: boolean
+          description: If true, automatically reverts to the last stable version on deployment failure.
+        AutoPromote:
+          type: boolean
+          description: If true, automatically promotes canary allocations when all are healthy.
+        Canary:
+          type: integer
+          description: The number of canary allocations to create.
+        Stagger:
+          type: integer
+          description: Time in nanoseconds to wait between batches of updates.
+    ServiceRegistration:
+      type: object
+      description: A Nomad service registration.
+      properties:
+        ID:
+          type: string
+        ServiceName:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        Datacenter:
+          type: string
+        JobID:
+          type: string
+        AllocID:
+          type: string
         Tags:
           type: array
           items:
             type: string
-        CanaryTags:
-          type: array
-          items:
-            type: string
-        PortLabel:
+        Address:
           type: string
-        Provider:
-          type: string
-          description: The service discovery provider (consul or nomad).
-          enum:
-          - consul
-          - nomad
-        Checks:
-          type: array
-          items:
-            type: object
+        Port:
+          type: integer
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
     Task:
       type: object
       description: A task is the smallest unit of work in Nomad, executed within a task group.
@@ -224,93 +224,6 @@ components:
         Leader:
           type: boolean
           description: If true, this task is the leader task of the group.
-    UpdateStrategy:
-      type: object
-      description: Update strategy configuration for rolling deployments.
-      properties:
-        MaxParallel:
-          type: integer
-          description: The maximum number of allocations to update at a time.
-        HealthCheck:
-          type: string
-          description: The type of health check to use.
-          enum:
-          - checks
-          - task_states
-          - manual
-        MinHealthyTime:
-          type: integer
-          description: Minimum time in nanoseconds an allocation must be healthy.
-        HealthyDeadline:
-          type: integer
-          description: Deadline in nanoseconds for an allocation to become healthy.
-        ProgressDeadline:
-          type: integer
-          description: Deadline in nanoseconds for the deployment to make progress.
-        AutoRevert:
-          type: boolean
-          description: If true, automatically reverts to the last stable version on deployment failure.
-        AutoPromote:
-          type: boolean
-          description: If true, automatically promotes canary allocations when all are healthy.
-        Canary:
-          type: integer
-          description: The number of canary allocations to create.
-        Stagger:
-          type: integer
-          description: Time in nanoseconds to wait between batches of updates.
-    TaskGroup:
-      type: object
-      description: A task group is a set of tasks that must be co-located on the same node.
-      properties:
-        Name:
-          type: string
-          description: The name of the task group.
-        Count:
-          type: integer
-          description: The number of instances of this task group to run.
-        Tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-          description: The tasks that are part of this task group.
-        RestartPolicy:
-          type: object
-          properties:
-            Interval:
-              type: integer
-            Attempts:
-              type: integer
-            Delay:
-              type: integer
-            Mode:
-              type: string
-        EphemeralDisk:
-          type: object
-          properties:
-            SizeMB:
-              type: integer
-            Sticky:
-              type: boolean
-            Migrate:
-              type: boolean
-        Networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkResource'
-        Services:
-          type: array
-          items:
-            $ref: '#/components/schemas/Service'
-        Volumes:
-          type: object
-          additionalProperties:
-            type: object
-        Update:
-          $ref: '#/components/schemas/UpdateStrategy'
-        Scaling:
-          type: object
-          description: Scaling policy for the task group.
     Job:
       type: object
       description: A Nomad job specification defining the workload to be scheduled.
@@ -427,29 +340,33 @@ components:
         VaultToken:
           type: string
           description: Vault token for the job.
-    Resources:
+    Service:
       type: object
-      description: Resource requirements for a task.
+      description: A service registration for Consul or Nomad service discovery.
       properties:
-        CPU:
-          type: integer
-          description: CPU required in MHz.
-        Cores:
-          type: integer
-          description: Number of CPU cores required.
-        MemoryMB:
-          type: integer
-          description: Memory required in MB.
-        MemoryMaxMB:
-          type: integer
-          description: Maximum memory in MB (memory oversubscription).
-        DiskMB:
-          type: integer
-          description: Disk space required in MB.
-        Networks:
+        Name:
+          type: string
+          description: The name of the service.
+        Tags:
           type: array
           items:
-            $ref: '#/components/schemas/NetworkResource'
+            type: string
+        CanaryTags:
+          type: array
+          items:
+            type: string
+        PortLabel:
+          type: string
+        Provider:
+          type: string
+          description: The service discovery provider (consul or nomad).
+          enum:
+          - consul
+          - nomad
+        Checks:
+          type: array
+          items:
+            type: object
     AllocationListStub:
       type: object
       description: A stub representation of an allocation returned in list operations.
@@ -493,6 +410,129 @@ components:
         ModifyTime:
           type: integer
           format: int64
+    TaskGroup:
+      type: object
+      description: A task group is a set of tasks that must be co-located on the same node.
+      properties:
+        Name:
+          type: string
+          description: The name of the task group.
+        Count:
+          type: integer
+          description: The number of instances of this task group to run.
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: The tasks that are part of this task group.
+        RestartPolicy:
+          type: object
+          properties:
+            Interval:
+              type: integer
+            Attempts:
+              type: integer
+            Delay:
+              type: integer
+            Mode:
+              type: string
+        EphemeralDisk:
+          type: object
+          properties:
+            SizeMB:
+              type: integer
+            Sticky:
+              type: boolean
+            Migrate:
+              type: boolean
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+        Services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        Volumes:
+          type: object
+          additionalProperties:
+            type: object
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Scaling:
+          type: object
+          description: Scaling policy for the task group.
+    NetworkResource:
+      type: object
+      description: Network resource configuration.
+      properties:
+        Mode:
+          type: string
+          description: The network mode (bridge, host, cni).
+        Device:
+          type: string
+        CIDR:
+          type: string
+        IP:
+          type: string
+        MBits:
+          type: integer
+        DNS:
+          type: object
+          properties:
+            Servers:
+              type: array
+              items:
+                type: string
+        DynamicPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+        ReservedPorts:
+          type: array
+          items:
+            type: object
+            properties:
+              Label:
+                type: string
+              Value:
+                type: integer
+              To:
+                type: integer
+              HostNetwork:
+                type: string
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
     Allocation:
       type: object
       description: An allocation mapping a task group in a job to a client node.
@@ -582,87 +622,9 @@ components:
         ModifyTime:
           type: integer
           format: int64
-    NetworkResource:
-      type: object
-      description: Network resource configuration.
-      properties:
-        Mode:
-          type: string
-          description: The network mode (bridge, host, cni).
-        Device:
-          type: string
-        CIDR:
-          type: string
-        IP:
-          type: string
-        MBits:
-          type: integer
-        DNS:
-          type: object
-          properties:
-            Servers:
-              type: array
-              items:
-                type: string
-        DynamicPorts:
-          type: array
-          items:
-            type: object
-            properties:
-              Label:
-                type: string
-              Value:
-                type: integer
-              To:
-                type: integer
-              HostNetwork:
-                type: string
-        ReservedPorts:
-          type: array
-          items:
-            type: object
-            properties:
-              Label:
-                type: string
-              Value:
-                type: integer
-              To:
-                type: integer
-              HostNetwork:
-                type: string
-    ServiceRegistration:
-      type: object
-      description: A Nomad service registration.
-      properties:
-        ID:
-          type: string
-        ServiceName:
-          type: string
-        Namespace:
-          type: string
-        NodeID:
-          type: string
-        Datacenter:
-          type: string
-        JobID:
-          type: string
-        AllocID:
-          type: string
-        Tags:
-          type: array
-          items:
-            type: string
-        Address:
-          type: string
-        Port:
-          type: integer
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
   responses:
-    InternalError:
-      description: Internal server error
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
@@ -679,8 +641,8 @@ components:
             properties:
               message:
                 type: string
-    NotFound:
-      description: Resource not found
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -688,6 +650,44 @@ components:
             properties:
               message:
                 type: string
+  parameters:
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    AllocIDParam:
+      name: allocID
+      in: path
+      required: true
+      description: The ID of the allocation.
+      schema:
+        type: string
   securitySchemes:
     nomadToken:
       type: apiKey

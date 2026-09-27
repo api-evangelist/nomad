@@ -143,34 +143,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
   schemas:
     Evaluation:
       type: object
@@ -270,11 +242,52 @@ components:
         ModifyTime:
           type: integer
           format: int64
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   parameters:
-    NextTokenParam:
-      name: next_token
+    PerPageParam:
+      name: per_page
       in: query
-      description: Indicates where to start paging for queries that support pagination.
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    EvalIDParam:
+      name: evalID
+      in: path
+      required: true
+      description: The ID of the evaluation.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
       schema:
         type: string
     NamespaceParam:
@@ -289,23 +302,10 @@ components:
       description: Specifies a string to filter results based on an ID prefix.
       schema:
         type: string
-    FilterParam:
-      name: filter
+    NextTokenParam:
+      name: next_token
       in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    EvalIDParam:
-      name: evalID
-      in: path
-      required: true
-      description: The ID of the evaluation.
+      description: Indicates where to start paging for queries that support pagination.
       schema:
         type: string
   securitySchemes:

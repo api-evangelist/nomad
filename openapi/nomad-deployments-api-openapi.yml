@@ -181,73 +181,60 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-  parameters:
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    DeploymentIDParam:
-      name: deploymentID
-      in: path
-      required: true
-      description: The ID of the deployment.
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
   schemas:
+    DeploymentUpdateResponse:
+      type: object
+      description: Response from a deployment update operation.
+      properties:
+        EvalID:
+          type: string
+        EvalCreateIndex:
+          type: integer
+        DeploymentModifyIndex:
+          type: integer
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
     Deployment:
       type: object
       description: A deployment tracks a rolling update of allocations between two versions of a job.
@@ -306,59 +293,72 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-    AllocationListStub:
-      type: object
-      description: A stub representation of an allocation returned in list operations.
-      properties:
-        ID:
-          type: string
-        EvalID:
-          type: string
-        Name:
-          type: string
-        Namespace:
-          type: string
-        NodeID:
-          type: string
-        NodeName:
-          type: string
-        JobID:
-          type: string
-        JobVersion:
-          type: integer
-        TaskGroup:
-          type: string
-        DesiredStatus:
-          type: string
-        ClientStatus:
-          type: string
-        DeploymentStatus:
-          type: object
-          properties:
-            Healthy:
-              type: boolean
-            Canary:
-              type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
-    DeploymentUpdateResponse:
-      type: object
-      description: Response from a deployment update operation.
-      properties:
-        EvalID:
-          type: string
-        EvalCreateIndex:
-          type: integer
-        DeploymentModifyIndex:
-          type: integer
+  parameters:
+    DeploymentIDParam:
+      name: deploymentID
+      in: path
+      required: true
+      description: The ID of the deployment.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   securitySchemes:
     nomadToken:
       type: apiKey

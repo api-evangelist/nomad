@@ -169,8 +169,8 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    InternalError:
-      description: Internal server error
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
       content:
         application/json:
           schema:
@@ -178,8 +178,8 @@ components:
             properties:
               message:
                 type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:

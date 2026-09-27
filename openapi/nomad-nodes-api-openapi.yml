@@ -170,34 +170,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
   schemas:
     NetworkResource:
       type: object
@@ -247,29 +219,6 @@ components:
                 type: integer
               HostNetwork:
                 type: string
-    Resources:
-      type: object
-      description: Resource requirements for a task.
-      properties:
-        CPU:
-          type: integer
-          description: CPU required in MHz.
-        Cores:
-          type: integer
-          description: Number of CPU cores required.
-        MemoryMB:
-          type: integer
-          description: Memory required in MB.
-        MemoryMaxMB:
-          type: integer
-          description: Maximum memory in MB (memory oversubscription).
-        DiskMB:
-          type: integer
-          description: Disk space required in MB.
-        Networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkResource'
     NodeListStub:
       type: object
       description: A stub representation of a node returned in list operations.
@@ -302,6 +251,29 @@ components:
           type: integer
         ModifyIndex:
           type: integer
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
     Node:
       type: object
       description: A Nomad client node.
@@ -363,11 +335,45 @@ components:
           type: integer
         ModifyIndex:
           type: integer
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   parameters:
-    NextTokenParam:
-      name: next_token
+    PerPageParam:
+      name: per_page
       in: query
-      description: Indicates where to start paging for queries that support pagination.
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
       schema:
         type: string
     PrefixParam:
@@ -383,18 +389,12 @@ components:
       description: The ID of the node.
       schema:
         type: string
-    FilterParam:
-      name: filter
+    NextTokenParam:
+      name: next_token
       in: query
-      description: Specifies the expression used to filter the results.
+      description: Indicates where to start paging for queries that support pagination.
       schema:
         type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
   securitySchemes:
     nomadToken:
       type: apiKey
