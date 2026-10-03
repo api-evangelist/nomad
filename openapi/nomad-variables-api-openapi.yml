@@ -130,60 +130,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  schemas:
-    VariableMetadata:
-      type: object
-      description: Metadata about a Nomad variable without the item values.
-      properties:
-        Namespace:
-          type: string
-        Path:
-          type: string
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
-    Variable:
-      type: object
-      description: A Nomad variable containing encrypted key-value data.
-      properties:
-        Namespace:
-          type: string
-          description: The namespace the variable belongs to.
-        Path:
-          type: string
-          description: The path of the variable.
-        Items:
-          type: object
-          additionalProperties:
-            type: string
-          description: The key-value items stored in the variable.
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
     Unauthorized:
       description: Unauthorized - missing or invalid ACL token
       content:
@@ -211,29 +158,82 @@ components:
             properties:
               message:
                 type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    Variable:
+      type: object
+      description: A Nomad variable containing encrypted key-value data.
+      properties:
+        Namespace:
+          type: string
+          description: The namespace the variable belongs to.
+        Path:
+          type: string
+          description: The path of the variable.
+        Items:
+          type: object
+          additionalProperties:
+            type: string
+          description: The key-value items stored in the variable.
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    VariableMetadata:
+      type: object
+      description: Metadata about a Nomad variable without the item values.
+      properties:
+        Namespace:
+          type: string
+        Path:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
   parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
     PrefixParam:
       name: prefix
       in: query
       description: Specifies a string to filter results based on an ID prefix.
       schema:
         type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
     NextTokenParam:
       name: next_token
       in: query
       description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
       schema:
         type: string
   securitySchemes:

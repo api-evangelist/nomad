@@ -117,15 +117,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
     Unauthorized:
       description: Unauthorized - missing or invalid ACL token
       content:
@@ -153,7 +144,22 @@ components:
             properties:
               message:
                 type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   parameters:
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
     PerPageParam:
       name: per_page
       in: query
@@ -164,12 +170,6 @@ components:
       name: filter
       in: query
       description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
       schema:
         type: string
     NextTokenParam:

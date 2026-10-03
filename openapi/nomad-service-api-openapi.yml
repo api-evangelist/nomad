@@ -73,6 +73,34 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   schemas:
     ServiceRegistration:
       type: object
@@ -111,34 +139,6 @@ components:
       description: The target namespace. Defaults to the default namespace.
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
   securitySchemes:
     nomadToken:
       type: apiKey

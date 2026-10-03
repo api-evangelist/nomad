@@ -560,7 +560,317 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  headers:
+    NomadLastContact:
+      description: The time in milliseconds that a server was last contacted by the leader node.
+      schema:
+        type: integer
+    NomadKnownLeader:
+      description: Indicates if there is a known cluster leader.
+      schema:
+        type: boolean
+    NomadIndex:
+      description: The internal index value that represents the current state of the requested resource.
+      schema:
+        type: integer
   schemas:
+    Evaluation:
+      type: object
+      description: An evaluation represents a scheduling decision made by Nomad.
+      properties:
+        ID:
+          type: string
+          description: The unique ID of the evaluation.
+        Priority:
+          type: integer
+        Type:
+          type: string
+        TriggeredBy:
+          type: string
+          description: The event that triggered the evaluation.
+        Namespace:
+          type: string
+        JobID:
+          type: string
+        JobModifyIndex:
+          type: integer
+        NodeID:
+          type: string
+        NodeModifyIndex:
+          type: integer
+        DeploymentID:
+          type: string
+        Status:
+          type: string
+          description: The status of the evaluation.
+          enum:
+          - blocked
+          - pending
+          - complete
+          - failed
+          - canceled
+        StatusDescription:
+          type: string
+        Wait:
+          type: integer
+        NextEval:
+          type: string
+        PreviousEval:
+          type: string
+        BlockedEval:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    Service:
+      type: object
+      description: A service registration for Consul or Nomad service discovery.
+      properties:
+        Name:
+          type: string
+          description: The name of the service.
+        Tags:
+          type: array
+          items:
+            type: string
+        CanaryTags:
+          type: array
+          items:
+            type: string
+        PortLabel:
+          type: string
+        Provider:
+          type: string
+          description: The service discovery provider (consul or nomad).
+          enum:
+          - consul
+          - nomad
+        Checks:
+          type: array
+          items:
+            type: object
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
+    JobRegisterResponse:
+      type: object
+      description: The response body for a successful job registration.
+      properties:
+        EvalID:
+          type: string
+          description: The ID of the evaluation created by the registration.
+        EvalCreateIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        Warnings:
+          type: string
+          description: Warnings generated during the registration.
+    TaskGroup:
+      type: object
+      description: A task group is a set of tasks that must be co-located on the same node.
+      properties:
+        Name:
+          type: string
+          description: The name of the task group.
+        Count:
+          type: integer
+          description: The number of instances of this task group to run.
+        Tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: The tasks that are part of this task group.
+        RestartPolicy:
+          type: object
+          properties:
+            Interval:
+              type: integer
+            Attempts:
+              type: integer
+            Delay:
+              type: integer
+            Mode:
+              type: string
+        EphemeralDisk:
+          type: object
+          properties:
+            SizeMB:
+              type: integer
+            Sticky:
+              type: boolean
+            Migrate:
+              type: boolean
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+        Services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        Volumes:
+          type: object
+          additionalProperties:
+            type: object
+        Update:
+          $ref: '#/components/schemas/UpdateStrategy'
+        Scaling:
+          type: object
+          description: Scaling policy for the task group.
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
+    JobListStub:
+      type: object
+      description: A stub representation of a job returned in list operations.
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        Type:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Priority:
+          type: integer
+        Version:
+          type: integer
+        SubmitTime:
+          type: integer
+          format: int64
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        JobModifyIndex:
+          type: integer
+        NodePool:
+          type: string
+        Datacenters:
+          type: array
+          items:
+            type: string
+        JobSummary:
+          $ref: '#/components/schemas/JobSummary'
     UpdateStrategy:
       type: object
       description: Update strategy configuration for rolling deployments.
@@ -596,63 +906,37 @@ components:
         Stagger:
           type: integer
           description: Time in nanoseconds to wait between batches of updates.
-    Task:
+    JobSummary:
       type: object
-      description: A task is the smallest unit of work in Nomad, executed within a task group.
+      description: Summary of a job showing allocation counts by task group.
       properties:
-        Name:
+        JobID:
           type: string
-          description: The name of the task.
-        Driver:
+        Namespace:
           type: string
-          description: The task driver to use (e.g., docker, exec, raw_exec, java).
-        Config:
-          type: object
-          additionalProperties: true
-          description: Driver-specific configuration for the task.
-        Env:
+        Summary:
           type: object
           additionalProperties:
-            type: string
-          description: Environment variables for the task.
-        Resources:
-          $ref: '#/components/schemas/Resources'
-        Meta:
-          type: object
-          additionalProperties:
-            type: string
-        LogConfig:
-          type: object
-          properties:
-            MaxFiles:
-              type: integer
-            MaxFileSizeMB:
-              type: integer
-        Templates:
-          type: array
-          items:
             type: object
-        Artifacts:
-          type: array
-          items:
-            type: object
-        Leader:
-          type: boolean
-          description: If true, this task is the leader task of the group.
-    JobRegisterResponse:
-      type: object
-      description: The response body for a successful job registration.
-      properties:
-        EvalID:
-          type: string
-          description: The ID of the evaluation created by the registration.
-        EvalCreateIndex:
+            properties:
+              Queued:
+                type: integer
+              Complete:
+                type: integer
+              Failed:
+                type: integer
+              Running:
+                type: integer
+              Starting:
+                type: integer
+              Lost:
+                type: integer
+              Unknown:
+                type: integer
+        CreateIndex:
           type: integer
-        JobModifyIndex:
+        ModifyIndex:
           type: integer
-        Warnings:
-          type: string
-          description: Warnings generated during the registration.
     Job:
       type: object
       description: A Nomad job specification defining the workload to be scheduled.
@@ -769,33 +1053,6 @@ components:
         VaultToken:
           type: string
           description: Vault token for the job.
-    Service:
-      type: object
-      description: A service registration for Consul or Nomad service discovery.
-      properties:
-        Name:
-          type: string
-          description: The name of the service.
-        Tags:
-          type: array
-          items:
-            type: string
-        CanaryTags:
-          type: array
-          items:
-            type: string
-        PortLabel:
-          type: string
-        Provider:
-          type: string
-          description: The service discovery provider (consul or nomad).
-          enum:
-          - consul
-          - nomad
-        Checks:
-          type: array
-          items:
-            type: object
     JobRegisterRequest:
       type: object
       description: The request body for registering a new job.
@@ -813,49 +1070,6 @@ components:
         PolicyOverride:
           type: boolean
           description: If true, overrides soft mandatory Sentinel policies.
-    AllocationListStub:
-      type: object
-      description: A stub representation of an allocation returned in list operations.
-      properties:
-        ID:
-          type: string
-        EvalID:
-          type: string
-        Name:
-          type: string
-        Namespace:
-          type: string
-        NodeID:
-          type: string
-        NodeName:
-          type: string
-        JobID:
-          type: string
-        JobVersion:
-          type: integer
-        TaskGroup:
-          type: string
-        DesiredStatus:
-          type: string
-        ClientStatus:
-          type: string
-        DeploymentStatus:
-          type: object
-          properties:
-            Healthy:
-              type: boolean
-            Canary:
-              type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
     Deployment:
       type: object
       description: A deployment tracks a rolling update of allocations between two versions of a job.
@@ -914,181 +1128,6 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-    JobListStub:
-      type: object
-      description: A stub representation of a job returned in list operations.
-      properties:
-        ID:
-          type: string
-        Name:
-          type: string
-        Namespace:
-          type: string
-        Type:
-          type: string
-        Status:
-          type: string
-        StatusDescription:
-          type: string
-        Priority:
-          type: integer
-        Version:
-          type: integer
-        SubmitTime:
-          type: integer
-          format: int64
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        JobModifyIndex:
-          type: integer
-        NodePool:
-          type: string
-        Datacenters:
-          type: array
-          items:
-            type: string
-        JobSummary:
-          $ref: '#/components/schemas/JobSummary'
-    JobSummary:
-      type: object
-      description: Summary of a job showing allocation counts by task group.
-      properties:
-        JobID:
-          type: string
-        Namespace:
-          type: string
-        Summary:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              Queued:
-                type: integer
-              Complete:
-                type: integer
-              Failed:
-                type: integer
-              Running:
-                type: integer
-              Starting:
-                type: integer
-              Lost:
-                type: integer
-              Unknown:
-                type: integer
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-    TaskGroup:
-      type: object
-      description: A task group is a set of tasks that must be co-located on the same node.
-      properties:
-        Name:
-          type: string
-          description: The name of the task group.
-        Count:
-          type: integer
-          description: The number of instances of this task group to run.
-        Tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-          description: The tasks that are part of this task group.
-        RestartPolicy:
-          type: object
-          properties:
-            Interval:
-              type: integer
-            Attempts:
-              type: integer
-            Delay:
-              type: integer
-            Mode:
-              type: string
-        EphemeralDisk:
-          type: object
-          properties:
-            SizeMB:
-              type: integer
-            Sticky:
-              type: boolean
-            Migrate:
-              type: boolean
-        Networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkResource'
-        Services:
-          type: array
-          items:
-            $ref: '#/components/schemas/Service'
-        Volumes:
-          type: object
-          additionalProperties:
-            type: object
-        Update:
-          $ref: '#/components/schemas/UpdateStrategy'
-        Scaling:
-          type: object
-          description: Scaling policy for the task group.
-    Evaluation:
-      type: object
-      description: An evaluation represents a scheduling decision made by Nomad.
-      properties:
-        ID:
-          type: string
-          description: The unique ID of the evaluation.
-        Priority:
-          type: integer
-        Type:
-          type: string
-        TriggeredBy:
-          type: string
-          description: The event that triggered the evaluation.
-        Namespace:
-          type: string
-        JobID:
-          type: string
-        JobModifyIndex:
-          type: integer
-        NodeID:
-          type: string
-        NodeModifyIndex:
-          type: integer
-        DeploymentID:
-          type: string
-        Status:
-          type: string
-          description: The status of the evaluation.
-          enum:
-          - blocked
-          - pending
-          - complete
-          - failed
-          - canceled
-        StatusDescription:
-          type: string
-        Wait:
-          type: integer
-        NextEval:
-          type: string
-        PreviousEval:
-          type: string
-        BlockedEval:
-          type: string
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
     NetworkResource:
       type: object
       description: Network resource configuration.
@@ -1137,101 +1176,50 @@ components:
                 type: integer
               HostNetwork:
                 type: string
-    Resources:
+    Task:
       type: object
-      description: Resource requirements for a task.
+      description: A task is the smallest unit of work in Nomad, executed within a task group.
       properties:
-        CPU:
-          type: integer
-          description: CPU required in MHz.
-        Cores:
-          type: integer
-          description: Number of CPU cores required.
-        MemoryMB:
-          type: integer
-          description: Memory required in MB.
-        MemoryMaxMB:
-          type: integer
-          description: Maximum memory in MB (memory oversubscription).
-        DiskMB:
-          type: integer
-          description: Disk space required in MB.
-        Networks:
+        Name:
+          type: string
+          description: The name of the task.
+        Driver:
+          type: string
+          description: The task driver to use (e.g., docker, exec, raw_exec, java).
+        Config:
+          type: object
+          additionalProperties: true
+          description: Driver-specific configuration for the task.
+        Env:
+          type: object
+          additionalProperties:
+            type: string
+          description: Environment variables for the task.
+        Resources:
+          $ref: '#/components/schemas/Resources'
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        LogConfig:
+          type: object
+          properties:
+            MaxFiles:
+              type: integer
+            MaxFileSizeMB:
+              type: integer
+        Templates:
           type: array
           items:
-            $ref: '#/components/schemas/NetworkResource'
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions
-      content:
-        application/json:
-          schema:
             type: object
-            properties:
-              message:
-                type: string
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
+        Artifacts:
+          type: array
+          items:
             type: object
-            properties:
-              message:
-                type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
+        Leader:
+          type: boolean
+          description: If true, this task is the leader task of the group.
   parameters:
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    JobIDParam:
-      name: jobID
-      in: path
-      required: true
-      description: The ID of the job.
-      schema:
-        type: string
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
     NextTokenParam:
       name: next_token
       in: query
@@ -1244,19 +1232,31 @@ components:
       description: The target namespace. Defaults to the default namespace.
       schema:
         type: string
-  headers:
-    NomadKnownLeader:
-      description: Indicates if there is a known cluster leader.
+    JobIDParam:
+      name: jobID
+      in: path
+      required: true
+      description: The ID of the job.
       schema:
-        type: boolean
-    NomadLastContact:
-      description: The time in milliseconds that a server was last contacted by the leader node.
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
       schema:
         type: integer
-    NomadIndex:
-      description: The internal index value that represents the current state of the requested resource.
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
       schema:
-        type: integer
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
   securitySchemes:
     nomadToken:
       type: apiKey

@@ -170,7 +170,67 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   schemas:
+    NodeListStub:
+      type: object
+      description: A stub representation of a node returned in list operations.
+      properties:
+        ID:
+          type: string
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+        SchedulingEligibility:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Version:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
     NetworkResource:
       type: object
       description: Network resource configuration.
@@ -219,61 +279,6 @@ components:
                 type: integer
               HostNetwork:
                 type: string
-    NodeListStub:
-      type: object
-      description: A stub representation of a node returned in list operations.
-      properties:
-        ID:
-          type: string
-        Datacenter:
-          type: string
-        Name:
-          type: string
-        NodeClass:
-          type: string
-        NodePool:
-          type: string
-        Drain:
-          type: boolean
-        SchedulingEligibility:
-          type: string
-        Status:
-          type: string
-        StatusDescription:
-          type: string
-        Version:
-          type: string
-        Drivers:
-          type: object
-          additionalProperties:
-            type: object
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-    Resources:
-      type: object
-      description: Resource requirements for a task.
-      properties:
-        CPU:
-          type: integer
-          description: CPU required in MHz.
-        Cores:
-          type: integer
-          description: Number of CPU cores required.
-        MemoryMB:
-          type: integer
-          description: Memory required in MB.
-        MemoryMaxMB:
-          type: integer
-          description: Maximum memory in MB (memory oversubscription).
-        DiskMB:
-          type: integer
-          description: Disk space required in MB.
-        Networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/NetworkResource'
     Node:
       type: object
       description: A Nomad client node.
@@ -335,35 +340,36 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
+    Resources:
+      type: object
+      description: Resource requirements for a task.
+      properties:
+        CPU:
+          type: integer
+          description: CPU required in MHz.
+        Cores:
+          type: integer
+          description: Number of CPU cores required.
+        MemoryMB:
+          type: integer
+          description: Memory required in MB.
+        MemoryMaxMB:
+          type: integer
+          description: Maximum memory in MB (memory oversubscription).
+        DiskMB:
+          type: integer
+          description: Disk space required in MB.
+        Networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkResource'
   parameters:
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
     PerPageParam:
       name: per_page
       in: query
@@ -376,10 +382,10 @@ components:
       description: Specifies the expression used to filter the results.
       schema:
         type: string
-    PrefixParam:
-      name: prefix
+    NextTokenParam:
+      name: next_token
       in: query
-      description: Specifies a string to filter results based on an ID prefix.
+      description: Indicates where to start paging for queries that support pagination.
       schema:
         type: string
     NodeIDParam:
@@ -387,12 +393,6 @@ components:
       in: path
       required: true
       description: The ID of the node.
-      schema:
-        type: string
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
       schema:
         type: string
   securitySchemes:

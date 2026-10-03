@@ -262,6 +262,18 @@ components:
           type: integer
         ModifyIndex:
           type: integer
+    ACLPolicyListStub:
+      type: object
+      description: A stub representation of an ACL policy.
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
     ACLToken:
       type: object
       description: An ACL token used for authentication and authorization.
@@ -299,18 +311,6 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-    ACLPolicyListStub:
-      type: object
-      description: A stub representation of an ACL policy.
-      properties:
-        Name:
-          type: string
-        Description:
-          type: string
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
     ACLPolicy:
       type: object
       description: An ACL policy defining permissions for Nomad resources.
@@ -329,8 +329,17 @@ components:
         ModifyIndex:
           type: integer
   responses:
-    BadRequest:
-      description: Bad request
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -347,17 +356,8 @@ components:
             properties:
               message:
                 type: string
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
+    BadRequest:
+      description: Bad request
       content:
         application/json:
           schema:

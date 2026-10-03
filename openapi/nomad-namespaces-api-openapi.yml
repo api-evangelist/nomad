@@ -116,38 +116,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  schemas:
-    Namespace:
-      type: object
-      description: A Nomad namespace for segmenting jobs and objects.
-      properties:
-        Name:
-          type: string
-          description: The name of the namespace.
-        Description:
-          type: string
-          description: A human-readable description of the namespace.
-        Quota:
-          type: string
-          description: The name of the quota specification attached to the namespace.
-        Meta:
-          type: object
-          additionalProperties:
-            type: string
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
   responses:
-    BadRequest:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
     Unauthorized:
       description: Unauthorized - missing or invalid ACL token
       content:
@@ -175,6 +144,37 @@ components:
             properties:
               message:
                 type: string
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+  schemas:
+    Namespace:
+      type: object
+      description: A Nomad namespace for segmenting jobs and objects.
+      properties:
+        Name:
+          type: string
+          description: The name of the namespace.
+        Description:
+          type: string
+          description: A human-readable description of the namespace.
+        Quota:
+          type: string
+          description: The name of the quota specification attached to the namespace.
+        Meta:
+          type: object
+          additionalProperties:
+            type: string
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
   parameters:
     PerPageParam:
       name: per_page
@@ -182,16 +182,16 @@ components:
       description: Maximum number of results to return per page.
       schema:
         type: integer
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
     NextTokenParam:
       name: next_token
       in: query
       description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
       schema:
         type: string
   securitySchemes:
