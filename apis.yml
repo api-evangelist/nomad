@@ -427,6 +427,9 @@ apis:
   - type: JSONSchema
     url: json-schema/nomad-job-schema.json
 common:
+  - type: CapabilityMap
+    url: capabilities/nomad-capability-edges.yml
+    name: HashiCorp Nomad Business Capability Map
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/hashicorp-nomad/overview
   - type: AgenticAccess

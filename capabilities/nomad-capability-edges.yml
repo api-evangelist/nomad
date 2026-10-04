@@ -1,0 +1,63 @@
+slug: nomad
+provider: HashiCorp Nomad
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: ACL
+  spec_file: nomad-acl-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''List ACL policies'', ''Create an ACL token'', schemas ACLToken, ACLPolicy'
+  reason: Operations manage access-control policies and authentication tokens for the cluster, which is
+    identity and access management.
+- tag: Nodes
+  spec_file: nomad-nodes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /node/{nodeID}/drain drainNode Set node drain mode; DELETE /node/{nodeID}/purge purgeNode
+    Purge a node; schemas Node, Resources, NetworkResource
+  reason: Operations manage cluster compute nodes (drain, purge, resources, network) — classic compute/infrastructure
+    estate management under IT Infrastructure Management.
+- tag: Deployments
+  spec_file: nomad-deployments-api-openapi.yml
+  capability_id: BC-4210.40
+  capability_id_l1: BC-4210
+  capability_name: Deployment Orchestration
+  confidence: 0.75
+  evidence: '''Fail a deployment'', ''Pause or resume a deployment'', ''Promote a deployment'''
+  reason: Controlling rollout progression (promote canary, pause, fail) of application deployments is
+    deployment orchestration with controlled blast radius.
+- tag: Node Pools
+  spec_file: nomad-node-pools-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: GET /node/pools listNodePools List node pools; PUT /node/pools createNodePool Create or update
+    a node pool; schema NodePool
+  reason: Node pools group the compute client nodes of a Nomad cluster; creating and deleting them is
+    management of compute infrastructure, i.e. Cross-Industry IT Infrastructure Management, not any business-domain
+    capability.
+- tag: Volumes
+  spec_file: nomad-volumes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: GET /volumes listVolumes List volumes; schema VolumeListStub
+  reason: Storage volumes attached to the cluster — storage infrastructure inventory, which sits under
+    IT Infrastructure Management (compute, storage, network).
