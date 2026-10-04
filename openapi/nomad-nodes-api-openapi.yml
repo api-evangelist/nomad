@@ -170,67 +170,39 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    PrefixParam:
+      name: prefix
+      in: query
+      description: Specifies a string to filter results based on an ID prefix.
+      schema:
+        type: string
+    FilterParam:
+      name: filter
+      in: query
+      description: Specifies the expression used to filter the results.
+      schema:
+        type: string
+    NodeIDParam:
+      name: nodeID
+      in: path
+      required: true
+      description: The ID of the node.
+      schema:
+        type: string
   schemas:
-    NodeListStub:
-      type: object
-      description: A stub representation of a node returned in list operations.
-      properties:
-        ID:
-          type: string
-        Datacenter:
-          type: string
-        Name:
-          type: string
-        NodeClass:
-          type: string
-        NodePool:
-          type: string
-        Drain:
-          type: boolean
-        SchedulingEligibility:
-          type: string
-        Status:
-          type: string
-        StatusDescription:
-          type: string
-        Version:
-          type: string
-        Drivers:
-          type: object
-          additionalProperties:
-            type: object
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
     NetworkResource:
       type: object
       description: Network resource configuration.
@@ -279,6 +251,38 @@ components:
                 type: integer
               HostNetwork:
                 type: string
+    NodeListStub:
+      type: object
+      description: A stub representation of a node returned in list operations.
+      properties:
+        ID:
+          type: string
+        Datacenter:
+          type: string
+        Name:
+          type: string
+        NodeClass:
+          type: string
+        NodePool:
+          type: string
+        Drain:
+          type: boolean
+        SchedulingEligibility:
+          type: string
+        Status:
+          type: string
+        StatusDescription:
+          type: string
+        Version:
+          type: string
+        Drivers:
+          type: object
+          additionalProperties:
+            type: object
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
     Node:
       type: object
       description: A Nomad client node.
@@ -363,38 +367,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NetworkResource'
-  parameters:
-    PrefixParam:
-      name: prefix
-      in: query
-      description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    FilterParam:
-      name: filter
-      in: query
-      description: Specifies the expression used to filter the results.
-      schema:
-        type: string
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    NodeIDParam:
-      name: nodeID
-      in: path
-      required: true
-      description: The ID of the node.
-      schema:
-        type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   securitySchemes:
     nomadToken:
       type: apiKey

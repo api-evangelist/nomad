@@ -82,53 +82,26 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    InternalError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
+  parameters:
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Maximum number of results to return per page.
+      schema:
+        type: integer
+    NextTokenParam:
+      name: next_token
+      in: query
+      description: Indicates where to start paging for queries that support pagination.
+      schema:
+        type: string
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
   schemas:
-    ScalingPolicyListStub:
-      type: object
-      description: A stub representation of a scaling policy.
-      properties:
-        ID:
-          type: string
-        Target:
-          type: object
-          additionalProperties:
-            type: string
-        Type:
-          type: string
-        Enabled:
-          type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
     ScalingPolicy:
       type: object
       description: A scaling policy for a task group.
@@ -158,25 +131,52 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-  parameters:
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Maximum number of results to return per page.
-      schema:
-        type: integer
-    NextTokenParam:
-      name: next_token
-      in: query
-      description: Indicates where to start paging for queries that support pagination.
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
+    ScalingPolicyListStub:
+      type: object
+      description: A stub representation of a scaling policy.
+      properties:
+        ID:
+          type: string
+        Target:
+          type: object
+          additionalProperties:
+            type: string
+        Type:
+          type: string
+        Enabled:
+          type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
   securitySchemes:
     nomadToken:
       type: apiKey

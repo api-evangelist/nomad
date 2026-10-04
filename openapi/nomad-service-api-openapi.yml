@@ -101,6 +101,13 @@ components:
             properties:
               message:
                 type: string
+  parameters:
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
   schemas:
     ServiceRegistration:
       type: object
@@ -132,13 +139,6 @@ components:
           type: integer
         ModifyIndex:
           type: integer
-  parameters:
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
   securitySchemes:
     nomadToken:
       type: apiKey
