@@ -427,6 +427,12 @@ apis:
   - type: JSONSchema
     url: json-schema/nomad-job-schema.json
 common:
+  - type: Plans
+    url: plans/nomad-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/nomad-rate-limits.yml
+  - type: FinOps
+    url: finops/nomad-finops.yml
   - type: CapabilityMap
     url: capabilities/nomad-capability-edges.yml
     name: HashiCorp Nomad Business Capability Map
