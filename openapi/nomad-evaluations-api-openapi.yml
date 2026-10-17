@@ -144,49 +144,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    AllocationListStub:
-      type: object
-      description: A stub representation of an allocation returned in list operations.
-      properties:
-        ID:
-          type: string
-        EvalID:
-          type: string
-        Name:
-          type: string
-        Namespace:
-          type: string
-        NodeID:
-          type: string
-        NodeName:
-          type: string
-        JobID:
-          type: string
-        JobVersion:
-          type: integer
-        TaskGroup:
-          type: string
-        DesiredStatus:
-          type: string
-        ClientStatus:
-          type: string
-        DeploymentStatus:
-          type: object
-          properties:
-            Healthy:
-              type: boolean
-            Canary:
-              type: boolean
-        CreateIndex:
-          type: integer
-        ModifyIndex:
-          type: integer
-        CreateTime:
-          type: integer
-          format: int64
-        ModifyTime:
-          type: integer
-          format: int64
     Evaluation:
       type: object
       description: An evaluation represents a scheduling decision made by Nomad.
@@ -242,7 +199,56 @@ components:
         ModifyTime:
           type: integer
           format: int64
+    AllocationListStub:
+      type: object
+      description: A stub representation of an allocation returned in list operations.
+      properties:
+        ID:
+          type: string
+        EvalID:
+          type: string
+        Name:
+          type: string
+        Namespace:
+          type: string
+        NodeID:
+          type: string
+        NodeName:
+          type: string
+        JobID:
+          type: string
+        JobVersion:
+          type: integer
+        TaskGroup:
+          type: string
+        DesiredStatus:
+          type: string
+        ClientStatus:
+          type: string
+        DeploymentStatus:
+          type: object
+          properties:
+            Healthy:
+              type: boolean
+            Canary:
+              type: boolean
+        CreateIndex:
+          type: integer
+        ModifyIndex:
+          type: integer
+        CreateTime:
+          type: integer
+          format: int64
+        ModifyTime:
+          type: integer
+          format: int64
   parameters:
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
     PerPageParam:
       name: per_page
       in: query
@@ -255,16 +261,17 @@ components:
       description: Indicates where to start paging for queries that support pagination.
       schema:
         type: string
+    EvalIDParam:
+      name: evalID
+      in: path
+      required: true
+      description: The ID of the evaluation.
+      schema:
+        type: string
     PrefixParam:
       name: prefix
       in: query
       description: Specifies a string to filter results based on an ID prefix.
-      schema:
-        type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
       schema:
         type: string
     FilterParam:
@@ -273,16 +280,9 @@ components:
       description: Specifies the expression used to filter the results.
       schema:
         type: string
-    EvalIDParam:
-      name: evalID
-      in: path
-      required: true
-      description: The ID of the evaluation.
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -290,8 +290,8 @@ components:
             properties:
               message:
                 type: string
-    InternalError:
-      description: Internal server error
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
       content:
         application/json:
           schema:

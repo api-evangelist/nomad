@@ -55,6 +55,12 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
+    NamespaceParam:
+      name: namespace
+      in: query
+      description: The target namespace. Defaults to the default namespace.
+      schema:
+        type: string
     PerPageParam:
       name: per_page
       in: query
@@ -73,15 +79,9 @@ components:
       description: Specifies the expression used to filter the results.
       schema:
         type: string
-    NamespaceParam:
-      name: namespace
-      in: query
-      description: The target namespace. Defaults to the default namespace.
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid ACL token
+    InternalError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -89,8 +89,8 @@ components:
             properties:
               message:
                 type: string
-    InternalError:
-      description: Internal server error
+    Unauthorized:
+      description: Unauthorized - missing or invalid ACL token
       content:
         application/json:
           schema:
