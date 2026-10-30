@@ -1,4 +1,4 @@
-# HashiCorp Nomad (nomad)
+# HashiCorp Nomad
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,120 +66,201 @@
 
 HashiCorp Nomad is a flexible workload orchestrator that enables organizations to deploy and manage containers, legacy applications, and batch jobs across any infrastructure. The Nomad developer platform provides a comprehensive HTTP API, official SDKs, and tooling for automating job scheduling, cluster management, and service orchestration at scale.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/nomad/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/nomad/refs/heads/main/apis.yml)
+**Areas:** Workload Orchestration · Container Orchestration · Scheduling · Infrastructure · DevOps
 
-## Tags
+## HashiCorp Nomad on APIs.io
 
-- Workload Orchestration
-- Container Orchestration
-- Scheduling
-- Infrastructure
-- DevOps
+Everything profiled for HashiCorp Nomad is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/nomad/](https://apis.io/providers/nomad/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (22)
 
-- **Created:** 2026-03-20
-- **Modified:** 2026-05-19
+- [HashiCorp Nomad Go SDK](https://apis.io/apis/nomad/go-sdk/) — The HashiCorp Nomad Go SDK is the official Go client library for interacting with the Nomad HTTP API. It provides a high-level, idiomatic Go interface for…
+- [HashiCorp Nomad Python SDK](https://apis.io/apis/nomad/python-sdk/) — The python-nomad library is a Python client for the HashiCorp Nomad HTTP API. It provides Pythonic access to Nomad resources including jobs, nodes,…
+- [HashiCorp Nomad Java SDK](https://apis.io/apis/nomad/java-sdk/) — The Nomad Java SDK is an official Java client library for the HashiCorp Nomad HTTP API. It enables Java and JVM-based applications to interact with Nomad…
+- [HashiCorp Nomad ACL API](https://apis.io/apis/nomad/nomad-acl-api/) — Endpoints for managing Access Control List policies, tokens, and authentication methods.
+- [HashiCorp Nomad Agent API](https://apis.io/apis/nomad/nomad-agent-api/) — Endpoints for interacting with the local Nomad agent, including health checks, member listing, and server management.
+- [HashiCorp Nomad Allocations API](https://apis.io/apis/nomad/nomad-allocations-api/) — Endpoints for querying allocations. An allocation declares that a set of tasks in a job should be run on a particular node.
+- [HashiCorp Nomad Deployments API](https://apis.io/apis/nomad/nomad-deployments-api/) — Endpoints for querying and managing deployments. Deployments track the rolling update of allocations between two versions of a job.
+- [HashiCorp Nomad Evaluations API](https://apis.io/apis/nomad/nomad-evaluations-api/) — Endpoints for querying evaluations. Evaluations are the mechanism by which Nomad makes scheduling decisions.
+- [HashiCorp Nomad Jobs API](https://apis.io/apis/nomad/nomad-jobs-api/) — Endpoints for listing, creating, reading, updating, and deleting jobs. Jobs are the primary unit of work in Nomad.
+- [HashiCorp Nomad Namespaces API](https://apis.io/apis/nomad/nomad-namespaces-api/) — Endpoints for managing namespaces, which segment jobs and their associated objects.
+- [HashiCorp Nomad Node Pools API](https://apis.io/apis/nomad/nomad-node-pools-api/) — Endpoints for managing node pools, which group nodes for scheduling constraints.
+- [HashiCorp Nomad Nodes API](https://apis.io/apis/nomad/nomad-nodes-api/) — Endpoints for querying and managing client nodes registered with the Nomad cluster.
+- [HashiCorp Nomad Operator API](https://apis.io/apis/nomad/nomad-operator-api/) — Endpoints for cluster-level operations such as Raft peer management and autopilot configuration.
+- [HashiCorp Nomad Regions API](https://apis.io/apis/nomad/nomad-regions-api/) — Endpoints for listing known regions in the Nomad cluster.
+- [HashiCorp Nomad Scaling API](https://apis.io/apis/nomad/nomad-scaling-api/) — Endpoints for querying scaling policies and their status.
+- [HashiCorp Nomad Search API](https://apis.io/apis/nomad/nomad-search-api/) — Endpoints for searching across Nomad objects by prefix or fuzzy match.
+- [HashiCorp Nomad Service API](https://apis.io/apis/nomad/nomad-service-api/) — The Service API from HashiCorp Nomad — 1 operation(s) for service.
+- [HashiCorp Nomad Services API](https://apis.io/apis/nomad/nomad-services-api/) — The Services API from HashiCorp Nomad — 1 operation(s) for services.
+- [HashiCorp Nomad Status API](https://apis.io/apis/nomad/nomad-status-api/) — Endpoints for querying the status of the Nomad cluster including leader and peer information.
+- [HashiCorp Nomad System API](https://apis.io/apis/nomad/nomad-system-api/) — Endpoints for system maintenance operations such as garbage collection and reconciliation.
+- [HashiCorp Nomad Variables API](https://apis.io/apis/nomad/nomad-variables-api/) — Endpoints for managing Nomad variables, which store encrypted key-value data.
+- [HashiCorp Nomad Volumes API](https://apis.io/apis/nomad/nomad-volumes-api/) — Endpoints for managing CSI and host volumes attached to Nomad allocations.
 
-## APIs
+### Published properties
 
-### HashiCorp Nomad HTTP API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The HashiCorp Nomad HTTP API provides programmatic access to all Nomad functionality including job scheduling, allocation management, node operations, deployments, services, evaluations, namespaces, ACL policies, and cluster status. All API routes are prefixed with /v1/ and the default port is 4646. The API is RESTful, responds to standard HTTP verbs, and supports ACL token authentication via the X-Nomad-Token header or Bearer scheme. Developers can use this API to submit and manage workloads, monitor cluster health, query allocation status, and integrate Nomad orchestration into their infrastructure automation workflows.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://developer.hashicorp.com/nomad/api-docs](https://developer.hashicorp.com/nomad/api-docs)
-- **Base URL:** `http://localhost:4646`
+Event-driven and webhook contracts.
 
-#### Tags
+- [HashiCorp Nomad Event Stream](https://apis.io/asyncapis/nomad/nomad-event-stream-asyncapi/)
 
-- Workload Orchestration
-- Container Orchestration
-- Scheduling
-- Infrastructure
-- DevOps
-- Cloud
+#### Event channels (8)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://developer.hashicorp.com/nomad/api-docs)
-- [OpenAPI](openapi/nomad-http-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/nomad-http-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/nomad-http-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/nomad-event-stream-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [JSON Schema](json-schema/nomad-job-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [/event/stream?topic=*](https://apis.io/channels/nomad/event-stream-topic/)
+- [/event/stream?topic=Allocation](https://apis.io/channels/nomad/event-stream-topic-allocation/)
+- [/event/stream?topic=Deployment](https://apis.io/channels/nomad/event-stream-topic-deployment/)
+- [/event/stream?topic=Evaluation](https://apis.io/channels/nomad/event-stream-topic-evaluation/)
+- [/event/stream?topic=Job](https://apis.io/channels/nomad/event-stream-topic-job/)
+- [/event/stream?topic=Node](https://apis.io/channels/nomad/event-stream-topic-node/)
+- [/event/stream?topic=NodePool](https://apis.io/channels/nomad/event-stream-topic-nodepool/)
+- [/event/stream?topic=Service](https://apis.io/channels/nomad/event-stream-topic-service/)
 
-### HashiCorp Nomad Go SDK
+#### Agentic access (1)
 
-The HashiCorp Nomad Go SDK is the official Go client library for interacting with the Nomad HTTP API. It provides a high-level, idiomatic Go interface for managing jobs, allocations, nodes, deployments, evaluations, and other Nomad resources. The SDK is maintained by HashiCorp as part of the main Nomad repository and is used internally by the Nomad CLI itself, making it the most comprehensive and up-to-date client available.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://pkg.go.dev/github.com/hashicorp/nomad/api](https://pkg.go.dev/github.com/hashicorp/nomad/api)
+- [Nomad Agentic Access](https://apis.io/agentic-access/nomad/nomad-agentic-access/)
 
-#### Tags
+#### JSON Schema (1)
 
-- Workload Orchestration
-- Go
-- SDK
-- DevOps
+The data models the API reads and writes.
 
-#### Properties
+- [HashiCorp Nomad Job](https://apis.io/schemas/nomad/nomad-job/)
 
-- [Documentation](https://pkg.go.dev/github.com/hashicorp/nomad/api)
-- [Postman Collection](collections/nomad-http-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/nomad-http-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### JSON-LD (1)
 
-### HashiCorp Nomad Python SDK
+Linked-data contexts for the provider's vocabulary.
 
-The python-nomad library is a Python client for the HashiCorp Nomad HTTP API. It provides Pythonic access to Nomad resources including jobs, nodes, allocations, deployments, evaluations, namespaces, and ACL management. The library supports configuration via environment variables such as NOMAD_ADDR, NOMAD_TOKEN, and NOMAD_NAMESPACE for consistency with the Nomad CLI and other ecosystem tools.
+- [Nomad Context](https://apis.io/jsonld/nomad/nomad-context/)
 
-- **Human URL:** [https://github.com/jrxFive/python-nomad](https://github.com/jrxFive/python-nomad)
+#### Collections (39)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Workload Orchestration
-- Python
-- SDK
-- DevOps
+- [HashiCorp Nomad HTTP ACL API](https://apis.io/collections/nomad/open-nomad-acl-api/)
+- [HashiCorp Nomad HTTP ACL Agent API](https://apis.io/collections/nomad/open-nomad-agent-api/)
+- [HashiCorp Nomad HTTP ACL Allocations API](https://apis.io/collections/nomad/open-nomad-allocations-api/)
+- [HashiCorp Nomad HTTP ACL Deployments API](https://apis.io/collections/nomad/open-nomad-deployments-api/)
+- [HashiCorp Nomad HTTP ACL Evaluations API](https://apis.io/collections/nomad/open-nomad-evaluations-api/)
+- [HashiCorp Nomad HTTP API](https://apis.io/collections/nomad/open-nomad-http-api/)
+- [HashiCorp Nomad HTTP ACL Jobs API](https://apis.io/collections/nomad/open-nomad-jobs-api/)
+- [HashiCorp Nomad HTTP ACL Namespaces API](https://apis.io/collections/nomad/open-nomad-namespaces-api/)
+- [HashiCorp Nomad HTTP ACL Node Pools API](https://apis.io/collections/nomad/open-nomad-node-pools-api/)
+- [HashiCorp Nomad HTTP ACL Nodes API](https://apis.io/collections/nomad/open-nomad-nodes-api/)
+- [HashiCorp Nomad HTTP ACL Operator API](https://apis.io/collections/nomad/open-nomad-operator-api/)
+- [HashiCorp Nomad HTTP ACL Regions API](https://apis.io/collections/nomad/open-nomad-regions-api/)
+- [HashiCorp Nomad HTTP ACL Scaling API](https://apis.io/collections/nomad/open-nomad-scaling-api/)
+- [HashiCorp Nomad HTTP ACL Search API](https://apis.io/collections/nomad/open-nomad-search-api/)
+- [HashiCorp Nomad HTTP ACL Service API](https://apis.io/collections/nomad/open-nomad-service-api/)
+- [HashiCorp Nomad HTTP ACL Services API](https://apis.io/collections/nomad/open-nomad-services-api/)
+- [HashiCorp Nomad HTTP ACL Status API](https://apis.io/collections/nomad/open-nomad-status-api/)
+- [HashiCorp Nomad HTTP ACL System API](https://apis.io/collections/nomad/open-nomad-system-api/)
+- [HashiCorp Nomad HTTP ACL Variables API](https://apis.io/collections/nomad/open-nomad-variables-api/)
+- [HashiCorp Nomad HTTP ACL Volumes API](https://apis.io/collections/nomad/open-nomad-volumes-api/)
+- [HashiCorp Nomad HTTP ACL API](https://apis.io/collections/nomad/postman-nomad-acl-api/)
+- [HashiCorp Nomad HTTP ACL Agent API](https://apis.io/collections/nomad/postman-nomad-agent-api/)
+- [HashiCorp Nomad HTTP ACL Allocations API](https://apis.io/collections/nomad/postman-nomad-allocations-api/)
+- [HashiCorp Nomad HTTP ACL Deployments API](https://apis.io/collections/nomad/postman-nomad-deployments-api/)
+- [HashiCorp Nomad HTTP ACL Evaluations API](https://apis.io/collections/nomad/postman-nomad-evaluations-api/)
+- …and 14 more published on APIs.io
 
-#### Properties
+#### Governance rules (2)
 
-- [Documentation](https://github.com/jrxFive/python-nomad)
-- [Postman Collection](collections/nomad-http-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/nomad-http-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Spectral rulesets for the provider's contracts.
 
-### HashiCorp Nomad Java SDK
+- [HashiCorp Nomad — asyncapi rules](https://apis.io/rules/nomad/nomad-asyncapi-spectral-rules/)
+- [HashiCorp Nomad — jsonschema rules](https://apis.io/rules/nomad/nomad-jsonschema-spectral-rules/)
 
-The Nomad Java SDK is an official Java client library for the HashiCorp Nomad HTTP API. It enables Java and JVM-based applications to interact with Nomad clusters for submitting jobs, querying allocations, managing nodes, and performing other orchestration operations. The SDK provides a typed Java interface over the Nomad REST API, making it suitable for enterprise applications and microservice architectures running on the JVM.
+#### Security (2)
 
-- **Human URL:** [https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks](https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks)
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Nomad Authentication](https://apis.io/security/nomad/nomad-authentication/)
+- [Nomad Domain Security](https://apis.io/security/nomad/nomad-domain-security/)
 
-- Workload Orchestration
-- Java
-- SDK
-- DevOps
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://developer.hashicorp.com/nomad/api-docs/libraries-and-sdks)
-- [Postman Collection](collections/nomad-http-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/nomad-http-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Nomad Plans Pricing](https://apis.io/plans/nomad/nomad-plans-pricing/)
 
-## Common Properties
+#### Rate limits (1)
 
-- [LinkedIn](https://www.linkedin.com/company/hashicorp)
-- [Portal](https://developer.hashicorp.com/nomad)
-- [Documentation](https://developer.hashicorp.com/nomad/docs)
+Published request limits.
+
+- [Nomad Rate Limits](https://apis.io/rate-limits/nomad/nomad-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Nomad Finops](https://apis.io/finops/nomad/nomad-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.nomadproject.io/)
-- [Privacy Policy](https://www.hashicorp.com/privacy)
-- [Terms of Service](https://www.hashicorp.com/terms-of-service)
+- [Documentation](https://developer.hashicorp.com/nomad/docs)
 - [Support](https://support.hashicorp.com/)
 - [Blog](https://www.hashicorp.com/blog)
-- [Login](https://portal.cloud.hashicorp.com/sign-in)
-- [JSON-LD](json-ld/nomad-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Terms of service](https://www.hashicorp.com/terms-of-service)
+- [Privacy policy](https://www.hashicorp.com/privacy)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** API Evangelist
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 39.1** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 62.9 |
+| Contract governance | 13.6 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 38.1 |
+| Access clarity | 25.0 |
+
+**Agent readiness 19.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/nomad/](https://apis.io/providers/nomad/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for HashiCorp Nomad: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/nomad/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
